@@ -6,6 +6,8 @@ We are using the [`pnpm`](https://pnpm.io/) package manager
 
 ## Getting Started
 
+On first cloning the repo run `pnpm install`
+
 Run `pnpm run dev`
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
