@@ -5,11 +5,11 @@ export default function HomePageTopSection() {
         <section className="relative bg-cover bg-center bg-no-repeat h-screen"
             style={{ backgroundImage: "url('/images/tower-bridge-1.jpeg')" }}>
             <div className="flex flex-col h-full bg-black bg-opacity-50 items-center justify-center">
-                <h1 className="text-white text-3xl sm:text-4xl md:text-6xl font-bold">Common Room</h1>
+                <h1 className="text-white text-3xl sm:text-4xl md:text-6xl font-bold">London Student Network</h1>
 
                 <div className="w-auto flex flex-row p-10 space-x-20 " >
 
-                    <p className="font-bold text-lg md:text-xl">Bowl making machine</p>
+                    <p className="font-bold text-lg md:text-xl">Connecting 500, 000 students</p>
 
                     <Link href="/signin" className="flex items-center space-x-2 group">
                         <div>

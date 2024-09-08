@@ -20,20 +20,17 @@ export default function Header() {
 			<NavLinks pathname={pathname} className="hidden md:flex" />
 
 			<div className="flex items-center space-x-4">
-				<Link href='/signin' className='py-2 px-4  rounded-lg shadow-lg text-xl transition-all duration-300 ease-in-out hover:shadow-inner hover:bg-blue-800'>
+				<Link href='/signin' className='py-2 px-4 rounded-lg shadow-lg text-xl transition-all duration-300 ease-in-out hover:shadow-inner hover:bg-blue-800'>
 					Sign In
 				</Link>
 
-				<button
-					onClick={toggleMenu}
-					className="md:hidden p-2"
-				>
+				<button onClick={toggleMenu} className="md:hidden p-2" >
 					<img src="/icons/menu.svg" alt="Menu Icon" className="w-6 h-6" />
 				</button>
 			</div>
 
 			{isMenuOpen && (
-				<div className="absolute top-16 right-8 p-6 rounded-lg shadow-lg">
+				<div className="backdrop:absolute top-16 right-8 p-6 rounded-lg shadow-lg">
 					<NavLinks pathname={pathname} className="flex flex-col space-y-4" />
 				</div>
 			)}
@@ -49,20 +46,21 @@ function NavLinks({ pathname, className }: { pathname: string, className?: strin
 				pathname === '/events' ? 'underline' : 'no-underline',
 				'hover:underline transition-all md:text-xl'
 			)}>
-				events
+				Events
 			</Link>
 			<Link href="/about" className={clsx(
 				pathname === '/about' ? 'underline' : 'no-underline',
 				'hover:underline transition-all md:text-xl'
 			)}>
-				about
+				About
 			</Link>
 			<Link href="/contact" className={clsx(
 				pathname === '/contact' ? 'underline' : 'no-underline',
 				'hover:underline transition-all md:text-xl'
 			)}>
-				contact us
+				Contact Us
 			</Link>
 		</nav>
 	);
 }
+

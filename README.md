@@ -1,8 +1,19 @@
 # London Students Network Website
 
-This is a [Next.js](https://nextjs.org) project 
+This is a [Next.js](https://nextjs.org) project using the [`pnpm`](https://pnpm.io/) package manager
 
-We are using the [`pnpm`](https://pnpm.io/) package manager
+## Developer Notes
+
+Please follow the official git branching strategy:
+
+- create a git branch for each new **feature** or **bugfix**
+
+- only merge into main *via a Pull Request*. All code must be reviewed to into live deployment
+
+Developer advice:
+
+- use TODO's, MARK's, and NOTE's throughout your codebase in order to quickly identify meaninful parts of code
+
 
 ## Getting Started
 
