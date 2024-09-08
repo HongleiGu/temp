@@ -32,7 +32,7 @@ export default function EventPage() {
 			{ Object.keys(events).map((monthYearKey) => {
 				const [month, year] = monthYearKey.split('-')
 				return (
-					<EventSection month={month} events={events[monthYearKey]} year={year} />
+					<EventSection key={monthYearKey} month={month} events={events[monthYearKey]} year={year} />
 				)
 			}
 			)}
