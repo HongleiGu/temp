@@ -30,7 +30,7 @@ export default function Header() {
 			</div>
 
 			{isMenuOpen && (
-				<div className="backdrop:absolute top-16 right-8 p-6 rounded-lg shadow-lg">
+				<div className="absolute top-16 right-8 p-6 rounded-lg shadow-lg">
 					<NavLinks pathname={pathname} className="flex flex-col space-y-4" />
 				</div>
 			)}
