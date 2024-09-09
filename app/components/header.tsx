@@ -31,7 +31,7 @@ export default function Header() {
 			<NavLinks pathname={pathname} className="hidden md:flex space-x-8" />
 
 			<div className="flex items-center space-x-4">
-				<Link href='/signin' className='hidden md:block py-2 px-4 rounded-lg shadow-lg text-xl transition-all duration-300 ease-in-out hover:shadow-inner hover:bg-blue-800'>
+				<Link href='/login' className='hidden md:block py-2 px-4 rounded-lg shadow-lg text-xl transition-all duration-300 ease-in-out hover:shadow-inner hover:bg-blue-800'>
 					Sign In
 				</Link>
 
@@ -51,7 +51,7 @@ export default function Header() {
 
 					<div className="border-t border-gray-600 my-4" />
 
-					<Link href='/signin' onClick={closeMenu} className='py-2 px-4 mt-auto text-xl w-full text-center'>
+					<Link href='/login' onClick={closeMenu} className='py-2 px-4 mt-auto text-xl w-full text-center'>
 						Sign In
 					</Link>
 				</motion.div>
