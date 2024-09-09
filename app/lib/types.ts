@@ -10,3 +10,12 @@ export interface Event {
 	location: string;
 	image: string;
 }
+
+export type User = {
+	id: string;
+	name: string;
+	email: string;
+	password: string;
+	role: string;
+	emailVerified: boolean;
+}

@@ -10,13 +10,12 @@ export const authConfig = {
 	callbacks: {
 		authorized({ auth, request: { nextUrl } }) {
 			const isLoggedIn = !!auth?.user;
-			// const isAdmin = auth?.user?.role === 'admin'
+			const isAdmin = auth?.user?.role === 'admin'
 			const onAdminPage = nextUrl.pathname.startsWith('/admin');
-			if (onAdminPage) {
+			if (onAdminPage && isAdmin) {
+				console.log(`Admin: ${auth?.user}`)
 				if (isLoggedIn) return true;
 				return false; // Redirect unauthenticated users to login page
-			} else if (isLoggedIn) {
-				return Response.redirect(new URL('/events', nextUrl));
 			}
 			return true;
 		},
