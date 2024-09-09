@@ -12,7 +12,7 @@ export default function Header() {
 	const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
 	return (
-		<header className="fixed top-0 left-0 w-full bg-opacity-50 backdrop-blur-lg border-b-2 border-gray-300 border-opacity-25 flex justify-between items-center px-8 shadow-md text-white z-50">
+		<header className="sticky top-0 left-0 w-full  backdrop-blur-lg border-b-2 border-gray-300 border-opacity-25 flex justify-between items-center px-8 shadow-md text-white bg-blue-700 bg-opacity-25 z-50">
 			<Link href='/' className="flex items-center space-x-2">
 				<img src='/logo/LSN LOGO 1.png' alt='LSN logo' className="w-16 md:w-24" />
 			</Link>
@@ -30,7 +30,7 @@ export default function Header() {
 			</div>
 
 			{isMenuOpen && (
-				<div className="backdrop:absolute top-16 right-8 p-6 rounded-lg shadow-lg">
+				<div className="absolute top-16 right-8 p-6 rounded-lg shadow-lg">
 					<NavLinks pathname={pathname} className="flex flex-col space-y-4" />
 				</div>
 			)}
