@@ -6,7 +6,7 @@ interface EventCardProps {
 
 export default function EventCard({ event }: EventCardProps) {
 	return (
-		<div className="flex flex-col bg-neutral-200 bg-opacity-80 p-4 rounded-md shadow-lg transition-transform duration-300 ease-in-out hover:scale-105">
+		<div className="flex flex-col bg-white  p-4 rounded-sm shadow-lg transition-transform duration-300 ease-in-out hover:scale-105 hover:bg-opacity-90">
 			<img src={event.image} alt={event.event_title} className="w-full h-40 object-cover rounded-md mb-2" />
 			<div className="flex flex-col justify-between flex-grow">
 				<div>

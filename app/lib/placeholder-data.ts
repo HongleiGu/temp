@@ -31,7 +31,7 @@ export const events: Event[] = [
 		time_start: '18:30',
 		time_end: '19:30',
 		location: 'Imperial College London, RSM Building, Room 1.31',
-		image: '/images/placeholders/room.jpg',
+		image: '/images/placeholders/robot.jpeg',
 	},
 	{
 		id: 'sda33e9f-4001-4271-9855-fec4b6a6442a',
@@ -65,5 +65,27 @@ export const events: Event[] = [
 		time_end: '17:00',
 		location: 'Imperial College London, Tech Lab',
 		image: '/images/placeholders/robot.jpeg',
-	}
+	},
+	{
+		id: 'c23e9f-4001-4271-9855-fec4b6a6442c',
+		organiser_name: 'Tech Enthusiasts',
+		event_title: 'Robotics Workshop',
+		description: 'Learn the basics of robotics!',
+		date: '2024-11-14',
+		time_start: '15:00',
+		time_end: '17:00',
+		location: 'Imperial College London, Tech Lab',
+		image: '/images/placeholders/robot.jpeg',
+	},
+	{
+		id: 'sda33e9f-4001-4271-9855-fec4b6a6442a',
+		organiser_name: 'Imperial Neurotech Society',
+		event_title: 'The newest thing in the whole wide world',
+		description: 'Join us to hear all things Neurotechnology',
+		date: '2025-09-20',
+		time_start: '18:30',
+		time_end: '19:30',
+		location: 'Imperial College London, RSM Building, Room 1.31',
+		image: '/images/placeholders/room.jpg',
+	},
 ];
