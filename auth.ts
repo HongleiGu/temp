@@ -19,6 +19,10 @@ async function getUser(email: string): Promise<User | undefined> {
 
 export const { auth, signIn, signOut } = NextAuth({
 	...authConfig,
+	session: {
+		strategy: "jwt",
+		maxAge: 1 * 24 * 60 * 60, // 1 day
+	},
 	providers: [Credentials({
 		async authorize(credentials) {
 			const parsedCredentials = z.object({ email: z.string().email(), password: z.string().min(6) })
@@ -44,13 +48,13 @@ export const { auth, signIn, signOut } = NextAuth({
 			console.log(token)
 			return token;
 		},
-		async session({ session, token }) {
-			console.log(`Debugging ${session}, ${token}`)
+		async session({ session, token, user }) {
 			if (token) {
 				session.user.role = token.role;  // Attach role to the session
 			}
-			console.log(session)
+			// console.log(session.user.role)
 			return session;
-		}
-	}
+		},
+	},
+	secret: process.env.AUTH_SECRET
 })
