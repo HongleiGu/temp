@@ -1,14 +1,31 @@
 
 export interface Event {
 	id: string;
-	organiser_name: string;
-	event_title: string;
+	title: string,
 	description: string;
-	date: string;
-	time_start: string;
-	time_end: string;
-	location: string;
-	image: string;
+	organiser: string;
+	time: string,
+	date: string,
+	location: string,
+	image_url: string,
+	event_type: number
+}
+
+export interface SQLEvent {
+	id: string;
+	title: string,
+	description: string;
+	organiser: string;
+	start_time: string,
+	end_time: string,
+	day: number,
+	month: number,
+	year: number,
+	location_building: string,
+	location_area: string,
+	location_address: string,
+	image_url: string,
+	event_type: number
 }
 
 export type User = {
