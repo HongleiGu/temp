@@ -45,7 +45,6 @@ export const { auth, signIn, signOut } = NextAuth({
 			if (user) {
 				token.role = user.role;  // Attach role to the token
 			}
-			console.log(token)
 			return token;
 		},
 		async session({ session, token, user }) {
@@ -53,8 +52,6 @@ export const { auth, signIn, signOut } = NextAuth({
 				session.user.role = token.role;  // Attach role to the session
 			}
 
-			console.log(`SESSION:`)
-			console.log(session.user)
 			return session;
 		},
 	},

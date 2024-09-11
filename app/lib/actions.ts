@@ -33,8 +33,6 @@ export async function authenticate(prevState: string | undefined, formData: Form
 export async function hasAdminPermissions(redirectPage?: string) {
 	const session = await auth()
 
-	console.log(session)
-
 	if (redirectPage) {
 		if (!session) {
 			redirect(redirectPage)

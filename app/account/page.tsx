@@ -3,7 +3,6 @@
 import { auth } from '@/auth';
 
 export default async function AccountPage() {
-	// const { data: session, status } = useSession()
 
 	const session = await auth()
 
