@@ -52,7 +52,9 @@ export const { auth, signIn, signOut } = NextAuth({
 			if (token) {
 				session.user.role = token.role;  // Attach role to the session
 			}
-			// console.log(session.user.role)
+
+			console.log(`SESSION:`)
+			console.log(session.user)
 			return session;
 		},
 	},

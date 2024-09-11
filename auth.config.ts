@@ -91,13 +91,15 @@ export const authConfig = {
 	],
 	callbacks: {
 		authorized({ auth, request: { nextUrl } }) {
+			const user = auth?.user
+			console.log(user)
 			const isAdmin = auth?.user?.role === 'admin'
 			const onAdminPage = nextUrl.pathname.startsWith('/admin');
-			if (onAdminPage) {
-				console.log(`!! ${auth?.user?.role} trying to access /admin`)
-				if (isAdmin) return true
-				return false // Redirect unauthenticated users to login page
-			}
+			// if (onAdminPage) {
+			// 	console.log(`!! ${auth?.user } trying to access /admin`)
+			// 	if (isAdmin) return true
+			// 	return false // Redirect unauthenticated users to login page
+			// }
 			return true
 		},
 	},

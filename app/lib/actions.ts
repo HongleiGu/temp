@@ -1,7 +1,7 @@
 'use server';
 
 import { redirect } from "next/navigation";
-import { signIn } from "@/auth";
+import { auth, signIn } from "@/auth";
 import { AuthError } from "next-auth";
 
 export async function authenticate(prevState: string | undefined, formData: FormData) {
@@ -28,4 +28,29 @@ export async function authenticate(prevState: string | undefined, formData: Form
 		throw error
 	}
 	redirect(`/account`)
+}
+
+export async function hasAdminPermissions(redirectPage?: string) {
+	const session = await auth()
+
+	console.log(session)
+
+	if (redirectPage) {
+		if (!session) {
+			redirect(redirectPage)
+		}
+	}
+
+	try {
+		const role = session?.user.role
+
+		console.log(`ROLE: ${role}`)
+
+		if (role && role === 'admin') {
+			return true
+		} 
+		redirect(redirectPage || '/login')
+	} catch (error: any) {
+		false
+	}
 }
