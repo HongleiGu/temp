@@ -1,15 +1,5 @@
 import { Event } from './types';
 
-export const users = [
-	{
-		id: '410544b2-4001-4271-9855-fec4b6a6442a',
-		name: 'User',
-		email: 'user@nextmail.com',
-		password: '123456',
-	},
-];
-
-
 export const events: Event[] = [
 	{
 		id: 'ab33e9f-4001-4271-9855-fec4b6a6442a',

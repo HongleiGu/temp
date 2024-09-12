@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { inria } from '@/app/fonts';
 import "./globals.css";
 import Header from "./components/header";
+import { SessionProvider } from "next-auth/react";
+
 
 export const metadata: Metadata = {
 	title: "London Student Network",
@@ -16,8 +18,10 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${inria.className} antialiased`} >
-				<Header />
-				{children}
+				<SessionProvider>
+					<Header />
+					{children}
+				</SessionProvider>
 			</body>
 		</html>
 	);
