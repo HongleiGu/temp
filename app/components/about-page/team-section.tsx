@@ -82,13 +82,13 @@ export default function TeamSection() {
                     <div className="bg-black bg-opacity-50 p-2 text-center">
                         <img src="/images/about/anish-kochhar.jpg" alt="Anish Kochhar" className="w-48 h-60 object-cover mx-auto my-4" />
                         <h2 className="text-2xl tracking-wider mb-2 underline">Anish Kochhar</h2>
-                        <p className="text-xl text-gray-300 pb-10">Tech Officer</p>
+                        <p className="text-xl text-gray-300 pb-10">Head of Tech</p>
                     </div>
 
                     <div className="bg-black bg-opacity-50 p-2 text-center">
                         <img src="/images/about/alan-jiang.jpg" alt="Alan Jiang" className="w-48 h-60 object-cover mx-auto my-4" />
                         <h2 className="text-2xl tracking-wider mb-2 underline">Alan Jiang</h2>
-                        <p className="text-xl text-gray-300 pb-10">Website Developer</p>
+                        <p className="text-xl text-gray-300 pb-10">Tech Officer</p>
                     </div>
                 </div>
             </div>
