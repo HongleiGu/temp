@@ -106,7 +106,7 @@ function NavLinks({ pathname, className, onClick }: { pathname: string, classNam
 
 
 
-function SideMenu({ closeMenu, headerHeight, pathname, session }: { closeMenu: () => void, headerHeight: number, pathname: string, session?: any }) {
+function SideMenu({ closeMenu, headerHeight, pathname }: { closeMenu: () => void, headerHeight: number, pathname: string }) {
 	return (
 		<motion.div
 			initial={{ x: "100%" }}
