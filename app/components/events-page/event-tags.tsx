@@ -15,7 +15,7 @@ export default function EventCardTags({ eventType }: EventCardTagsProps) {
 			{tags.map((tag, index) => (
 				<span
 					key={index}
-					className={`w-5 h-5 rounded-full ${tag.color}`}
+					className={`w-5 h-5 rounded-full ${tag.color} border-white border-2 drop-shadow-sm`}
 					title={tag.label}
 				></span>
 			))}
