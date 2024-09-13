@@ -48,7 +48,8 @@ export async function hasAdminPermissions(redirectPage?: string) {
 			return true
 		} 
 		redirect(redirectPage || '/login')
-	} catch (error: any) {
-		false
-	}
+	} catch (error: unknown) {
+		console.log(error)
+		return false
+	} 
 }
