@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { inria } from '@/app/fonts';
 import "./globals.css";
 import Header from "./components/header";
+import Footer from "./components/footer";
 import { SessionProvider } from "next-auth/react";
 
 
@@ -21,6 +22,7 @@ export default function RootLayout({
 				<SessionProvider>
 					<Header />
 					{children}
+					<Footer />
 				</SessionProvider>
 			</body>
 		</html>
