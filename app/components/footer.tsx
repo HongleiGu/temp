@@ -19,13 +19,31 @@ export default function Footer() {
         {/* Social Links */}
         <div className="flex space-x-8 mt-5 mb-5">
           <a href="https://www.instagram.com/lsn.uk/" target="_blank" rel="noreferrer" aria-label="Instagram">
-            <img src="/images/about/connection-icon.png" alt="Instagram" className="w-16 h-16" />
+            <Image
+              src="/images/about/connection-icon.png"
+              alt="Instagram"
+              width={64}
+              height={64}
+              className="w-16 h-16"
+            />
           </a>
           <a href="https://www.linkedin.com/company/london-student-network/mycompany" target="_blank" rel="noreferrer" aria-label="LinkedIn">
-            <img src="/images/about/connection-icon.png" alt="LinkedIn" className="w-16 h-16" />
+            <Image
+              src="/images/about/connection-icon.png"
+              alt="LinkedIn"
+              width={64}
+              height={64}
+              className="w-16 h-16"
+            />
           </a>
           <a href="mailto:londonstudentnetwork@gmail.com" aria-label="Email">
-            <img src="/images/about/connection-icon.png" alt="Email" className="w-16 h-16" />
+            <Image
+              src="/images/about/connection-icon.png"
+              alt="Email"
+              width={64}
+              height={64}
+              className="w-16 h-16"
+            />
           </a>
         </div>
 

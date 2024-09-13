@@ -4,7 +4,7 @@ import TeamSection from '@/app/components/about-page/team-section';
 
 export default function AboutPage() {
     return (
-        <div className="relative h-cover overflow-hidden">
+        <div className="relative h-auto overflow-hidden">
             {/* Background Image */}
             <div
                 className="absolute inset-0 bg-fixed bg-cover bg-center z-0"
