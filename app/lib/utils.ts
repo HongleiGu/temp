@@ -7,7 +7,6 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function convertSQLEventToEvent(sqlEvent: SQLEvent): Event {
-	const location = `${sqlEvent.location_building}, ${sqlEvent.location_area}, ${sqlEvent.location_address}`;
 	const date = `${String(sqlEvent.day).padStart(2, '0')}/${String(sqlEvent.month).padStart(2, '0')}/${sqlEvent.year}`;
 	const time = `${sqlEvent.start_time} - ${sqlEvent.end_time}`;
 
@@ -18,7 +17,9 @@ export function convertSQLEventToEvent(sqlEvent: SQLEvent): Event {
 		organiser: sqlEvent.organiser,
 		time: time,
 		date: date,
-		location: location,
+		location_building: sqlEvent.location_building,
+		location_area: sqlEvent.location_area,
+		location_address: sqlEvent.location_address,
 		image_url: sqlEvent.image_url,
 		event_type: sqlEvent.event_type
 	};
@@ -57,13 +58,19 @@ export function sortEventsByDate(events: Event[]): Event[] {
 	})
 }
 
-export function formatDateString(dateString: string): string {
+export function formatDateString(dateString: string, short: boolean = true): string {
 	const [day, month, year] = dateString.split('/').map(Number)
 	const date = new Date(year, month - 1, day)
 
-	const dayOfWeek = date.toLocaleString('en-US', { weekday: 'short' }).toUpperCase()
+	const dayOfWeek = date.toLocaleString('en-US', { weekday: short ? 'short' : 'long' })
 	const dayInMonth = String(day).padStart(2, '0')
-	const monthName = date.toLocaleString('en-US', { month: 'short' }).toUpperCase()
+	const monthName = date.toLocaleString('en-US', { month: short ? 'short' : 'long' })
 
 	return `${dayOfWeek}, ${dayInMonth} ${monthName}`
 }
+
+export const EVENT_TAG_TYPES: { [key: number]: { label: string; color: string } } = {
+	1: { label: 'SOCIAL', color: 'bg-[#f3a51a] opacity-95' },
+	2: { label: 'ACADEMIC', color: 'bg-[#079fbf] opacity-95' },
+	4: { label: 'SPORTING', color: 'bg-[#041A2E] opacity-95' },
+};

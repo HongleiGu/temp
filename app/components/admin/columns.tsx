@@ -70,10 +70,10 @@ export const columns: ColumnDef<Event>[] = [
 	// 	}
 	// }
 	{
-		accessorKey: "location",
+		accessorKey: "location_address",
 		header: "Location",
 		cell: ({ row }) => {
-			return <div className="line-clamp-3">{row.getValue("location")}</div>
+			return <div className="line-clamp-3">{row.getValue("location_address")}</div>
 		}
 	},
 ]

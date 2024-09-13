@@ -6,7 +6,9 @@ export interface Event {
 	organiser: string;
 	time: string,
 	date: string,
-	location: string,
+	location_building: string,
+	location_area: string,
+	location_address: string,
 	image_url: string,
 	event_type: number
 }

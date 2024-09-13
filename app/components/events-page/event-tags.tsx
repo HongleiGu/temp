@@ -1,18 +1,14 @@
+import { EVENT_TAG_TYPES } from "@/app/lib/utils";
+
 interface EventCardTagsProps {
 	eventType: number;
 }
 
-const TAGS: { [key: number]: { label: string; color: string } } = {
-	1: { label: 'SOCIAL', color: 'bg-[#f3a51a] opacity-95' },
-	2: { label: 'ACADEMIC', color: 'bg-[#079fbf] opacity-95' },
-	4: { label: 'SPORTING', color: 'bg-[#041A2E] opacity-95' },
-};
-
 export default function EventCardTags({ eventType }: EventCardTagsProps) {
-	const tags = Object.keys(TAGS)
+	const tags = Object.keys(EVENT_TAG_TYPES)
 		.map(Number)
 		.filter((key) => eventType & key)
-		.map((key) => TAGS[key]);
+		.map((key) => EVENT_TAG_TYPES[key]);
 
 	return (
 		<div className="absolute top-1 right-2 flex space-x-1">
