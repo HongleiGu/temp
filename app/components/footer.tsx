@@ -20,29 +20,29 @@ export default function Footer() {
         <div className="flex space-x-8 mt-5 mb-5">
           <a href="https://www.instagram.com/lsn.uk/" target="_blank" rel="noreferrer" aria-label="Instagram">
             <Image
-              src="/images/about/connection-icon.png"
+              src="/icons/instagram.svg"
               alt="Instagram"
               width={64}
               height={64}
-              className="w-16 h-16"
+              className="w-12 h-12"
             />
           </a>
           <a href="https://www.linkedin.com/company/london-student-network/mycompany" target="_blank" rel="noreferrer" aria-label="LinkedIn">
             <Image
-              src="/images/about/connection-icon.png"
+              src="/icons/linkedin.svg"
               alt="LinkedIn"
               width={64}
               height={64}
-              className="w-16 h-16"
+              className="w-12 h-12"
             />
           </a>
           <a href="mailto:londonstudentnetwork@gmail.com" aria-label="Email">
             <Image
-              src="/images/about/connection-icon.png"
+              src="/icons/mail.svg"
               alt="Email"
               width={64}
               height={64}
-              className="w-16 h-16"
+              className="w-12 h-12 mt-1"
             />
           </a>
         </div>
