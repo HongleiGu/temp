@@ -10,7 +10,8 @@ export interface Event {
 	location_area: string,
 	location_address: string,
 	image_url: string,
-	event_type: number
+	event_type: number,
+	sign_up_link?: string,
 }
 
 export interface SQLEvent {
@@ -27,7 +28,8 @@ export interface SQLEvent {
 	location_area: string,
 	location_address: string,
 	image_url: string,
-	event_type: number
+	event_type: number,
+	sign_up_link?: string,
 }
 
 export type User = {

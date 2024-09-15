@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Event } from "@/app/lib/types";
 import Image from 'next/image';
+import { createPortal } from 'react-dom';
 import { formatDateString, EVENT_TAG_TYPES } from '@/app/lib/utils';
 
 interface EventModalProps {
@@ -41,11 +42,11 @@ export default function EventModal({ event, onClose }: EventModalProps) {
 	};
 
 
-	return (
+	return createPortal(
 		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 			<div
 				ref={modalRef}
-				className="relative bg-white w-[90%] h-[80%] p-8 border-2 border-black overflow-hidden"
+				className="relative bg-white w-[90vw] h-[80vh] p-8 border-2 border-black overflow-hidden"
 			>
 				<button onClick={onClose} className="absolute top-4 right-4 transition" >
 					<Image
@@ -94,6 +95,7 @@ export default function EventModal({ event, onClose }: EventModalProps) {
 					</div>
 				</div>
 			</div>
-		</div>
+		</div>,
+		document.body
 	);
 }

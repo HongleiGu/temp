@@ -50,7 +50,7 @@ export default function Footer() {
 				</div>
 
 				<div className="hidden md:flex flex-col mt-3 mb-5 flex-end">
-					<h2 className="text-sm text-white text-center font-semibold">Copyright © 2024 London Student Network</h2>
+					<h2 className="text-sm text-white/70 text-center font-semibold">Copyright © 2024 London Student Network</h2>
 				</div>
 
 				{/* Newsletter Subscription */}

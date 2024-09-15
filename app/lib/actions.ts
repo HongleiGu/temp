@@ -1,7 +1,7 @@
 'use server';
 
 import { redirect } from "next/navigation";
-import { auth, signIn } from "@/auth";
+import { auth, signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
 
 export async function authenticate(prevState: string | undefined, formData: FormData) {
@@ -30,6 +30,18 @@ export async function authenticate(prevState: string | undefined, formData: Form
 	redirect(`/account`)
 }
 
+
+export async function logout() {
+	try {
+		await signOut({ redirect: false });
+		return { success: true };
+	} catch (error) {
+		console.error('Failed to sign out:', error);
+		return { success: false };
+	}
+}
+
+
 export async function hasAdminPermissions(redirectPage?: string) {
 	const session = await auth()
 
@@ -46,10 +58,10 @@ export async function hasAdminPermissions(redirectPage?: string) {
 
 		if (role && role === 'admin') {
 			return true
-		} 
+		}
 		redirect(redirectPage || '/login')
 	} catch (error: unknown) {
 		console.log(error)
 		return false
-	} 
+	}
 }

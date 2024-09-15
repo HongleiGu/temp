@@ -3,9 +3,11 @@
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
-import Link from 'next/link';
+import Link from 'next/link'
+import Image from 'next/image';
 import AnimatedMenuButton from './homepage/header-menu-button';
 import { motion } from 'framer-motion';
+import AuthButton from './auth-button';
 
 
 export default function Header() {
@@ -27,7 +29,8 @@ export default function Header() {
 	return (
 		<header className="sticky top-0 left-0 w-full  backdrop-blur-lg border-b-2 border-gray-300 border-opacity-25 flex justify-between items-center px-8 shadow-md text-white bg-blue-700 bg-opacity-25 z-50">
 			<Link href='/' onClick={closeMenu} className="flex items-center space-x-2">
-				<img src='/logo/LSN LOGO 1.png' alt='LSN logo' className="w-16 md:w-24" />
+				<Image src='/logo/LSN LOGO 1.png' alt='LSN logo' width={20} height={20} className='w-16 md:w-24'/>
+				{/* <img src='/logo/LSN LOGO 1.png' alt='LSN logo' className="w-16 md:w-24" /> */}
 			</Link>
 
 			<NavLinks pathname={pathname} className="hidden md:flex space-x-8" />
@@ -46,10 +49,11 @@ export default function Header() {
 						Sign Out
 					</Link>
 				) : */}
-					<Link href='/login' className='hidden md:block py-2 px-4 rounded-lg shadow-lg text-xl transition-all duration-300 ease-in-out hover:shadow-inner hover:bg-blue-800'>
+					{/* <Link href='/login' className='hidden md:block py-2 px-4 rounded-lg shadow-lg text-xl transition-all duration-300 ease-in-out hover:shadow-inner hover:bg-blue-800'>
 						Sign In
-					</Link>
+					</Link> */}
 				{/* } */}
+				<AuthButton />
 				<AnimatedMenuButton onClick={toggleMenu} isActive={isMenuOpen} className='md:hidden' />
 			</div>
 

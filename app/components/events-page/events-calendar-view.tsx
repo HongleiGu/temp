@@ -17,7 +17,8 @@ const testEvents: Event[] = [
 		location_area: "Short Location",
 		location_building: "Short Location",
 		image_url: "/images/placeholders/football.jpg",
-		event_type: 1
+		event_type: 1,
+		sign_up_link: 'https://google.com'
 	},
 	{
 		id: "2",
