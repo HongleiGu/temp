@@ -11,3 +11,22 @@ export async function fetchEvents() {
 		throw new Error('Failed to fetch revenue data')
 	}
 }
+
+
+export async function deleteEvents(eventIds: string[]): Promise<void> {
+	try {
+		if (eventIds.length === 0) {
+			throw new Error('No event IDs provided for deletion');
+		}
+
+		await sql`
+			DELETE FROM events
+			WHERE id = ANY(${eventIds})
+		`;
+
+		console.log(`Deleted ${eventIds.length} events.`);
+	} catch (error) {
+		console.error('Database error during deletion:', error);
+		throw new Error('Failed to delete events');
+	}
+}

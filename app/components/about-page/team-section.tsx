@@ -77,12 +77,12 @@ export default function TeamSection() {
             <div className="absolute inset-0"></div>
 
             {/* Content */}
-            <div className="relative z-10 text-centre text-white max-w-full mx-auto md:mx-32">
+            <div className="relative z-10 text-centre text-white max-w-full mx-auto ">
                 <h1 className="text-5xl font-bold mb-6 tracking-wider">Meet the Team</h1>
                 <hr className="border-white border-2 w-40 my-8" />
 
                 {/* Team Members */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
                     {teamMembers.map((member, index) => (
                         <div key={index} className="bg-black bg-opacity-50 p-2 text-center">
                             <div className="w-48 h-60 relative mx-auto my-4">

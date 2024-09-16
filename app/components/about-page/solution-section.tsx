@@ -29,7 +29,7 @@ export default function SolutionSection() {
                         <p className="text-2xl font-light text-gray-300">
                             LSN is the first dedicated platform specifically designed for sharing and promoting every event made by a student for students across the city.
                         </p>
-                    </div>
+			</div>
 
                     {/* Collaboration Section */}
                     <div>

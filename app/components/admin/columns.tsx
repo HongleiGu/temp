@@ -4,6 +4,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Event } from "@/app/lib/types";
 import { ArrowsUpDownIcon } from "@heroicons/react/24/outline";
 import { Button } from "../button";
+import { DataTableColumnHeader } from "./column-header";
+import { Checkbox } from "../checkbox";
 
 const parseDate = (dateString: string) => {
 	const [day, month, year] = dateString.split("/").map(Number);
@@ -12,6 +14,35 @@ const parseDate = (dateString: string) => {
 
 
 export const columns: ColumnDef<Event>[] = [
+	{
+		id: "select",
+		header: ({ table }) => (
+			<Checkbox
+				checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+				onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+				className="bg-white text-black"
+				aria-label="Select all"
+			/>
+		),
+		cell: ({ row }) => (
+			<Checkbox
+				checked={row.getIsSelected()}
+				onCheckedChange={(value) => row.toggleSelected(!!value)}
+				className="bg-white text-black"
+				aria-label="Select event"
+			/>
+		),
+		enableSorting: false,
+		enableHiding: false,
+	},
+	{
+		id: "event_id",
+		accessorKey: "id",
+		header: "ID",
+		cell: ({ row }) => row.getValue("event_id"),
+		enableHiding: true,
+
+	},
 	{
 		accessorKey: "date",
 		header: ({ column }) => {
@@ -36,7 +67,7 @@ export const columns: ColumnDef<Event>[] = [
 		accessorKey: 'time',
 		header: 'Time',
 		cell: ({ row }) => {
-			return <div className="text-center">{row.getValue("time")} : {row.getValue("date")}</div>
+			return <div className="text-start min-w-[70px]">{row.getValue("time")}</div>
 		},
 		enableResizing: true,
 	},
@@ -50,7 +81,10 @@ export const columns: ColumnDef<Event>[] = [
 	},
 	{
 		accessorKey: "organiser",
-		header: "Organiser",
+		// header: "Organiser",
+		header: ({ column }) => (
+			<DataTableColumnHeader column={column} title="Organiser" />
+		),
 		enableResizing: true,
 	},
 	{
@@ -70,10 +104,16 @@ export const columns: ColumnDef<Event>[] = [
 	// 	}
 	// }
 	{
-		accessorKey: "location_address",
+		accessorKey: "location",
 		header: "Location",
 		cell: ({ row }) => {
-			return <div className="line-clamp-3">{row.getValue("location_address")}</div>
+			return (
+				<div className="line-clamp-5">
+					<div className="text-gray-400">{row.original.location_building}</div>
+					<div className="text-gray-300">{row.original.location_area}</div>
+					<div className="text-white">{row.original.location_address}</div>
+				</div>
+			)
 		}
 	},
 ]
