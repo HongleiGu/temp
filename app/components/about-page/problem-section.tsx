@@ -1,7 +1,7 @@
 export default function ProblemSection() {
     return (
         <section
-            className="relative w-full min-h-screen flex flex-col justify-center bg-center bg-cover bg-no-repeat"
+            className="relative w-full min-h-screen flex flex-col justify-center "
         >
             {/* Overlay to make text readable */}
             <div className="absolute inset-0 "></div>

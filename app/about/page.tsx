@@ -1,13 +1,12 @@
 import ProblemSection from '@/app/components/about-page/problem-section';
 import SolutionSection from '@/app/components/about-page/solution-section';
 import TeamSection from '@/app/components/about-page/team-section';
-import Image from 'next/image';
 
 export default function AboutPage() {
     return (
-        <div className="relative h-auto overflow-hidden">
+        <main className="relative bg-cover bg-center bg-fixed bg-no-repeat h-screen overflow-y-auto " style={{ backgroundImage: "url('/images/tower-bridge-1.jpeg')" }}>
             {/* Background Image */}
-            <div className="absolute w-full h-screen">
+            {/* <div className="absolute w-full h-screen">
                 <Image
                     src="/images/tower-bridge-1.jpeg"
                     alt="Background Image"
@@ -16,22 +15,22 @@ export default function AboutPage() {
                     objectPosition="center"
                     priority
                 />
-            </div>
+            </div> */}
 
             {/* Scrollable Content */}
-            <div className="relative z-10 h-full overflow-y-auto bg-black bg-opacity-50 text-white">
+            <div className="relative h-full overflow-y-auto bg-black bg-opacity-50 text-white snap-y snap-mandatory">
                 <div className="p-10 space-y-10">
-                    <section>
+                    <section className='snap-start'>
                         <ProblemSection />
                     </section>
-                    <section>
+                    <section className='snap-start'>
                         <SolutionSection />
                     </section>
-                    <section>
+                    <section className='snap-start'>
                         <TeamSection />
                     </section>
                 </div>
             </div>
-        </div>
+        </main>
     );
 }
