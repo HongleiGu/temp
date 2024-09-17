@@ -134,7 +134,7 @@ export function createEventObject(data: any): Event {
 		location_area: data.location.area,
 		location_address: data.location.address,
 		image_url: data.selectedImage,
-		event_type: 7, 
+		event_type: data.event_tag, 
 		sign_up_link: data.signupLink || undefined,
 	};
 }
@@ -157,7 +157,7 @@ export async function createSQLEventObject(data: any): Promise<SQLEvent> {
 		location_area: data.location.area,
 		location_address: data.location.address,
 		image_url: data.selectedImage,
-		event_type: 7,
+		event_type: data.event_tag,
 		sign_up_link: data.signupLink || undefined,
 	};
 }
@@ -191,6 +191,7 @@ export const SocietyLogos = [
 	{ name: "Political Engagement and Activism Society", src: '/societies/roar.png' },
 	{ name: "KCL Backpackers", src: '/societies/roar.png' },
 	{ name: "KCL History Society", src: '/societies/roar.png' },
+	{ name: "KCL War Studies", src: '/societies/roar.png' },
 	{ name: "Boundless Compassion Charity Support", src: '/societies/roar.png' },
 	{ name: "KCL Men's Football", src: '/societies/roar.png' },
 	{ name: "Women and Politics", src: '/societies/roar.png' },

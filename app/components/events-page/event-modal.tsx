@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Event } from "@/app/lib/types";
 import Image from 'next/image';
 import { createPortal } from 'react-dom';
-import { formatDateString, EVENT_TAG_TYPES } from '@/app/lib/utils';
+import { formatDateString, EVENT_TAG_TYPES, returnLogo } from '@/app/lib/utils';
 import Link from 'next/link';
 import { Button } from '../button';
 
@@ -43,6 +43,8 @@ export default function EventModal({ event, onClose }: EventModalProps) {
 		return tags;
 	};
 
+	const societyLogo = returnLogo(event.organiser)
+
 
 	return createPortal(
 		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -70,7 +72,18 @@ export default function EventModal({ event, onClose }: EventModalProps) {
 							height={200}
 							className="w-[90%] h-64 object-cover border-2  border-black/70"
 						/>
-						<p className="text-sm text-gray-500 mt-2"><strong>Hosted by</strong> {event.organiser}</p>
+						<div className='flex flex-col'>
+							{ societyLogo.found && (
+								<Image
+									src={societyLogo.src || '/images/societies/roar.png'}
+									alt="Society Logo"
+									width={50}
+									height={50}
+									className='object-contain mt-4'
+								/>
+							)}
+							<p className="text-sm text-gray-500 mt-2"><strong>Hosted by</strong> {event.organiser}</p>
+						</div>
 					</div>
 
 					{/* Event Details */}

@@ -10,8 +10,9 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeftIcon, LockClosedIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 import EventModal from "./event-modal";
-import { validateEvent, createEventObject, createSQLEventObject } from '@/app/lib/utils';
+import { validateEvent, createEventObject, EVENT_TAG_TYPES } from '@/app/lib/utils';
 import { DefaultEvent } from '@/app/lib/types';
+import TagsField from './create-event-tags';
 
 
 const MAX_POSTGRES_STRING_LENGTH = 255;
@@ -26,7 +27,7 @@ export default function CreateEventPage({ imageList, organiserList }: CreateEven
 	const [eventData, setEventData] = useState(DefaultEvent); // Event data for preview
 	const [errorMessage, setErrorMessage] = useState("");
 
-	const { register, handleSubmit, formState: { errors, isValid }, setValue } = useForm({
+	const { register, handleSubmit, formState: { errors, isValid }, setValue, watch } = useForm({
 		mode: 'onChange', // Re-evaluate form validity as the user types
 	});
 
@@ -224,6 +225,17 @@ export default function CreateEventPage({ imageList, organiserList }: CreateEven
 		)
 	}
 
+	const TagsFieldWrapper = () => {
+		const eventTagValue = watch('event_tag', 0); // Default value is 0
+
+		return (
+			<TagsField
+				value={eventTagValue}
+				onChange={(newTagValue: number) => setValue('event_tag', newTagValue)}
+			/>
+		);
+	};
+
 
 	const ImagePickerField = () => (
 		<div className="flex flex-col mb-4">
@@ -295,12 +307,12 @@ export default function CreateEventPage({ imageList, organiserList }: CreateEven
 
 
 	return (
-		<div className="relative bg-gray-200 p-10 overflow-auto text-black">
-			<div className="sticky top-0 bg-white/50 p-4 border-b flex justify-between items-center rounded-lg">
+		<div className="relative bg-white p-10 overflow-auto text-black">
+			<div className="sticky top-0 bg-gray-300 p-4 border-b flex justify-between items-center rounded-lg">
 				<Button variant='ghost' size='sm' className='text-lg hover:text-gray-500' onClick={() => router.back()}>
 					<ArrowLeftIcon width={30} height={30} />Back
 				</Button>
-				{ errorMessage && (
+				{errorMessage && (
 					<p className='text-red-600 p-2 truncate'>{`Error: ${errorMessage}`}</p>
 				)}
 				<div className="space-x-0 space-y-2 md:space-y-0 md:space-x-4 flex flex-col md:flex-row items-center">
@@ -334,6 +346,7 @@ export default function CreateEventPage({ imageList, organiserList }: CreateEven
 				<OrganiserField />
 				<DateField />
 				<TimeField />
+				<TagsFieldWrapper />
 				<LocationField />
 				<ImagePickerField />
 				<SignupLinkField />
