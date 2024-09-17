@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import { SessionProvider } from "next-auth/react";
+import Router from "next/navigation";
 
 
 export const metadata: Metadata = {

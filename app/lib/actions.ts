@@ -65,3 +65,32 @@ export async function hasAdminPermissions(redirectPage?: string) {
 		return false
 	}
 }
+
+export async function isLoggedIn() {
+	const session = await auth()
+
+	if (!session) {
+		return { response: false }
+	} else {
+		return { response: true }
+	}
+}
+
+// Returns the list of Organisers a user is allowed to post for
+export async function getAuthorisedOrganiserList(): Promise<string[]> {
+	const session = await auth()
+
+	try {
+		const username = session?.user.name
+
+		if (username) {
+			return [username, "Imperial College Neurotech Society", "KCL Politics Society"]
+		} else {
+			throw new Error('User is not authenticated');
+		}
+	} catch (error) {
+		console.error('Failed to get authorised organiser list:', error);
+		return [];
+	}
+
+}

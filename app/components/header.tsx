@@ -27,7 +27,7 @@ export default function Header() {
 	const closeMenu = () => setIsMenuOpen(false);
 
 	return (
-		<header className="sticky top-0 left-0 w-full  backdrop-blur-lg border-b-2 border-gray-300 border-opacity-25 flex justify-between items-center px-8 shadow-md text-white bg-blue-700 bg-opacity-25 z-50">
+		<header className="sticky top-0 left-0 w-full backdrop-blur border-b-2 border-gray-300 border-opacity-25 flex justify-between items-center px-8 shadow-md text-white bg-[#041A2E]/80 z-50">
 			<Link href='/' onClick={closeMenu} className="flex items-center space-x-2">
 				<Image src='/logo/LSN LOGO 1.png' alt='LSN logo' width={20} height={20} className='w-16 md:w-24'/>
 				{/* <img src='/logo/LSN LOGO 1.png' alt='LSN logo' className="w-16 md:w-24" /> */}

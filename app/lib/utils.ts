@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge"
 import { SQLEvent, Event } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+	return twMerge(clsx(inputs))
 }
 
 export function convertSQLEventToEvent(sqlEvent: SQLEvent): Event {
@@ -45,7 +45,7 @@ export function getMonthName(month: string): string {
 		"January", "February", "March", "April", "May", "June",
 		"July", "August", "September", "October", "November", "December"
 	];
-	const monthIndex = parseInt(month, 10) - 1; 
+	const monthIndex = parseInt(month, 10) - 1;
 	return monthNames[monthIndex] || "Invalid month";
 }
 
@@ -75,3 +75,27 @@ export const EVENT_TAG_TYPES: { [key: number]: { label: string; color: string } 
 	2: { label: 'ACADEMIC', color: 'bg-[#079fbf] opacity-95' },
 	4: { label: 'SPORTING', color: 'bg-[#041A2E] opacity-95' },
 };
+
+
+export function generateDays() {
+	return Array.from({ length: 31 }, (_, i) => i + 1);
+}
+
+export function generateMonths() {
+	return [
+		"January", "February", "March", "April", "May", "June",
+		"July", "August", "September", "October", "November", "December"
+	];
+}
+
+export function generateYears(startYear = 2024, range = 10) {
+	return Array.from({ length: range }, (_, i) => startYear + i);
+}
+
+export function generateHours() {
+	return Array.from({ length: 24 }, (_, i) => String(i).padStart(2, '0'));
+}
+
+export function generateMinutes() {
+	return Array.from({ length: 4 }, (_, i) => String(i * 15).padStart(2, '0'));
+}

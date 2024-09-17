@@ -33,7 +33,7 @@ export default function EventCard({ event }: EventCardProps) {
 						<h3 className="text-slate-700 text-xl font-bold mt-2 mb-2 line-clamp-3">{event.title}</h3>
 					</div>
 					<div>
-						<p className="text-gray-500 text-xs ">{event.location_address}</p>
+						<p className="text-gray-500 text-xs ">{event.location_area}</p>
 						<p className="text-black text-right mt-2 truncate text-ellipsis">{event.organiser}</p>
 					</div>
 				</div>

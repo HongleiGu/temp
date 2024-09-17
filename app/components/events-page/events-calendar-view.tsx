@@ -44,14 +44,14 @@ export default async function EventsCalendarView() {
 	// TODO filters + pagination of events
 
 	return (
-		<>
+		<div>
 			{Object.keys(monthYearGroupings).map((monthYearKey) => {
 				const [month, year] = monthYearKey.split('/')
 				return (
 					<EventSection month={month} year={year} events={monthYearGroupings[monthYearKey]} />
 				)
 			})}
-		</>
+		</div>
 	)
 
 }

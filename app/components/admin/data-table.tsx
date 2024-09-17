@@ -17,6 +17,7 @@ import { Button } from "../button";
 import { Input } from "../input";
 
 import { ChevronDownIcon, ChevronLeftIcon, PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { useRouter } from "next/navigation";
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
@@ -35,6 +36,8 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ event_id: false })
 	const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 	const selectedRows = Object.keys(rowSelection);
+
+	const router = useRouter();
 
 	const handleDelete = async () => {
 		setIsDeleting(true)
@@ -107,9 +110,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
 						<Button
 							variant="outline"
 							className="border-green-700 text-white hover:bg-green-800"
-							onClick={() => {
-								alert("Add new event");
-							}}
+							onClick={() => router.push('/events/create')}
 						>
 							<PlusIcon className="h-4 w-4" />
 						</Button>
