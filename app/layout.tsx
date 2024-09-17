@@ -22,7 +22,9 @@ export default function RootLayout({
 			<body className={`${inria.className} antialiased`} >
 				<SessionProvider>
 					<Header />
-					{children}
+					<div className="overflow-hidden">
+						{children}
+					</div>
 					<Footer />
 				</SessionProvider>
 			</body>
