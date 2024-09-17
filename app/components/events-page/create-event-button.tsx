@@ -25,11 +25,11 @@ export default function CreateEventButton() {
 			<Button
 				variant="outline"
 				size="lg"
-				className="text-xl mb-2"
+				className="text-xl mb-2 text-white hover:bg-slate-800"
 				onClick={handleCreateEvent}
 			>
 				<PlusIcon width={18} height={18} className="mr-2" />
-				Create An Event
+				Add Event
 			</Button>
 			{error && (
 				<p className="text-red-500 mt-4 text-center">{error}</p>

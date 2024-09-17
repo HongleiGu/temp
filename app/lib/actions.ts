@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { auth, signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
+import { SocietyLogos } from "./utils";
 
 export async function authenticate(prevState: string | undefined, formData: FormData) {
 	try {
@@ -84,7 +85,7 @@ export async function getAuthorisedOrganiserList(): Promise<string[]> {
 		const username = session?.user.name
 
 		if (username) {
-			return [username, "Imperial College Neurotech Society", "KCL Politics Society"]
+			return [username, ...SocietyLogos.map(society => society.name)]
 		} else {
 			throw new Error('User is not authenticated');
 		}

@@ -1,5 +1,5 @@
 import { sql } from '@vercel/postgres';
-import { SQLEvent } from './types';
+import { Event, SQLEvent } from './types';
 import { convertSQLEventToEvent } from './utils';
 
 export async function fetchEvents() {
@@ -24,6 +24,31 @@ export async function fetchUpcomingEvents() {
 	} catch (error) {
 		console.error('Database error:', error);
 		throw new Error('Failed to fetch upcoming events');
+	}
+}
+
+export async function insertEvent(event: Event) {
+	try {
+		await sql`
+      INSERT INTO events (title, description, organiser, time, date, location_building, location_area, location_address, image_url, event_type, sign_up_link)
+      VALUES (
+        ${event.title}, 
+        ${event.description}, 
+        ${event.organiser}, 
+        ${event.time}, 
+        ${event.date}, 
+        ${event.location_building}, 
+        ${event.location_area}, 
+        ${event.location_address}, 
+        ${event.image_url}, 
+        ${event.event_type},
+        ${event.sign_up_link}
+      );
+    `;
+		return { success: true };
+	} catch (error) {
+		console.error('Error creating event:', error);
+		return { success: false, error };
 	}
 }
 

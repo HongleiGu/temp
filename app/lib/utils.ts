@@ -99,3 +99,80 @@ export function generateHours() {
 export function generateMinutes() {
 	return Array.from({ length: 4 }, (_, i) => String(i * 15).padStart(2, '0'));
 }
+
+export function validateEvent(formData: any) {
+	// Validate Date
+	const { day, month, year } = formData.date;
+	const date = new Date(year, month - 1, day); // month is zero-indexed
+	console.log(date.getMonth(), month)
+	console.log(date.getDate(), day)
+	if (date.getMonth() + 1 !== Number(month) || date.getDate() !== Number(day)) {
+		return "Invalid date selected!"
+	}
+
+	// Validate Time
+	const { startHour, startMinute, endHour, endMinute } = formData.time;
+	const startTime = new Date(year, month - 1, day, startHour, startMinute);
+	const endTime = new Date(year, month - 1, day, endHour, endMinute);
+
+	if (startTime > endTime) {
+		return "Timings are invalid!"
+	}
+
+	if (!formData.title || !formData.organiser) {
+		return "Title and organiser are required!"
+	}
+
+}
+
+
+export const PartnerLogos = [
+	{ src: '/partners/LSEULaw.png', name: 'LSEU Law Society' },
+	{ src: '/partners/GlobalChina.png', name: 'Global China and Asia Study Society' },
+	{ src: '/partners/RSA_logo.png', name: 'RSA' },
+	{ src: '/partners/ROAR.png', name: 'ROAR news' },
+	{ src: '/partners/KnownImpact.png', name: 'Known Impact' },
+	{ src: '/partners/KCLPolitics.png', name: 'KCL Politics' },
+	{ src: '/partners/ICLEnt.jpeg', name: 'ICL Entrepreneurs' },
+	{ src: '/partners/AmericanPol.png', name: 'American Politics Society' },
+	{ src: '/partners/GreenFinance.png', name: 'Green Finance' },
+	{ src: '/partners/KCLBackpackers.webp', name: 'KCL Backpackers' },
+	{ src: '/partners/KCLUN.png', name: 'KCL UN Women' },
+	{ src: '/partners/KCLArmy.png', name: 'KCL Army' },
+	{ src: '/partners/LSEAmicus.png', name: 'Amicus LSE' }
+]
+
+export const SocietyLogos = [
+	{ name: "Roar News", src: '/societies/roar.png' },
+	{ name: "KCL Politics", src: '/societies/roar.png' },
+	{ name: "EISKA (European and International Studies King's Association)", src: '/societies/roar.png' },
+	{ name: "LSE SU European Society", src: '/societies/roar.png' },
+	{ name: "Global China and Asia Study Society", src: '/societies/roar.png' },
+	{ name: "Imperial College Finance Society", src: '/societies/roar.png' },
+	{ name: "Amicus UCL", src: '/societies/roar.png' },
+	{ name: "KCL American Politics Society", src: '/societies/roar.png' },
+	{ name: "Political Engagement and Activism Society", src: '/societies/roar.png' },
+	{ name: "KCL Backpackers", src: '/societies/roar.png' },
+	{ name: "KCL History Society", src: '/societies/roar.png' },
+	{ name: "Boundless Compassion Charity Support", src: '/societies/roar.png' },
+	{ name: "KCL Men's Football", src: '/societies/roar.png' },
+	{ name: "Women and Politics", src: '/societies/roar.png' },
+	{ name: "KCL European Society", src: '/societies/roar.png' },
+	{ name: "KCL Political Economy Society", src: '/societies/roar.png' },
+	{ name: "Imperial College Film Society", src: '/societies/roar.png' },
+	{ name: "LSESU Entrepreneurs", src: '/societies/roar.png' },
+	{ name: "KCL Liberal Democrats", src: '/societies/roar.png' },
+	{ name: "KCL Think Tank", src: '/societies/roar.png' },
+	{ name: "Student Startups UK", src: '/societies/roar.png' },
+	{ name: "American Society University of Westminster ", src: '/societies/roar.png' },
+	{ name: "Imperial College Law Society", src: '/societies/roar.png' },
+	{ name: "European Affairs Institute ", src: '/societies/roar.png' },
+]
+
+export function returnLogo(organiser: string): { found: boolean, src?: string } {
+	const logo = SocietyLogos.find(logo => logo.name === organiser);
+	if (logo) {
+		return { found: true, src: logo.src };
+	}
+	return { found: false };
+}

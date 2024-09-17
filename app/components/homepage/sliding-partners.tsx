@@ -4,61 +4,7 @@ import { animate, useMotionValue, motion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import useMeasure from "react-use-measure";
-
-const logos = [
-	{
-		src: '/partners/LSEULaw.png',
-		alt: 'LSEU Law Society'
-	},
-	{
-		src: '/partners/GlobalChina.png',
-		alt: 'Global China & Asia Study'
-	},
-	{
-		src: '/partners/RSA_logo.png',
-		alt: 'RSA'
-	},
-	{
-		src: '/partners/ROAR.png',
-		alt: 'ROAR'
-	},
-	{
-		src: '/partners/KnownImpact.png',
-		alt: 'Known Impact'
-	},
-	{
-		src: '/partners/KCLPolitics.png',
-		alt: 'KCL Politics'
-	},
-	{
-		src: '/partners/ICLEnt.jpeg',
-		alt: 'ICL Entrepreneurs'
-	},
-	{
-		src: '/partners/AmericanPol.png',
-		alt: 'American Politics Society'
-	},
-	{
-		src: '/partners/GreenFinance.png',
-		alt: 'Green Finance'
-	},
-	{
-		src: '/partners/KCLBackpackers.webp',
-		alt: 'KCL Backpackers'
-	},
-	{
-		src: '/partners/KCLUN.png',
-		alt: 'KCL UN Women'
-	},
-	{
-		src: '/partners/KCLArmy.png',
-		alt: 'KCL Army'
-	},
-	{
-		src: '/partners/LSEAmicus.png',
-		alt: 'LSE Amicus'
-	}
-]
+import { PartnerLogos } from "@/app/lib/utils";
 
 export default function SlidingPartners() {
 
@@ -106,8 +52,8 @@ export default function SlidingPartners() {
 			onHoverStart={() => { setMustFinish(true); setDuration(SLOW_DURATION) }}
 			onHoverEnd={() => { setMustFinish(true); setDuration(FAST_DURATION) } }
 		>
-			{[...logos, ...logos].map((logo, index) => (
-				<LogoCard image={logo.src} alt={logo.alt} key={index} />
+			{[...PartnerLogos, ...PartnerLogos].map((logo, index) => (
+				<LogoCard image={logo.src} alt={logo.name} key={index} />
 			))}
 		</motion.div>
 	)

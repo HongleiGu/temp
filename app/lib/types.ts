@@ -1,35 +1,35 @@
 
 export interface Event {
 	id: string;
-	title: string,
+	title: string;
 	description: string;
 	organiser: string;
-	time: string,
-	date: string,
-	location_building: string,
-	location_area: string,
-	location_address: string,
-	image_url: string,
-	event_type: number,
-	sign_up_link?: string,
+	time: string;
+	date: string;
+	location_building: string;
+	location_area: string;
+	location_address: string;
+	image_url: string;
+	event_type: number;
+	sign_up_link?: string;
 }
 
 export interface SQLEvent {
 	id: string;
-	title: string,
+	title: string;
 	description: string;
 	organiser: string;
-	start_time: string,
-	end_time: string,
-	day: number,
-	month: number,
-	year: number,
-	location_building: string,
-	location_area: string,
-	location_address: string,
-	image_url: string,
-	event_type: number,
-	sign_up_link?: string,
+	start_time: string;
+	end_time: string;
+	day: number;
+	month: number;
+	year: number;
+	location_building: string;
+	location_area: string;
+	location_address: string;
+	image_url: string;
+	event_type: number;
+	sign_up_link?: string;
 }
 
 export type User = {
@@ -40,3 +40,19 @@ export type User = {
 	role: string;
 	emailVerified: boolean;
 }
+
+
+export const DefaultEvent: Event = {
+	id: '',
+	title: 'Sample Event',
+	description: 'This is a sample description for a default event.',
+	organiser: 'Imperial Neurotech Society',
+	time: '10:00 - 11:00',
+	date: '12/12/2024',
+	location_building: 'Lecture Room G40, Sir Alexander Fleming Building',
+	location_area: 'Imperial College Campus, South Kensington',
+	location_address: 'Prince Consort Road, SW7 2BP',
+	image_url: '/images/placeholders/football.jpg',
+	event_type: 7, 
+	sign_up_link: 'https://google.co.uk',
+};

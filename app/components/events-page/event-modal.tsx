@@ -3,6 +3,8 @@ import { Event } from "@/app/lib/types";
 import Image from 'next/image';
 import { createPortal } from 'react-dom';
 import { formatDateString, EVENT_TAG_TYPES } from '@/app/lib/utils';
+import Link from 'next/link';
+import { Button } from '../button';
 
 interface EventModalProps {
 	event: Event;
@@ -92,6 +94,20 @@ export default function EventModal({ event, onClose }: EventModalProps) {
 							<hr className="border-t-1 border-gray-300 m-2" />
 							<p className="text-gray-600">{event.description}</p>
 						</div>
+
+						{event.sign_up_link && (
+							<div className="mt-10 self-end w-full flex flex-row justify-start">
+								<Button
+									variant='filled'
+									size='lg' 
+									className="text-gray-600 text-lg rounded-md bg-[#e75b28] border-[#e2531f] hover:bg-[#f57141] uppercase font-semibold tracking-widest p-6"
+								>
+									<Link href={event.sign_up_link}>
+									Sign-up
+									</Link>
+								</Button>
+							</div>
+						)}
 					</div>
 				</div>
 			</div>
