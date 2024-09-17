@@ -59,7 +59,7 @@ export default function TeamSection() {
         },
         {
             name: "Anish Kochhar",
-            title: "Head of Tech",
+            title: "Head of Technology",
             image: "/images/about/anish-kochhar.jpg",
         },
         {
@@ -89,8 +89,8 @@ export default function TeamSection() {
                                 <Image
                                     src={member.image}
                                     alt={member.name}
-                                    layout="fill"
-                                    objectFit="cover"
+                                    fill
+									style={{ objectFit: "contain" }}
                                 />
                             </div>
                             <h2 className="text-2xl tracking-wider mb-2 underline">{member.name}</h2>
