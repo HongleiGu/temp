@@ -40,12 +40,19 @@ export default async function EventsCalendarView() {
 	const allEvents = await fetchEvents();
 
 	const monthYearGroupings = convertEventsToMonthYearGroupings(allEvents.concat(testEvents))
-
+	
+	const sortedMonthYearKeys = Object.keys(monthYearGroupings).sort((a, b) => {
+		const [monthA, yearA] = a.split('/');
+		const [monthB, yearB] = b.split('/');
+		const dateA = new Date(`${yearA}-${monthA}-01`);
+		const dateB = new Date(`${yearB}-${monthB}-01`);
+		return dateA.getTime() - dateB.getTime();
+	})
 	// TODO filters + pagination of events
 
 	return (
 		<div>
-			{Object.keys(monthYearGroupings).map((monthYearKey) => {
+			{sortedMonthYearKeys.map((monthYearKey) => {
 				const [month, year] = monthYearKey.split('/')
 				return (
 					<EventSection month={month} year={year} events={monthYearGroupings[monthYearKey]} />

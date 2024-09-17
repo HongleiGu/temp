@@ -102,7 +102,7 @@ export default function EventModal({ event, onClose }: EventModalProps) {
 									size='lg' 
 									className="text-gray-600 text-lg rounded-md bg-[#e75b28] border-[#e2531f] hover:bg-[#f57141] uppercase font-semibold tracking-widest p-6"
 								>
-									<Link href={event.sign_up_link}>
+									<Link href={event.sign_up_link} target="_blank" rel="noreferrer">
 									Sign-up
 									</Link>
 								</Button>

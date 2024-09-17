@@ -1,9 +1,11 @@
-import { Event } from '@/app/lib/types';
+import { Event, SQLEvent } from '@/app/lib/types';
 import { insertEvent } from '@/app/lib/data';
 import { NextResponse } from 'next/server';
+import { createSQLEventObject } from '@/app/lib/utils';
 
 export async function POST(req: Request) {
-	const event: Event = await req.json();
-	const response = await insertEvent(event)	
+	const data = await req.json();
+	const sqlEvent = await createSQLEventObject(data);
+	const response = await insertEvent(sqlEvent)	
 	return NextResponse.json(response)
 }

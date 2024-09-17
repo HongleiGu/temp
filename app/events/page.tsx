@@ -1,6 +1,7 @@
 
 import EventsCalendarView from '../components/events-page/events-calendar-view';
 import CreateEventButton from '../components/events-page/create-event-button';
+import EventKeys from '../components/events-page/events-key';
 
 
 export default function EventPage() {
@@ -12,6 +13,8 @@ export default function EventPage() {
 			<h1 className="text-4xl font-bold mb-8 text-center">UPCOMING EVENTS</h1>
 
 			<EventsCalendarView />
+
+			<EventKeys />
 
 		</main>
 	)

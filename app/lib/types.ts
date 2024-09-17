@@ -19,6 +19,7 @@ export interface SQLEvent {
 	title: string;
 	description: string;
 	organiser: string;
+	organiser_uid: string;
 	start_time: string;
 	end_time: string;
 	day: number;

@@ -27,24 +27,12 @@ export async function fetchUpcomingEvents() {
 	}
 }
 
-export async function insertEvent(event: Event) {
+export async function insertEvent(event: SQLEvent) {
 	try {
 		await sql`
-      INSERT INTO events (title, description, organiser, time, date, location_building, location_area, location_address, image_url, event_type, sign_up_link)
-      VALUES (
-        ${event.title}, 
-        ${event.description}, 
-        ${event.organiser}, 
-        ${event.time}, 
-        ${event.date}, 
-        ${event.location_building}, 
-        ${event.location_area}, 
-        ${event.location_address}, 
-        ${event.image_url}, 
-        ${event.event_type},
-        ${event.sign_up_link}
-      );
-    `;
+		INSERT INTO events (title, description, organiser, organiser_uid, start_time, end_time, day, month, year, location_building, location_area, location_address, image_url, event_type, sign_up_link)
+		VALUES (${event.title}, ${event.description}, ${event.organiser}, ${event.organiser_uid}, ${event.start_time}, ${event.end_time}, ${event.day}, ${event.month}, ${event.year}, ${event.location_building}, ${event.location_area}, ${event.location_address}, ${event.image_url}, ${event.event_type}, ${event.sign_up_link ?? null})
+		`
 		return { success: true };
 	} catch (error) {
 		console.error('Error creating event:', error);
