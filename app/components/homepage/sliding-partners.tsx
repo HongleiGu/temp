@@ -1,4 +1,9 @@
+"use client";
+
+import { animate, useMotionValue, motion } from "framer-motion";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import useMeasure from "react-use-measure";
 
 const logos = [
 	{
@@ -57,15 +62,64 @@ const logos = [
 
 export default function SlidingPartners() {
 
-	return(
-		<div className="relative overflow-hidden py-4 mx-0">
-			<div className="flex space-x-8 animate-scroll items-center">
-				{logos.map((logo, index) => (
-					<div key={index} className="flex-shrink-0">
-						<Image src={logo.src} alt={logo.alt} width={75} height={75} className="h-auto w-auto object-contain" />
-					</div>
-				))}
-			</div>
+	const FAST_DURATION = 35;
+	const SLOW_DURATION = 80;
+
+	const [duration, setDuration] = useState(FAST_DURATION)
+	const [mustFinish, setMustFinish] = useState(false)
+	const [rerender, setRerender] = useState(false)
+
+	let [ref, { width }] = useMeasure();
+	const xTranslation = useMotionValue(0);
+
+	useEffect(() => {
+		let controls
+		let finalPosition = (-width / 2) - 8
+
+		if (mustFinish) {
+			controls = animate(xTranslation, [xTranslation.get(), finalPosition], {
+				ease: 'linear',
+				duration: duration * (1 - xTranslation.get() / finalPosition),
+				onComplete: () => {
+					setMustFinish(false)
+					setRerender(!rerender)
+				}
+			})
+		} else {
+			controls = animate(xTranslation, [0, finalPosition], {
+				ease: "linear",
+				duration: duration,
+				repeat: Infinity,
+				repeatType: "loop",
+				repeatDelay: 0
+			})
+		}
+
+
+		return controls?.stop
+	}, [xTranslation, width, duration, rerender]);
+
+	return (
+		<motion.div className="relative left-0 flex gap-4"
+			ref={ref}
+			style={{ x: xTranslation }}
+			onHoverStart={() => { setMustFinish(true); setDuration(SLOW_DURATION) }}
+			onHoverEnd={() => { setMustFinish(true); setDuration(FAST_DURATION) } }
+		>
+			{[...logos, ...logos].map((logo, index) => (
+				<LogoCard image={logo.src} alt={logo.alt} key={index} />
+			))}
+		</motion.div>
+	)
+}
+
+
+
+function LogoCard({ image, alt }: { image: string, alt: string }) {
+	return (
+		<div className="relative overflow-hidden h-[100px] min-w-[200px] flex justify-center items-center">
+			{/* TODO: AnimatePresence item to display logo society name above (https://www.youtube.com/watch?v=Ot4nZ6UjJLE&ab_channel=BuiltWithCode) */}
+			<Image src={image} alt={alt} fill style={{ objectFit: 'contain' }} />
 		</div>
 	)
 }

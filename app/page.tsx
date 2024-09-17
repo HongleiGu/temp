@@ -1,3 +1,4 @@
+import UpcomingEventsSection from "./components/homepage/events-section";
 import PartnersSection from "./components/homepage/partners-section";
 import HomePageTopSection from "./components/homepage/top-section";
 
@@ -7,6 +8,7 @@ export default function Home() {
 			
 				<HomePageTopSection />
 				<PartnersSection />
+				<UpcomingEventsSection />
 			
 		</main>
 	);

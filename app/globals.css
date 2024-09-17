@@ -38,19 +38,3 @@ body {
 		--radius: 0.5rem;
 	}
 }
-
-@keyframes scroll {
-	0% {
-		transform: translateX(0);
-	}
-
-	100% {
-		transform: translateX(-100%);
-	}
-}
-
-.animate-scroll {
-	display: flex;
-	animation: scroll 30s linear infinite;
-	/* Smooth scrolling effect */
-}

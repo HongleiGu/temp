@@ -25,7 +25,7 @@ export default function CreateEventButton() {
 			<Button
 				variant="outline"
 				size="lg"
-				className="text-xl"
+				className="text-xl mb-2"
 				onClick={handleCreateEvent}
 			>
 				<PlusIcon width={18} height={18} className="mr-2" />
