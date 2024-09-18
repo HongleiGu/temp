@@ -72,3 +72,12 @@ export async function insertContactForm(form: ContactFormInput) {
 		return { success: false, error };
 	}
 }
+export async function fetchAllContactForms() {
+	try {
+		const data = await sql<ContactFormInput>`SELECT * FROM contact_forms`
+		return data.rows
+	} catch (error) {
+		console.error('Database error:', error)
+		throw new Error('Failed to fetch revenue data')
+	}
+}

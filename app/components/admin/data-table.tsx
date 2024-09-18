@@ -22,10 +22,11 @@ import { useRouter } from "next/navigation";
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[]
 	data: TData[]
+	control?: boolean
 }
 
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, control = true }: DataTableProps<TData, TValue>) {
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 	const [isDeleting, setIsDeleting] = useState(false)
 	const [sorting, setSorting] = useState<SortingState>([])
@@ -35,6 +36,8 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
 	const selectedRows = Object.keys(rowSelection);
 
 	const router = useRouter();
+
+	const searchTerm = control ? 'title' : 'name' // events or contact_form
 
 	const handleDelete = async () => {
 		setIsDeleting(true)
@@ -85,41 +88,45 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
 		<div>
 			<div className="flex items-center py-4 justify-between space-x-2 sm:space-x-0">
 				<Input
-					placeholder="Filter events by title.."
-					value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+					placeholder={control ? "Filter events by title.." : "Filter form by sender name"}
+					value={(table.getColumn(searchTerm)?.getFilterValue() as string) ?? ""}
 					onChange={(event) =>
-						table.getColumn("title")?.setFilterValue(event.target.value)
+						table.getColumn(searchTerm)?.setFilterValue(event.target.value)
 					}
 					className="max-w-sm bg-transparent"
 				/>
 				<div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
-					<div className="ml-auto flex space-x-2">
-						<Button
-							variant="filled"
-							className="border-slate-200 text-white"
-							disabled={selectedRows.length !== 1}
-							onClick={() => {
-								alert("Edit event " + selectedRows[0])
-							}}
-						>
-							<PencilIcon className="h-4 w-4" />
-						</Button>
-						<Button
-							variant="outline"
-							className="border-green-700 text-white hover:bg-green-800"
-							onClick={() => router.push('/events/create')}
-						>
-							<PlusIcon className="h-4 w-4" />
-						</Button>
-						<Button
-							variant="outline"
-							className="border-slate-200 text-white hover:bg-red-900"
-							disabled={selectedRows.length === 0}
-							onClick={() => { setShowDeleteDialog(true) }}
-						>
-							<TrashIcon className="h-4 w-4" />
-						</Button>
-					</div>
+					{control && (
+						<div className="ml-auto flex space-x-2">
+
+
+							<Button
+								variant="filled"
+								className="border-slate-200 text-white"
+								disabled={selectedRows.length !== 1}
+								onClick={() => {
+									alert("Edit event " + selectedRows[0])
+								}}
+							>
+								<PencilIcon className="h-4 w-4" />
+							</Button>
+							<Button
+								variant="outline"
+								className="border-green-700 text-white hover:bg-green-800"
+								onClick={() => router.push('/events/create')}
+							>
+								<PlusIcon className="h-4 w-4" />
+							</Button>
+							<Button
+								variant="outline"
+								className="border-slate-200 text-white hover:bg-red-900"
+								disabled={selectedRows.length === 0}
+								onClick={() => { setShowDeleteDialog(true) }}
+							>
+								<TrashIcon className="h-4 w-4" />
+							</Button>
+						</div>
+					)}
 
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
