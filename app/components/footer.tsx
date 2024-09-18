@@ -14,44 +14,52 @@ export default function Footer() {
 
 	return (
 		<footer className="bg-blue-600/25 text-white px-8 py-4 border-t-2 border-gray-300 border-opacity-25">
-			<div className="mx-auto my-auto flex flex-col sm:flex-row justify-between items-center h-full space-y-6 sm:space-y-0">
+			<div className="mx-auto my-auto flex flex-col md:flex-row justify-between items-center h-full space-y-3">
 
-				{/* Social Links */}
-				<div className="flex flex-row my-5 mx-4 justify-between space-x-8">
+				{/* Social Links and Terms & Conditions (mobile layout) */}
+				<div className="flex flex-row md:flex-col items-center justify-between w-full md:w-auto md:space-x-8">
+					{/* Social Media Icons */}
+					<div className="flex flex-row space-x-4 mb-2">
+						<Link href="https://www.instagram.com/lsn.uk/" target="_blank" rel="noreferrer" aria-label="Instagram">
+							<Image
+								src="/icons/instagram.svg"
+								alt="Instagram"
+								width={24}
+								height={24}
+								className="w-6 h-6"
+							/>
+						</Link>
+						<Link href="https://www.linkedin.com/company/london-student-network/mycompany" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+							<Image
+								src="/icons/linkedin.svg"
+								alt="LinkedIn"
+								width={24}
+								height={24}
+								className="w-6 h-6"
+							/>
+						</Link>
+						<Link href="mailto:londonstudentnetwork@gmail.com" aria-label="Email">
+							<Image
+								src="/icons/mail.svg"
+								alt="Email"
+								width={24}
+								height={24}
+								className="w-6 h-6 mt-1"
+							/>
+						</Link>
+					</div>
 
-
-					<Link href="https://www.instagram.com/lsn.uk/" target="_blank" rel="noreferrer" aria-label="Instagram">
-						<Image
-							src="/icons/instagram.svg"
-							alt="Instagram"
-							width={24}
-							height={24}
-							className="w-6 h-6"
-						/>
-					</Link>
-					<Link href="https://www.linkedin.com/company/london-student-network/mycompany" target="_blank" rel="noreferrer" aria-label="LinkedIn">
-						<Image
-							src="/icons/linkedin.svg"
-							alt="LinkedIn"
-							width={24}
-							height={24}
-							className="w-6 h-6"
-						/>
-					</Link>
-					<Link href="mailto:londonstudentnetwork@gmail.com" aria-label="Email">
-						<Image
-							src="/icons/mail.svg"
-							alt="Email"
-							width={24}
-							height={24}
-							className="w-6 h-6 mt-1"
-						/>
+					{/* Terms and Conditions - visible on all screens */}
+					<Link
+						href="/terms-conditions"
+						className="text-xs md:text-sm text-center text-white underline hover:text-blue-400 mt-2"
+					>
+						Terms and Conditions
 					</Link>
 				</div>
 
-				<div className="hidden md:flex flex-col mt-3 mb-5 flex-end">
-					<h2 className="text-sm text-white/70 text-center font-semibold">Copyright © 2024 London Student Network</h2>
-				</div>
+				{/* Copyright - visible only on desktop */}
+				<h2 className="hidden md:flex text-sm text-white/70 text-center font-semibold">Copyright © 2024 London Student Network</h2>
 
 				{/* Newsletter Subscription */}
 				<div className="flex flex-col items-center justify-end">
@@ -60,7 +68,7 @@ export default function Footer() {
 						<input
 							type="email"
 							placeholder="Enter your email"
-							className="h-full px-4 py-2 bg-transparent text-white outline-none ring-2 ring-white/20"
+							className="h-full px-4 py-2 bg-transparent text-gray-700 outline-none ring-2 ring-white/20"
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
 							required
@@ -72,9 +80,9 @@ export default function Footer() {
 							→
 						</button>
 					</form>
-
 				</div>
 			</div>
 		</footer>
 	);
 }
+
