@@ -11,7 +11,7 @@ export default function HomePageTopSection() {
 
                     <p className="font-bold text-lg md:text-xl">Connecting 500, 000 students</p>
 
-                    <Link href="/signin" className="flex items-center space-x-2 group">
+                    <Link href="/sign" className="flex items-center space-x-2 group">
                         <div>
                             <span className="relative text-lg font-medium flex items-center space-x-2">
                                 Join Us

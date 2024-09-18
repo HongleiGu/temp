@@ -46,7 +46,7 @@ export default function Header() {
 						Sign Out
 					</Link>
 				) : */}
-					<Link href='/login' className='hidden md:block py-2 px-4 rounded-lg shadow-lg text-xl transition-all duration-300 ease-in-out hover:shadow-inner hover:bg-blue-800'>
+					<Link href='/sign' className='hidden md:block py-2 px-4 rounded-lg shadow-lg text-xl transition-all duration-300 ease-in-out hover:shadow-inner hover:bg-blue-800'>
 						Sign In
 					</Link>
 				{/* } */}
