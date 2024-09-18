@@ -1,4 +1,3 @@
-import { SQLEvent } from '@/app/lib/types';
 import { insertEvent } from '@/app/lib/data';
 import { NextResponse } from 'next/server';
 import { createSQLEventObject } from '@/app/lib/utils';

@@ -52,10 +52,10 @@ export default async function EventsCalendarView() {
 
 	return (
 		<div>
-			{sortedMonthYearKeys.map((monthYearKey) => {
+			{sortedMonthYearKeys.map((monthYearKey, index) => {
 				const [month, year] = monthYearKey.split('/')
 				return (
-					<EventSection month={month} year={year} events={monthYearGroupings[monthYearKey]} />
+					<EventSection key={index} month={month} year={year} events={monthYearGroupings[monthYearKey]} />
 				)
 			})}
 		</div>

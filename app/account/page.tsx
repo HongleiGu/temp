@@ -19,7 +19,7 @@ export default function AccountPage() {
 				router.push('/login')
 			}
 		}
-	}, [session, status]);
+	}, [session, status, router]);
 
 	if (status === 'loading') {
 		return (

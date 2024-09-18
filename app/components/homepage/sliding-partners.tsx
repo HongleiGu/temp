@@ -46,7 +46,7 @@ export default function SlidingPartners() {
 	}, [xTranslation, width, duration, rerender]);
 
 	return (
-		<motion.div className="relative left-0 flex gap-4 h-auto"
+		<motion.div className="relative mx-auto flex gap-24 h-auto"
 			ref={ref}
 			style={{ x: xTranslation }}
 			onHoverStart={() => { setMustFinish(true); setDuration(SLOW_DURATION) }}
@@ -63,9 +63,9 @@ export default function SlidingPartners() {
 
 function LogoCard({ image, alt }: { image: string, alt: string }) {
 	return (
-		<div className="relative h-[100px] min-w-[200px] flex justify-center items-center">
+		<div className="relative h-[10px] min-w-[100px] flex justify-center items-center">
 			{/* TODO: AnimatePresence item to display logo society name above (https://www.youtube.com/watch?v=Ot4nZ6UjJLE&ab_channel=BuiltWithCode) */}
-			<Image src={image} alt={alt} fill className="object-contain" />
+			<Image src={image} alt={alt} width={90} height={90} className="object-contain" />
 		</div>
 	)
 }

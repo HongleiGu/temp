@@ -1,8 +1,7 @@
 'use client';
 
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import { AuthError } from "next-auth";
-import { SocietyLogos } from "./utils";
 
 export async function authenticate(prevState: string | undefined, formData: FormData) {
 	try {

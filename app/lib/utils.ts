@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { SQLEvent, Event } from "./types";
+import { SQLEvent, Event, FormData } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
@@ -100,7 +100,7 @@ export function generateMinutes() {
 	return Array.from({ length: 4 }, (_, i) => String(i * 15).padStart(2, '0'));
 }
 
-export function validateEvent(formData: any) {
+export function validateEvent(formData: FormData): string | undefined {
 	// Validate Date
 	const { day, month, year } = formData.date;
 	const date = new Date(year, month - 1, day); // month is zero-indexed
@@ -122,7 +122,7 @@ export function validateEvent(formData: any) {
 	}
 }
 
-export function createEventObject(data: any): Event {
+export function createEventObject(data: FormData): Event {
 	return {
 		id: "",
 		title: data.title,
@@ -139,7 +139,7 @@ export function createEventObject(data: any): Event {
 	};
 }
 
-export async function createSQLEventObject(data: any): Promise<SQLEvent> {
+export async function createSQLEventObject(data: FormData): Promise<SQLEvent> {
 	const organiserUid = "45ef371c-0cbc-4f2a-b9f1-f6078aa6638c" // TODO: write server action to get organiser id
 
 	return {

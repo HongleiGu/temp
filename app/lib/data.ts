@@ -1,5 +1,5 @@
 import { sql } from '@vercel/postgres';
-import { Event, SQLEvent, ContactFormInput } from './types';
+import { SQLEvent, ContactFormInput } from './types';
 import { convertSQLEventToEvent } from './utils';
 
 export async function fetchEvents() {

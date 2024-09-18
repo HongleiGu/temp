@@ -48,6 +48,31 @@ export interface ContactFormInput {
 	message: string
 }
 
+export interface FormData {
+	title: string;
+	description: string;
+	organiser: string;
+	date: {
+		day: number;
+		month: number;
+		year: number;
+	};
+	time: {
+		startHour: number;
+		startMinute: number;
+		endHour: number;
+		endMinute: number;
+	};
+	location: {
+		building: string;
+		area: string;
+		address: string;
+	};
+	selectedImage: string;
+	event_tag: number;
+	signupLink?: string;
+}
+
 
 export const DefaultEvent: Event = {
 	id: '',

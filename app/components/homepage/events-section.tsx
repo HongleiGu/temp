@@ -1,6 +1,5 @@
 "use server";
 
-import { fetchUpcomingEvents } from "@/app/lib/data";
 import UpcomingEventsView from "./upcoming-events";
 
 export default async function UpcomingEventsSection() {

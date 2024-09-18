@@ -10,8 +10,8 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeftIcon, LockClosedIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 import EventModal from "./event-modal";
-import { validateEvent, createEventObject, EVENT_TAG_TYPES } from '@/app/lib/utils';
-import { DefaultEvent } from '@/app/lib/types';
+import { validateEvent, createEventObject } from '@/app/lib/utils';
+import { DefaultEvent, FormData } from '@/app/lib/types';
 import TagsField from './create-event-tags';
 
 
@@ -36,7 +36,7 @@ export default function CreateEventPage({ imageList, organiserList }: CreateEven
 	const router = useRouter()
 
 
-	const onSubmit = async (data: any) => {
+	const onSubmit = async (data: FormData) => {
 		const error = validateEvent(data);
 
 		if (error) {
@@ -67,7 +67,7 @@ export default function CreateEventPage({ imageList, organiserList }: CreateEven
 		}
 	};
 
-	const onPreview = (data: any) => {
+	const onPreview = (data: FormData) => {
 		const error = validateEvent(data);
 
 		if (error) {
@@ -338,7 +338,7 @@ export default function CreateEventPage({ imageList, organiserList }: CreateEven
 			</div>
 
 			<form className="space-y-4">
-				<h1 className="text-4xl font-semibold p-6">Let's create an event!</h1>
+				<h1 className="text-4xl font-semibold p-6">Let&#39;s create an event!</h1>
 				<p className="text-sm text-gray-600 pl-6">Tell us a little about your event</p>
 
 				<TitleField />

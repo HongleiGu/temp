@@ -28,7 +28,7 @@ interface DataTableProps<TData, TValue> {
 
 export function DataTable<TData, TValue>({ columns, data, control = true }: DataTableProps<TData, TValue>) {
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false)
-	const [isDeleting, setIsDeleting] = useState(false)
+	// const [isDeleting, setIsDeleting] = useState(false)
 	const [sorting, setSorting] = useState<SortingState>([])
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ event_id: false })
@@ -40,7 +40,7 @@ export function DataTable<TData, TValue>({ columns, data, control = true }: Data
 	const searchTerm = control ? 'title' : 'name' // events or contact_form
 
 	const handleDelete = async () => {
-		setIsDeleting(true)
+		// setIsDeleting(true)
 		try {
 			const selectedIds = table.getSelectedRowModel().rows.map(row => row.original.id)
 			await fetch("/api/events/delete", {
@@ -54,7 +54,7 @@ export function DataTable<TData, TValue>({ columns, data, control = true }: Data
 		} catch (error) {
 			console.error("Failed to delete events:", error);
 		} finally {
-			setIsDeleting(false)
+			// setIsDeleting(false)
 			setShowDeleteDialog(false)
 		}
 	};
