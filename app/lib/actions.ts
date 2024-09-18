@@ -13,6 +13,7 @@ export async function authenticate(prevState: string | undefined, formData: Form
 			email: formData.get('email'),
 			password: formData.get('password')
 		});
+		console.log (formData.get('email'), formData.get('password'), result)
 
 		if (result?.error) {
 			return { response: false, error: "Invalid credentials" }
@@ -43,22 +44,3 @@ export async function logout() {
 	}
 }
 
-// Returns the list of Organisers a user is allowed to post for
-export async function getAuthorisedOrganiserList(): Promise<string[]> {
-	
-	const session = useSession()
-
-	try {
-		const username = session?.data?.user.name
-
-		if (username) {
-			return [username, ...SocietyLogos.map(society => society.name)]
-		} else {
-			throw new Error('User is not authenticated');
-		}
-	} catch (error) {
-		console.error('Failed to get authorised organiser list:', error);
-		return [];
-	}
-
-}

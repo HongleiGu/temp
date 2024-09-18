@@ -42,6 +42,12 @@ export type User = {
 	emailVerified: boolean;
 }
 
+export interface ContactFormInput {
+	name: string
+	email: string
+	message: string
+}
+
 
 export const DefaultEvent: Event = {
 	id: '',

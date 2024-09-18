@@ -7,12 +7,17 @@ import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/app/components/button';
 
 export default function AccountPage() {
-	const { data: session, status } = useSession({ required: true })
+	const { data: session, status } = useSession()
 	const router = useRouter()
 
 	useEffect(() => {
-		if (!session && status === "authenticated") {
-			signOut({ callbackUrl: '/login' });  // Force sign out because session is invalid
+		if (!session) {
+			if (status === "authenticated") {
+				signOut();  // Force sign out because session is invalid
+			} else if (status !== "loading") {
+				console.log('We out here')
+				router.push('/login')
+			}
 		}
 	}, [session, status]);
 

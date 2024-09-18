@@ -1,5 +1,5 @@
 import { sql } from '@vercel/postgres';
-import { Event, SQLEvent } from './types';
+import { Event, SQLEvent, ContactFormInput } from './types';
 import { convertSQLEventToEvent } from './utils';
 
 export async function fetchEvents() {
@@ -57,5 +57,18 @@ export async function deleteEvents(eventIds: string[]): Promise<void> {
 	} catch (error) {
 		console.error('Database error during deletion:', error);
 		throw new Error('Failed to delete events');
+	}
+}
+
+export async function insertContactForm(form: ContactFormInput) {
+	try {
+		await sql`
+		INSERT INTO contact_forms (name, email, message)
+		VALUES (${form.name}, ${form.email}, ${form.message})
+		`
+		return { success: true };
+	} catch (error) {
+		console.error('Error adding contact form item:', error);
+		return { success: false, error };
 	}
 }
