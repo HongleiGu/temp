@@ -12,7 +12,7 @@ export default function CreateEventButton() {
 
 	const handleCreateEvent = async () => {
 		setError(''); // Reset error state
-		const response = await isLoggedIn();
+		const response = isLoggedIn();
 		if (response.response) {
 			router.push('/events/create'); // Redirect if logged in
 		} else {

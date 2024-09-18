@@ -1,11 +1,12 @@
 "use server";
 
 import CreateEventPage from "@/app/components/events-page/create-event";
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
 import fs from 'fs';
 import path from 'path';
 import { getAuthorisedOrganiserList, isLoggedIn } from "@/app/lib/actions";
+import { redirect } from "next/navigation";
+import nextAuthOptions from "@/auth";
+import { getServerSession } from "next-auth";
 
 async function getImageList() {
 	const placeholdersDir = path.join(process.cwd(), 'public/images/placeholders');
@@ -13,13 +14,12 @@ async function getImageList() {
 	return files.filter(file => file.endsWith('.jpg'));
 }
 
-
 export default async function CreatePage() {
 
-	const response = await isLoggedIn();
-	if (!response.response) {
-		return redirect('/login')
-	}
+	const session = await getServerSession(nextAuthOptions)
+
+	return <pre>{JSON.stringify(session, null, 2)}</pre>
+
 
 	const organiserList = await getAuthorisedOrganiserList();
 

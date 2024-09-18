@@ -24,9 +24,6 @@ interface DataTableProps<TData, TValue> {
 	data: TData[]
 }
 
-async function deleteEvents(rowIds: string[]) {
-	console.log(rowIds)
-}
 
 export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false)

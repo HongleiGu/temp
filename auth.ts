@@ -1,10 +1,10 @@
-import NextAuth from "next-auth";
 import { authConfig } from "./auth.config";
 import Credentials from "next-auth/providers/credentials";
 import { z } from 'zod';
 import { sql } from "@vercel/postgres";
 import type { User } from "./app/lib/types";
 import bcrypt from 'bcrypt';
+import { NextAuthConfig } from "next-auth";
 
 async function getUser(email: string): Promise<User | undefined> {
 	try {
@@ -17,8 +17,9 @@ async function getUser(email: string): Promise<User | undefined> {
 }
 
 
-export const { auth, signIn, signOut } = NextAuth({
+const nextAuthOptions: NextAuthConfig = {
 	...authConfig,
+
 	session: {
 		strategy: "jwt",
 		maxAge: 1 * 24 * 60 * 60, // 1 day
@@ -43,17 +44,31 @@ export const { auth, signIn, signOut } = NextAuth({
 	callbacks: {
 		async jwt({ token, user }) {
 			if (user) {
-				token.role = user.role;  // Attach role to the token
+				token.id = user.id;
+				token.name = user.name;
+				token.email = user.email;
+				token.role = user.role;
 			}
 			return token;
 		},
-		async session({ session, token, user }) {
-			if (token) {
-				session.user.role = token.role;  // Attach role to the session
-			}
+		async session({ session, token }) {
+			// session.user = {
+			// 	name: token.name,
+			// 	email: token?.email || "test@gmail.com",
+			// 	role: token?.role || "User",
+			//   };
+
+			session.user = {
+				id: token.id,
+				name: token.name,
+				email: token.email,
+				role: token.role,  // Assuming you have role management
+			};
 
 			return session;
 		},
 	},
 	secret: process.env.AUTH_SECRET
-})
+};
+
+export default nextAuthOptions;

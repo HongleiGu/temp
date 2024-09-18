@@ -1,13 +1,13 @@
-'use server';
+'use client';
 
-import { redirect } from "next/navigation";
-import { auth, signIn, signOut } from "@/auth";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { AuthError } from "next-auth";
 import { SocietyLogos } from "./utils";
 
 export async function authenticate(prevState: string | undefined, formData: FormData) {
 	try {
 		console.log('Attempting sign in!')
+
 		const result = await signIn('credentials', {
 			redirect: false,
 			email: formData.get('email'),
@@ -15,20 +15,21 @@ export async function authenticate(prevState: string | undefined, formData: Form
 		});
 
 		if (result?.error) {
-			return 'Invalid credentials';
+			return { response: false, error: "Invalid credentials" }
+		} else {
+			return { response: true }
 		}
 	} catch (error) {
 		if (error instanceof AuthError) {
 			switch (error.type) {
 				case 'CredentialsSignin':
-					return 'Invalid credentials.'
+					return { response: false, error: "Invalid credentials" }
 				default:
-					return 'Something went wrong.'
+					return { response: false, error: "Something went wrong" }
 			}
 		}
 		throw error
 	}
-	redirect(`/account`)
 }
 
 
@@ -43,32 +44,30 @@ export async function logout() {
 }
 
 
-export async function hasAdminPermissions(redirectPage?: string) {
-	const session = await auth()
+export function hasAdminPermissions() {
+	const session = useSession()
 
-	if (redirectPage) {
-		if (!session) {
-			redirect(redirectPage)
-		}
+	if (!session) {
+		return { response: false }
 	}
 
 	try {
-		const role = session?.user.role
+		const role = session?.data?.user.role
 
 		console.log(`ROLE: ${role}`)
 
 		if (role && role === 'admin') {
-			return true
+			return { response: true }
 		}
-		redirect(redirectPage || '/login')
+		return { response: false }
 	} catch (error: unknown) {
 		console.log(error)
-		return false
+		return { response: false }
 	}
 }
 
-export async function isLoggedIn() {
-	const session = await auth()
+export function isLoggedIn() {
+	const session = useSession()
 
 	if (!session) {
 		return { response: false }
@@ -79,10 +78,11 @@ export async function isLoggedIn() {
 
 // Returns the list of Organisers a user is allowed to post for
 export async function getAuthorisedOrganiserList(): Promise<string[]> {
-	const session = await auth()
+	
+	const session = useSession()
 
 	try {
-		const username = session?.user.name
+		const username = session?.data?.user.name
 
 		if (username) {
 			return [username, ...SocietyLogos.map(society => society.name)]

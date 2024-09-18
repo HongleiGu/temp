@@ -1,16 +1,23 @@
 "use server";
 
 import { hasAdminPermissions } from "@/app/lib/actions";
-import { redirect } from "next/navigation";
 import EventList from "../components/admin/events-list";
+import { redirect, useRouter } from "next/navigation";
+import nextAuthOptions from "@/auth";
+import { getServerSession } from "next-auth";
+
 
 export default async function AdminPage() {
 
-	const isAdmin = await hasAdminPermissions('/login')
-
-	if (!isAdmin) {
-		return redirect('/login')
+	const session = await getServerSession(nextAuthOptions)
+	if (!session) { 
+		redirect('/login')
 	}
+
+	if (session.user.role !== 'admin') {
+		redirect('/account')
+	}
+
 
 	return (
 		<main className="relative h-full max-auto pt-8 bg-gradient-to-b from-[#041A2E] via-[#064580] to-[#083157]">

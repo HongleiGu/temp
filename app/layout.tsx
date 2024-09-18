@@ -3,8 +3,7 @@ import { inria } from '@/app/fonts';
 import "./globals.css";
 import Header from "./components/header";
 import Footer from "./components/footer";
-import { SessionProvider } from "next-auth/react";
-import Router from "next/navigation";
+import SessionProviderWrapper from "./components/session-provider-wrapper";
 
 
 export const metadata: Metadata = {
@@ -20,13 +19,13 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${inria.className} antialiased`} >
-				<SessionProvider>
+				<SessionProviderWrapper>
 					<Header />
 					<div className="overflow-hidden">
 						{children}
 					</div>
 					<Footer />
-				</SessionProvider>
+				</SessionProviderWrapper>
 			</body>
 		</html>
 	);

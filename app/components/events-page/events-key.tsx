@@ -2,7 +2,7 @@ import { EVENT_TAG_TYPES } from "@/app/lib/utils";
 
 export default function EventKeys() {
 	return (
-		<div className="fixed bottom-10 right-4 bg-gray-600/80 rounded-md p-4  shadow-lg border-dotted border border-white">
+		<div className="fixed bottom-10 right-4 bg-gray-600/90 rounded-md p-4 shadow-lg border border-white">
 			{/* <h3 className="pb-4 text-center font-bold italic text-xl">KEY</h3> */}
 			<ul>
 				{Object.entries(EVENT_TAG_TYPES).map(([key, { label, color }]) => (

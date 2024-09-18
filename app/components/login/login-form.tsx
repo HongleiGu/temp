@@ -1,20 +1,38 @@
 'use client';
 
+import { useState, FormEvent } from 'react';
 import { KeyIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from '../button';
-import { useActionState  } from 'react';
 import { authenticate } from '@/app/lib/actions';
+import { useRouter } from 'next/navigation';
 
 export default function LoginForm() {
-	const [errorMessage, formAction, isPending] = useActionState(
-		authenticate,
-		undefined,
-	);
+	const [errorMessage, setErrorMessage] = useState<string | null>(null)
+	const [isPending, setIsPending] = useState<boolean>(false)
+
+	const router = useRouter()
+
+	// Handle form submission
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
+		setErrorMessage(null)
+		setIsPending(true)
+
+		const formData = new FormData(e.currentTarget)
+		const result = await authenticate(undefined, formData)
+
+		if (!result.response) {
+			setErrorMessage(result.error || 'Login failed');
+		} else {
+			router.push('/account')
+		}
+		setIsPending(false)
+	};
 
 
 	return (
-		<form action={formAction} className="space-y-3">
+		<form onSubmit={handleSubmit} className="space-y-3">
 			<div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8 text-black">
 				<h1 className='mb-3 text-xl '>
 					Please enter your details to log in
@@ -59,7 +77,7 @@ export default function LoginForm() {
 						</div>
 					</div>
 				</div>
-				<Button className="mt-4 w-full" aria-disabled={isPending}>
+				<Button variant="filled" size="md" className="mt-4 w-full" aria-disabled={isPending}>
 					Log in <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
 				</Button>
 				<div
