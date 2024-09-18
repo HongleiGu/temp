@@ -3,7 +3,7 @@
 import CreateEventPage from "@/app/components/events-page/create-event";
 import fs from 'fs';
 import path from 'path';
-import { getAuthorisedOrganiserList, isLoggedIn } from "@/app/lib/actions";
+import { getAuthorisedOrganiserList } from "@/app/lib/actions";
 import { redirect } from "next/navigation";
 import nextAuthOptions from "@/auth";
 import { getServerSession } from "next-auth";

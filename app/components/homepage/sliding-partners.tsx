@@ -46,7 +46,7 @@ export default function SlidingPartners() {
 	}, [xTranslation, width, duration, rerender]);
 
 	return (
-		<motion.div className="relative left-0 flex gap-4"
+		<motion.div className="relative left-0 flex gap-4 h-auto"
 			ref={ref}
 			style={{ x: xTranslation }}
 			onHoverStart={() => { setMustFinish(true); setDuration(SLOW_DURATION) }}

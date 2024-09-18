@@ -1,6 +1,5 @@
 "use server";
 
-import { hasAdminPermissions } from "@/app/lib/actions";
 import EventList from "../components/admin/events-list";
 import { redirect, useRouter } from "next/navigation";
 import nextAuthOptions from "@/auth";

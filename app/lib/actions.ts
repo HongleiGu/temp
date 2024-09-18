@@ -43,39 +43,6 @@ export async function logout() {
 	}
 }
 
-
-export function hasAdminPermissions() {
-	const session = useSession()
-
-	if (!session) {
-		return { response: false }
-	}
-
-	try {
-		const role = session?.data?.user.role
-
-		console.log(`ROLE: ${role}`)
-
-		if (role && role === 'admin') {
-			return { response: true }
-		}
-		return { response: false }
-	} catch (error: unknown) {
-		console.log(error)
-		return { response: false }
-	}
-}
-
-export function isLoggedIn() {
-	const session = useSession()
-
-	if (!session) {
-		return { response: false }
-	} else {
-		return { response: true }
-	}
-}
-
 // Returns the list of Organisers a user is allowed to post for
 export async function getAuthorisedOrganiserList(): Promise<string[]> {
 	

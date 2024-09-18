@@ -29,25 +29,32 @@ export default function AccountPage() {
 		const { user } = session;
 
 		return (
-			<div className="min-h-screen mx-auto p-8 bg-gradient-to-b from-[#041A2E] via-[#064580] to-[#083157]">
-				<h1 className="text-3xl font-semibold">Account Details</h1>
-				<div className="mt-8 p-6 rounded-lg shadow-lg">
-					<div className="flex items-center space-x-4">
-						<div className="text-lg font-semibold">Welcome, {user?.name || 'undefined'}!</div>
-					</div>
-					<div className="mt-4">
-						<p>
-							<span className="font-medium">Email: </span>{user?.email || 'No email available'}
-						</p>
-						<p>
-							<span className="font-medium">Role: </span>{user?.role || 'undefined'}
-						</p>
-					</div>
-					<div className="mt-8">
-						<Button variant='outline' size='lg' onClick={() => router.push('/events')}>
-							View Events
-						</Button>
-					</div>
+			<div className="min-h-screen flex flex-col justify-start p-10 bg-gradient-to-b from-[#041A2E] via-[#064580] to-[#083157] overflow-x-hidden">
+				<h1 className="text-4xl font-semibold mb-6">Your account</h1>
+
+				<div className="border-b border-gray-300 pb-4 ml-4 mb-10 space-y-6">
+					<h2 className="text-2xl italic mb-2 ml-2">Your details</h2>
+					<p className="text-sm">
+						<span className="mr-10 font-semibold">Name:</span> {user?.name || 'Test User'}
+					</p>
+					<p className="text-sm">
+						<span className="mr-10 font-semibold">Email:</span> {user?.email || 'test@lsn.co.uk'}
+					</p>
+				</div>
+
+				<div className="border-b border-gray-300 pb-4 ml-4 mb-10 space-y-6">
+					<h2 className="text-2xl italic mb-2 ml-2">Your events</h2>
+					<p className="text-sm italic text-gray-300 ml-20 w-full">Coming Soon</p>
+				</div>
+
+				<div className="flex justify-end self-end">
+					<Button
+						variant='filled'
+						className="bg-red-600 text-white py-2 px-4 rounded-full"
+						onClick={() => router.push('/logout')}
+					>
+						Sign out
+					</Button>
 				</div>
 			</div>
 		);

@@ -1,14 +1,15 @@
 "use client";
 
 import LogoutForm from "../components/logout/logout-form";
-import { isLoggedIn } from "@/app/lib/actions";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default async function LogoutPage() {
 
 	const router = useRouter()
-	const response = isLoggedIn();
-	if (!response.response) {
+	const session = useSession();
+
+	if (!session) {
 		router.push('/login')
 	}
 

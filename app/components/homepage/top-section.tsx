@@ -43,7 +43,7 @@ function Title() {
 			</h1>
 			<div className="w-auto flex flex-row p-10 space-x-20">
 				<p className="font-bold text-lg md:text-xl text-white">Connecting 500,000 students</p>
-				<JoinButton href="/signin" text="Join us" />
+				<JoinButton href="/sign" text="Join us" />
 			</div>
 		</section>
 	)
@@ -59,7 +59,7 @@ function ForStudents() {
 				Every event, opportunity, group and skill all in one place. <br /> <br />
 				Become unbound by your university and become a student of the City.
 			</p>
-			<JoinButton href="/signin" className="self-end mr-12 mt-12" text="Create your account with us today" />
+			<JoinButton href="/sign" className="self-end mr-12 mt-12" text="Create your account with us today" />
 		</section>
 	)
 }
@@ -76,7 +76,7 @@ function ForSocieties() {
 				in London can interface with you.  <br /> <br />
 				Connect and Collaborate with ease!
 			</p>
-			<JoinButton href="/signin" className="ml-20 mt-12" text="Share your events through us today" />
+			<JoinButton href="/sign" className="ml-20 mt-12" text="Share your events through us today" />
 		</section>
 	)
 }
