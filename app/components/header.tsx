@@ -125,7 +125,7 @@ function SideMenu({ closeMenu, headerHeight, pathname }: { closeMenu: () => void
 				</Link>
 			) :
 			} */}
-			<Link href='/login' onClick={closeMenu} className='py-2 px-4 mt-auto text-xl w-full text-center'>
+			<Link href='/sign' onClick={closeMenu} className='py-2 px-4 mt-auto text-xl w-full text-center'>
 				Sign In
 			</Link>
 		</motion.div>
