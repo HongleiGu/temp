@@ -63,9 +63,9 @@ export default function SlidingPartners() {
 
 function LogoCard({ image, alt }: { image: string, alt: string }) {
 	return (
-		<div className="relative overflow-hidden h-[100px] min-w-[200px] flex justify-center items-center">
+		<div className="relative h-[100px] min-w-[200px] flex justify-center items-center">
 			{/* TODO: AnimatePresence item to display logo society name above (https://www.youtube.com/watch?v=Ot4nZ6UjJLE&ab_channel=BuiltWithCode) */}
-			<Image src={image} alt={alt} fill style={{ objectFit: 'contain' }} />
+			<Image src={image} alt={alt} fill className="object-contain" />
 		</div>
 	)
 }

@@ -1,8 +1,8 @@
-import React from 'react';
+
 
 export default function SignPage() {
     return (
-        <div className="flex items-center justify-center min-h-screen">
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#041A2E] via-[#064580] to-[#083157] text-white">
             <div className="flex flex-col md:flex-row items-center rounded-md w-full max-w-5xl">
                 {/* Left Section */}
                 <div className="flex flex-col items-center space-y-4 p-12">

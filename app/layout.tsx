@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`${inria.className} antialiased`} >
+			<body className={`${inria.className} antialiased text-white`} >
 				<SessionProviderWrapper>
 					<Header />
 					<div className="overflow-hidden">

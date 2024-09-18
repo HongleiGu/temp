@@ -106,14 +106,14 @@ export default function Register() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen">
-            <div className="w-screen p-12 md:px-60 bg-white">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-[#041A2E] via-[#064580] to-[#083157]">
+            <div className="w-screen p-12 md:px-60">
                 {/* Step 0: Email input */}
                 {step === 0 && (
                     <div>
                         <h2 className="text-4xl font-semibold">Let’s create your account</h2>
-                        <p className="mt-4 text-gray-600">First of all, please register an email address</p>
-                        <p className="mt-2 text-gray-600">We will send a confirmation email to the address to begin your onboarding</p>
+                        <p className="mt-4 text-gray-300">First of all, please register an email address</p>
+                        <p className="mt-2 text-gray-300">We will send a confirmation email to the address to begin your onboarding</p>
 
                         {/* Email input */}
                         <input

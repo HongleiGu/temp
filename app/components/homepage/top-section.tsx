@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "../button";
 import clsx from "clsx";
+import Image from "next/image";
 
 export default function HomePageTopSection() {
 	return (
@@ -23,9 +24,11 @@ function JoinButton({ text, className, href }: { text: string, className?: strin
 			<div>
 				<span className="relative text-lg font-medium flex items-center space-x-2 text-white">
 					{text}
-					<img
+					<Image
 						src="/icons/arrow-right.svg"
 						alt="next"
+						width={20}
+						height={12}
 						className="h-4 ml-2 transition-transform duration-300 ease-in-out group-hover:translate-x-2"
 					/>
 				</span>

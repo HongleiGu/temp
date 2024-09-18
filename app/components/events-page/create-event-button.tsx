@@ -14,7 +14,7 @@ export default function CreateEventButton() {
 
 	const handleCreateEvent = async () => {
 		setError(''); // Reset error state
-		if (!session) {
+		if (session) {
 			router.push('/events/create');
 		} else {
 			router.push('/login');
