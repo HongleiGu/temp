@@ -42,6 +42,17 @@ export type User = {
 	emailVerified: boolean;
 }
 
+export interface UserInformation {
+	id: string;
+	user_id: string;
+	gender: string;
+	birthdate: string;
+	university_attended: string;
+	graduation_year: string;
+	course_studied: string;
+	level_of_study: string;
+	newsletter_subscribe: boolean;
+}
 
 export const DefaultEvent: Event = {
 	id: '',
