@@ -1,5 +1,5 @@
 import { sql } from '@vercel/postgres';
-import { SQLEvent, ContactFormInput } from './types';
+import { SQLEvent, ContactFormInput, UserInformation } from './types';
 import { convertSQLEventToEvent } from './utils';
 
 export async function fetchEvents() {
@@ -84,5 +84,17 @@ export async function fetchAllContactForms() {
 	} catch (error) {
 		console.error('Database error:', error)
 		throw new Error('Failed to fetch revenue data')
+	}
+}
+export async function insertUserInformation(user: UserInformation) {
+	try {
+		await sql`
+			INSERT INTO user_information (user_id, gender, birthdate, university_attended, graduation_year, course, level_of_study, newsletter_subscribe)
+        	VALUES (${user.user_id}, ${user.gender}, ${user.birthdate}, ${user.university_attended}, ${user.graduation_year}, ${user.course_studied}, ${user.level_of_study}, ${user.newsletter_subscribe})
+		`
+		return { success: true };
+	} catch (error) {
+		console.error('Error creating event:', error);
+		return { success: false, error };
 	}
 }

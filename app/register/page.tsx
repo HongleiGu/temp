@@ -1,359 +1,283 @@
 'use client';
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+
+interface FormData {
+    email: string;
+    password: string;
+    confirmPassword: string;
+    name: string;
+    gender: string;
+    dob: string;
+    university: string;
+    graduationYear: string;
+    degreeCourse: string;
+    levelOfStudy: string;
+    hasAgreedToTerms: boolean;
+    isNewsletterSubscribed: boolean;
+}
 
 export default function Register() {
-    const [step, setStep] = useState(0); // Start at 0 for the email validation step
+    const { register, handleSubmit, formState: { errors }, getValues, watch } = useForm<FormData>({ defaultValues: { showPassword: false } });
+    const [step, setStep] = useState(0);
     const totalSteps = 5;
-
-    // Email validation state
-    const [email, setEmail] = useState("");
-    const [emailError, setEmailError] = useState("");
-
-    // Password validation state
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
-    const [passwordError, setPasswordError] = useState("");
-    const [fieldError, setFieldError] = useState("");
-
-    // State for other steps
-    const [name, setName] = useState("");
-    const [gender, setGender] = useState("");
-    const [dob, setDob] = useState("");
-    const [university, setUniversity] = useState("");
-    const [graduationYear, setGraduationYear] = useState("");
-    const [degreeCourse, setDegreeCourse] = useState("");
-    const [levelOfStudy, setLevelOfStudy] = useState("");
-    const [hasAgreedToTerms, setHasAgreedToTerms] = useState(false); // State for terms agreement
-    const [isNewsletterSubscribed, setIsNewsletterSubscribed] = useState(false); // Optional newsletter subscription
 
     const currentYear = new Date().getFullYear();
     const graduationYears = Array.from({ length: 11 }, (_, i) => currentYear + i);
 
     const nextStep = () => {
-        setEmailError("");
-        setPasswordError("");
-        setFieldError("");
-
-        // Email validation in step 0
-        if (step === 0) {
-            if (!email) {
-                setEmailError("Email is required.");
-                return;
-            }
-            // Simple regex for email validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                setEmailError("Please enter a valid email.");
-                return;
-            }
-        }
-
-        // Step 1: Password validation
-        if (step === 1) {
-            if (!password || !confirmPassword) {
-                setFieldError("All fields are required.");
-                return;
-            }
-            if (password.length < 8) {
-                setPasswordError("Password must be at least 8 characters long.");
-                return;
-            }
-            if (password !== confirmPassword) {
-                setPasswordError("Passwords do not match.");
-                return;
-            }
-            if (!hasAgreedToTerms) {
-                setFieldError("You must agree to the terms of service to continue.");
-                return;
-            }
-        }
-
-        // Step 2 validation
-        if (step === 2) {
-            if (!name || !gender || !dob) {
-                setFieldError("All fields are required.");
-                return;
-            }
-        }
-
-        // Step 3 validation
-        if (step === 3) {
-            if (!university || !graduationYear) {
-                setFieldError("All fields are required.");
-                return;
-            }
-        }
-
-        // Step 4 validation (newly added)
-        if (step === 4) {
-            if (!degreeCourse || !levelOfStudy) {
-                setFieldError("All fields are required.");
-                return;
-            }
-        }
-
         if (step < totalSteps) setStep(step + 1);
     };
 
     const prevStep = () => {
-        setFieldError(""); // Clear errors when going back
         if (step > 0) setStep(step - 1);
     };
 
     const calculateProgress = () => {
-        return ((step + 1) / (totalSteps + 1)) * 100; // Progress bar from step 0 to step 5
+        return ((step + 1) / (totalSteps + 1)) * 100;
     };
+
+    const onSubmit = async (data: FormData) => {
+        try {
+            const res = await fetch('/api/user/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            const result = await res.json();
+            if (result.success) {
+                console.log('User successfully created:', data);
+                // router.push('/login');
+                nextStep();
+            } else {
+                console.error('Error creating user:', result.error);
+            }
+        } catch (error) {
+            console.error('Error during user creation:', error);
+        }
+    };
+
+    // Step 0: Email input
+    const Step0 = () => (
+        <div>
+            <h2 className="text-4xl font-semibold">Let’s create your account</h2>
+            <p className="mt-4 text-gray-300">First of all, please register an email address</p>
+            <p className="mt-2 text-gray-300">We will send a confirmation email to the address to begin your onboarding</p>
+
+            <input
+                type="email"
+                placeholder="Email"
+                className="w-full mt-4 p-3 border border-gray-300 rounded-lg"
+                {...register('email', { required: 'Email is required.', pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Please enter a valid email.' } })}
+            />
+            {errors.email && <p className="text-red-500 mt-2">{errors.email.message}</p>}
+
+            <div className="text-right">
+                <button onClick={handleSubmit(nextStep)} className="mt-3 p-3 bg-black text-white rounded-lg">
+                    Continue
+                </button>
+            </div>
+        </div>
+    );
+
+    // Step 1: Password input
+    const Step1 = () => {
+        const showPassword = watch('showPassword');
+
+        return (
+            <div>
+                <h2 className="text-4xl font-semibold">Let’s create your account</h2>
+                <p className="mt-4 text-gray-600">Please set a strong password for your account</p>
+
+                <input
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="Password"
+                    className="w-full mt-4 p-3 border text-black border-gray-300 rounded-lg"
+                    //   {...register('password', { required: 'Password is required.', minLength: { value: 8, message: 'Password must be at least 8 characters long.' } })}
+                    {...register('password')}
+                />
+
+                <input
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="Confirm Password"
+                    className="w-full mt-4 p-3 border text-black border-gray-300 rounded-lg"
+                    {...register('confirmPassword', {
+                        // required: 'Confirm password is required.',
+                        // validate: (value) => value === getValues('password') || 'Passwords do not match.',
+                    })}
+                />
+                {/* {errors.password && <p className="text-red-500 mt-2">{errors.password.message}</p>} */}
+                {/* {errors.confirmPassword && <p className="text-red-500 mt-2">{errors.confirmPassword.message}</p>} */}
+
+                {/* Show password toggle */}
+                <div className="mt-2">
+                    <label className="flex items-center">
+                        <input type="checkbox" {...register('showPassword')} className="mr-2" />
+                        Show password
+                    </label>
+                </div>
+
+                {/* Terms of Service (mandatory) */}
+                <div className="mt-4">
+                    <label className="flex items-start">
+                        <input type="checkbox" className="mr-2 mt-1" {...register('hasAgreedToTerms', { required: 'You must agree to the terms of service to continue.' })} />
+                        <span className="text-gray-700">
+                            I agree to the{' '}
+                            <a href="/terms-conditions" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
+                                terms of service
+                            </a>{' '}
+                            <span className="text-red-500">*</span>
+                        </span>
+                    </label>
+                </div>
+                {errors.hasAgreedToTerms && <p className="text-red-500 mt-2">{errors.hasAgreedToTerms.message}</p>}
+
+                {/* Newsletter Subscription (optional) */}
+                <div className="mt-2">
+                    <label className="flex items-start">
+                        <input type="checkbox" className="mr-2 mt-1" {...register('isNewsletterSubscribed')} />
+                        <span className="text-gray-700">Subscribe to our newsletter and communications</span>
+                    </label>
+                </div>
+
+                {/* Continue button */}
+                <div className="flex justify-between mt-6">
+                    <button onClick={prevStep} className="p-3 bg-gray-300 text-black rounded-lg">
+                        Back
+                    </button>
+                    <button onClick={handleSubmit(nextStep)} className="p-3 rounded-lg text-white bg-black">
+                        Continue
+                    </button>
+                </div>
+            </div>
+        );
+    };
+
+    // Step 2: User Information
+    const Step2 = () => (
+        <div>
+            <h2 className="text-4xl font-semibold">Tell us a bit about yourself!</h2>
+            <p className="mt-4 text-gray-600">Let’s get started</p>
+
+            <input
+                type="text"
+                placeholder="Full Name"
+                className="w-full mt-4 p-3 border border-gray-300 rounded-lg"
+                {...register('name', { required: 'Full Name is required.' })}
+            />
+            <select
+                className="w-full mt-4 p-3 border border-gray-300 rounded-lg"
+                {...register('gender', { required: 'Gender is required.' })}
+            >
+                <option value="">Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Prefer not to say</option>
+            </select>
+            <input
+                type="date"
+                className="w-full mt-4 p-3 border border-gray-300 rounded-lg"
+                {...register('dob', { required: 'Date of Birth is required.' })}
+            />
+            {errors.name && <p className="text-red-500 mt-2">{errors.name.message}</p>}
+            {errors.gender && <p className="text-red-500 mt-2">{errors.gender.message}</p>}
+            {errors.dob && <p className="text-red-500 mt-2">{errors.dob.message}</p>}
+
+            <div className="flex justify-between mt-6">
+                <button onClick={prevStep} className="p-3 bg-gray-300 text-black rounded-lg">
+                    Back
+                </button>
+                <button onClick={handleSubmit(nextStep)} className="p-3 bg-black text-white rounded-lg">
+                    Continue
+                </button>
+            </div>
+        </div>
+    );
+
+    // Step 3: University and Graduation
+    const Step3 = () => (
+        <div>
+            <h2 className="text-4xl font-semibold">Where are you studying?</h2>
+            <p className="mt-4 text-gray-600">And other questions</p>
+
+            <input
+                type="text"
+                placeholder="University"
+                className="w-full mt-4 p-3 border border-gray-300 rounded-lg"
+                {...register('university', { required: 'University is required.' })}
+            />
+            <select
+                className="w-full mt-4 p-3 border border-gray-300 rounded-lg"
+                {...register('graduationYear', { required: 'Graduation Year is required.' })}
+            >
+                <option value="">Select Graduation Year</option>
+                {graduationYears.map((year) => (
+                    <option key={year} value={year}>
+                        {year}
+                    </option>
+                ))}
+            </select>
+            {errors.university && <p className="text-red-500 mt-2">{errors.university.message}</p>}
+            {errors.graduationYear && <p className="text-red-500 mt-2">{errors.graduationYear.message}</p>}
+
+            <div className="flex justify-between mt-6">
+                <button onClick={prevStep} className="p-3 bg-gray-300 text-black rounded-lg">
+                    Back
+                </button>
+                <button onClick={handleSubmit(nextStep)} className="p-3 bg-black text-white rounded-lg">
+                    Continue
+                </button>
+            </div>
+        </div>
+    );
+
+    // Step 4: Degree and Study Level
+    const Step4 = () => (
+        <div>
+            <h2 className="text-4xl font-semibold">What are you studying?</h2>
+            <p className="mt-4 text-gray-600">Underwater basket weaving is allowed</p>
+
+            <input
+                type="text"
+                placeholder="Degree Course"
+                className="w-full mt-4 p-3 border border-gray-300 rounded-lg"
+                {...register('degreeCourse', { required: 'Degree Course is required.' })}
+            />
+            <select
+                className="w-full mt-4 p-3 border border-gray-300 rounded-lg"
+                {...register('levelOfStudy', { required: 'Level of Study is required.' })}
+            >
+                <option value="">Level of Study</option>
+                <option value="undergraduate">Undergraduate</option>
+                <option value="postgraduate">Postgraduate</option>
+            </select>
+            {errors.degreeCourse && <p className="text-red-500 mt-2">{errors.degreeCourse.message}</p>}
+            {errors.levelOfStudy && <p className="text-red-500 mt-2">{errors.levelOfStudy.message}</p>}
+
+            <div className="flex justify-between mt-6">
+                <button onClick={prevStep} className="p-3 bg-gray-300 text-black rounded-lg">
+                    Back
+                </button>
+                <button onClick={handleSubmit(onSubmit)} className="p-3 bg-black text-white rounded-lg">
+                    Submit
+                </button>
+            </div>
+        </div>
+    );
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-[#041A2E] via-[#064580] to-[#083157]">
             <div className="w-screen p-12 md:px-60">
-                {/* Step 0: Email input */}
-                {step === 0 && (
-                    <div>
-                        <h2 className="text-4xl font-semibold">Let’s create your account</h2>
-                        <p className="mt-4 text-gray-300">First of all, please register an email address</p>
-                        <p className="mt-2 text-gray-300">We will send a confirmation email to the address to begin your onboarding</p>
+                {step === 0 && <Step0 />}
+                {step === 1 && <Step1 />}
+                {step === 2 && <Step2 />}
+                {step === 3 && <Step3 />}
+                {step === 4 && <Step4 />}
 
-                        {/* Email input */}
-                        <input
-                            type="email"
-                            placeholder="Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full mt-4 p-3 border border-gray-300 rounded-lg"
-                        />
-                        {emailError && <p className="text-red-500 mt-2">{emailError}</p>} {/* Email error */}
-
-                        <div className="text-right">
-                            <button
-                                onClick={nextStep}
-                                className="mt-3 p-3 bg-black text-white rounded-lg"
-                            >
-                                Continue
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-                {/* Step 1: Password input */}
-                {step === 1 && (
-                    <div>
-                        <h2 className="text-4xl font-semibold">Let’s create your account</h2>
-                        <p className="mt-4 text-gray-600">Please set a strong password for your account</p>
-
-                        {/* Password input */}
-                        <input
-                            type={showPassword ? "text" : "password"} // Toggle password visibility
-                            placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="w-full mt-4 p-3 border border-gray-300 rounded-lg"
-                        />
-
-                        {/* Confirm Password input */}
-                        <input
-                            type={showPassword ? "text" : "password"} // Toggle password visibility
-                            placeholder="Confirm Password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="w-full mt-4 p-3 border border-gray-300 rounded-lg"
-                        />
-                        {passwordError && <p className="text-red-500 mt-2">{passwordError}</p>} {/* Password error */}
-
-                        {/* Show password toggle */}
-                        <div className="mt-2">
-                            <label className="flex items-center">
-                                <input
-                                    type="checkbox"
-                                    checked={showPassword}
-                                    onChange={() => setShowPassword(!showPassword)}
-                                    className="mr-2"
-                                />
-                                Show password
-                            </label>
-                        </div>
-
-                        {/* Terms of Service (mandatory) */}
-                        <div className="mt-4">
-                            <label className="flex items-start">
-                                <input
-                                    type="checkbox"
-                                    className="mr-2 mt-1"
-                                    checked={hasAgreedToTerms}
-                                    onChange={() => setHasAgreedToTerms(!hasAgreedToTerms)} // Toggle terms agreement
-                                />
-                                <span className="text-gray-700">
-                                    I agree to the{" "}
-                                    <a href="/terms-conditions" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
-                                        terms of service
-                                    </a>{" "}
-                                    <span className="text-red-500">*</span>
-                                </span>
-                            </label>
-                        </div>
-
-                        {/* Newsletter Subscription (optional) */}
-                        <div className="mt-2">
-                            <label className="flex items-start">
-                                <input
-                                    type="checkbox"
-                                    className="mr-2 mt-1"
-                                    checked={isNewsletterSubscribed}
-                                    onChange={() => setIsNewsletterSubscribed(!isNewsletterSubscribed)} // Toggle newsletter subscription
-                                />
-                                <span className="text-gray-700">
-                                    Subscribe to our newsletter and communications <span className="text-gray-500">(we don’t spam)</span>
-                                </span>
-                            </label>
-                        </div>
-
-                        {/* Continue button */}
-                        {fieldError && <p className="text-red-500 mt-2">{fieldError}</p>}
-                        <div className="flex justify-between mt-6">
-                            <button
-                                onClick={prevStep}
-                                className="p-3 bg-gray-300 text-black rounded-lg"
-                            >
-                                Back
-                            </button>
-                            <button
-                                onClick={nextStep}
-                                className="p-3 rounded-lg text-white bg-black"
-                            >
-                                Continue
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-
-                {step === 2 && (
-                    <div>
-                        <h2 className="text-4xl font-semibold">Tell us a bit about yourself!</h2>
-                        <p className="mt-4 text-gray-600">Let’s get started</p>
-                        <input
-                            type="text"
-                            placeholder="Full Name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            className="w-full mt-4 p-3 border border-gray-300 rounded-lg"
-                        />
-                        <select
-                            value={gender}
-                            onChange={(e) => setGender(e.target.value)}
-                            className="w-full mt-4 p-3 border border-gray-300 rounded-lg"
-                        >
-                            <option value="">Select gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Prefer not to say</option>
-                        </select>
-                        <input
-                            type="date"
-                            value={dob}
-                            onChange={(e) => setDob(e.target.value)}
-                            className="w-full mt-4 p-3 border border-gray-300 rounded-lg"
-                        />
-                        {fieldError && <p className="text-red-500 mt-2">{fieldError}</p>} {/* General error */}
-                        <div className="flex justify-between mt-6">
-                            <button
-                                onClick={prevStep}
-                                className="p-3 bg-gray-300 text-black rounded-lg"
-                            >
-                                Back
-                            </button>
-                            <button
-                                onClick={nextStep}
-                                className="p-3 bg-black text-white rounded-lg"
-                            >
-                                Continue
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-                {step === 3 && (
-                    <div>
-                        <h2 className="text-4xl font-semibold">Where are you studying?</h2>
-                        <p className="mt-4 text-gray-600">And other questions</p>
-                        <input
-                            type="text"
-                            placeholder="University"
-                            value={university}
-                            onChange={(e) => setUniversity(e.target.value)}
-                            className="w-full mt-4 p-3 border border-gray-300 rounded-lg"
-                        />
-                        <select
-                            value={graduationYear}
-                            onChange={(e) => setGraduationYear(e.target.value)}
-                            className="w-full mt-4 p-3 border border-gray-300 rounded-lg"
-                        >
-                            <option value="">Select Graduation Year</option>
-                            {graduationYears.map((year) => (
-                                <option key={year} value={year}>
-                                    {year}
-                                </option>
-                            ))}
-                        </select>
-                        {fieldError && <p className="text-red-500 mt-2">{fieldError}</p>} {/* General error */}
-                        <div className="flex justify-between mt-6">
-                            <button
-                                onClick={prevStep}
-                                className="p-3 bg-gray-300 text-black rounded-lg"
-                            >
-                                Back
-                            </button>
-                            <button
-                                onClick={nextStep}
-                                className="p-3 bg-black text-white rounded-lg"
-                            >
-                                Continue
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-                {step === 4 && (
-                    <div>
-                        <h2 className="text-4xl font-semibold">What are you studying?</h2>
-                        <p className="mt-4 text-gray-600">Underwater basket weaving is allowed</p>
-                        <input
-                            type="text"
-                            placeholder="Degree Course"
-                            value={degreeCourse}
-                            onChange={(e) => setDegreeCourse(e.target.value)}
-                            className="w-full mt-4 p-3 border border-gray-300 rounded-lg"
-                        />
-                        <select
-                            value={levelOfStudy}
-                            onChange={(e) => setLevelOfStudy(e.target.value)}
-                            className="w-full mt-4 p-3 border border-gray-300 rounded-lg"
-                        >
-                            <option value="">Level of Study</option>
-                            <option value="undergraduate">Undergraduate</option>
-                            <option value="postgraduate">Postgraduate</option>
-                        </select>
-                        {fieldError && <p className="text-red-500 mt-2">{fieldError}</p>} {/* General error */}
-                        <div className="flex justify-between mt-6">
-                            <button
-                                onClick={prevStep}
-                                className="p-3 bg-gray-300 text-black rounded-lg"
-                            >
-                                Back
-                            </button>
-                            <button
-                                onClick={nextStep}
-                                className="p-3 bg-black text-white rounded-lg"
-                            >
-                                Submit
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-                {/* Thank You Page - Step 5 */}
-                {step === 5 && (
+                {step === totalSteps && (
                     <div className="text-center">
                         <h2 className="text-4xl font-semibold">Thank you for registering!</h2>
                         <p className="mt-4 text-gray-600">We’ve received your information and will be in touch soon.</p>

@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { SQLEvent, Event, FormData } from "./types";
+import { SQLEvent, Event, FormData, UserInformation } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
@@ -213,4 +213,18 @@ export function returnLogo(organiser: string): { found: boolean, src?: string } 
 		return { found: true, src: logo.src };
 	}
 	return { found: false };
+}
+
+export function createUserInformationObject(data: any): UserInformation {
+	return {
+		id: "",
+		user_id: "",
+		gender: data.gender,
+		birthdate: data.birthdate,
+		university_attended: data.university_attended,
+		graduation_year: data.graduation_year,
+		course_studied: data.course_studied,
+		level_of_study: data.level_of_study,
+		newsletter_subscribe: data.newsletter_subscribe,
+	};
 }

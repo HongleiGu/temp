@@ -1,5 +1,5 @@
-// import bcrypt from 'bcrypt';
-// import { invoices, customers, revenue, users } from '../lib/placeholder-data';
+//import bcrypt from 'bcrypt';
+//import { invoices, customers, revenue, users } from '../lib/placeholder-data';
 
 // import { db } from '@vercel/postgres';
 // const client = await db.connect();
@@ -98,6 +98,83 @@ export async function GET() {
 		// await client.sql`COMMIT`;
 
 		return Response.json({ message: 'Database updated successfully' });
+// 	} catch (error) {
+// 		await client.sql`ROLLBACK`;
+// 		return Response.json({ error }, { status: 500 });
+// 	}
+// }
+
+// const userInformation = [
+//     {
+//         user_id: '45ef371c-0cbc-4f2a-b9f1-f6078aa6638c',
+//         gender: 'Male',
+//         birthdate: '2001-05-15',
+//         university_attended: 'Imperial College London',
+//         graduation_year: '2017',
+//         course: 'Computer Science',
+//         level_of_study: 'Postgraduate',
+//         newsletter_subscribe: true
+//     },
+//     {
+//         user_id: '55ef371c-0cbc-4f2a-b9f1-f6078aa6638d',
+//         gender: 'Female',
+//         birthdate: '1998-08-22',
+//         university_attended: 'King\'s College London',
+//         graduation_year: '2020',
+//         course: 'Biomedical Engineering',
+//         level_of_study: 'Alumni',
+//         newsletter_subscribe: false
+//     },
+//     {
+//         user_id: '65ef371c-0cbc-4f2a-b9f1-f6078aa6638e',
+//         gender: 'Prefer not to say',
+//         birthdate: '2005-11-30',
+//         university_attended: 'University College London',
+//         graduation_year: '2026',
+//         course: 'Physics',
+//         level_of_study: 'Undergraduate',
+//         newsletter_subscribe: true
+//     }
+// ];
+
+// async function seedUserInformation() {
+//     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+//     await client.sql`
+//         CREATE TABLE IF NOT EXISTS user_information (
+//             id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+//             user_id UUID NOT NULL,
+//             gender VARCHAR(255) NOT NULL,
+//             birthdate VARCHAR(255) NOT NULL,
+//             university_attended VARCHAR(255) NOT NULL,
+//             graduation_year VARCHAR(255) NOT NULL,
+//             course VARCHAR(255) NOT NULL,
+//             level_of_study VARCHAR(255) NOT NULL,
+//             newsletter_subscribe BOOLEAN DEFAULT false
+//         );
+//     `;
+
+//     const insertedUserInformation = await Promise.all(
+//         userInformation.map(async (user) => {
+//             return client.sql`
+//                 INSERT INTO user_information (user_id, gender, birthdate, university_attended, graduation_year, course, level_of_study, newsletter_subscribe)
+//                 VALUES (${user.user_id}, ${user.gender}, ${user.birthdate}, ${user.university_attended}, ${user.graduation_year}, ${user.course}, ${user.level_of_study}, ${user.newsletter_subscribe})
+//                 ON CONFLICT (id) DO NOTHING;
+//             `;
+//         })
+//     );
+
+//     return insertedUserInformation;
+// }
+
+// export async function GET() {
+// 	try {
+// 		await client.sql`BEGIN`;
+// 		await seedUserInformation();
+
+// 		await client.sql`COMMIT`;
+
+// 		return Response.json({ message: 'Database seeded successfully' });
 	} catch (error) {
 		// await client.sql`ROLLBACK`;
 		return Response.json({ error }, { status: 500 });
