@@ -1,6 +1,6 @@
 'use client';
 
-import { useSession, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
@@ -12,10 +12,7 @@ export default function AccountPage() {
 
 	useEffect(() => {
 		if (!session) {
-			if (status === "authenticated") {
-				signOut();  // Force sign out because session is invalid
-			} else if (status !== "loading") {
-				console.log('We out here')
+			if (status !== "loading") {
 				router.push('/login')
 			}
 		}

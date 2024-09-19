@@ -19,14 +19,14 @@ import { Input } from "../input";
 import { ChevronDownIcon, ChevronLeftIcon, PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 
-interface DataTableProps<TData, TValue> {
+interface DataTableProps<TData extends { id: string }, TValue> { 
 	columns: ColumnDef<TData, TValue>[]
 	data: TData[]
 	control?: boolean
 }
 
 
-export function DataTable<TData, TValue>({ columns, data, control = true }: DataTableProps<TData, TValue>) {
+export function DataTable<TData extends { id: string }, TValue>({ columns, data, control = true }: DataTableProps<TData, TValue>) {
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 	// const [isDeleting, setIsDeleting] = useState(false)
 	const [sorting, setSorting] = useState<SortingState>([])

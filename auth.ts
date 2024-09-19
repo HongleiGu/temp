@@ -1,4 +1,3 @@
-import { authConfig } from "./auth.config";
 import Credentials from "next-auth/providers/credentials";
 import { z } from 'zod';
 import { sql } from "@vercel/postgres";
@@ -18,8 +17,10 @@ async function getUser(email: string): Promise<User | undefined> {
 
 
 const nextAuthOptions: NextAuthConfig = {
-	...authConfig,
-
+	pages: {
+		signIn: '/login',
+		signOut: '/logout',
+	},
 	session: {
 		strategy: "jwt",
 		maxAge: 1 * 24 * 60 * 60, // 1 day

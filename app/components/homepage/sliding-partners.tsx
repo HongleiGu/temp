@@ -15,12 +15,12 @@ export default function SlidingPartners() {
 	const [mustFinish, setMustFinish] = useState(false)
 	const [rerender, setRerender] = useState(false)
 
-	let [ref, { width }] = useMeasure();
+	const [ref, { width }] = useMeasure();
 	const xTranslation = useMotionValue(0);
 
 	useEffect(() => {
 		let controls
-		let finalPosition = (-width / 2) - 8
+		const finalPosition = (-width / 2) - 8
 
 		if (mustFinish) {
 			controls = animate(xTranslation, [xTranslation.get(), finalPosition], {

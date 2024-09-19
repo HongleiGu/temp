@@ -43,6 +43,7 @@ export type User = {
 }
 
 export interface ContactFormInput {
+	id: string
 	name: string
 	email: string
 	message: string

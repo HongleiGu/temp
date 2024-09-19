@@ -6,7 +6,7 @@ import path from 'path';
 import { SocietyLogos } from "@/app/lib/utils";
 import { redirect } from "next/navigation";
 import nextAuthOptions from "@/auth";
-import { getServerSession } from "next-auth";
+import { getServerSession, Session } from "next-auth";
 
 
 async function getImageList() {
@@ -16,7 +16,7 @@ async function getImageList() {
 }
 
 export default async function CreatePage() {
-	const session = await getServerSession(nextAuthOptions)
+	const session: Session | null = await getServerSession(nextAuthOptions)
 
 	if (!session) {
 		redirect('/')
@@ -38,7 +38,7 @@ export default async function CreatePage() {
 
 
 // Returns the list of Organisers a user is allowed to post for
-async function getAuthorisedOrganiserList(username: string): Promise<string[]> {
+async function getAuthorisedOrganiserList(username: string | undefined | null): Promise<string[]> {
 	
 	try {
 		if (username) {

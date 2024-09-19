@@ -3,17 +3,17 @@
 import ContactFormList from "@/app/components/admin/contact/contact-data-table"
 import { redirect } from "next/navigation"
 import nextAuthOptions from "@/auth"
-import { getServerSession } from "next-auth"
+import { getServerSession, Session } from "next-auth"
 import { Button } from "@/app/components/button"
 import Link from "next/link"
 
 export default async function AdminContactPage() {
-	const session = await getServerSession(nextAuthOptions)
+	const session: Session | null = await getServerSession(nextAuthOptions)
 	if (!session) {
 		redirect('/login')
 	}
 
-	if (session.user.role !== 'admin') {
+	if (session.user?.role !== 'admin') {
 		redirect('/account')
 	}
 

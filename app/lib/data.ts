@@ -48,10 +48,15 @@ export async function deleteEvents(eventIds: string[]): Promise<void> {
 			throw new Error('No event IDs provided for deletion');
 		}
 
-		await sql`
-			DELETE FROM events
-			WHERE id = ANY(${eventIds})
-		`;
+		const jsonEventIds = eventIds.map(id => ({ id }));
+
+		// Use json_populate_recordset to delete the events by ID
+		await sql.query(
+			`DELETE FROM events
+             WHERE id IN (SELECT id FROM json_populate_recordset(NULL::events, $1))`,
+			[JSON.stringify(jsonEventIds)]
+		);
+
 
 		console.log(`Deleted ${eventIds.length} events.`);
 	} catch (error) {

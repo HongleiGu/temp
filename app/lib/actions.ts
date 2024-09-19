@@ -1,7 +1,6 @@
 'use client';
 
 import { signIn, signOut } from "next-auth/react";
-import { AuthError } from "next-auth";
 
 export async function authenticate(prevState: string | undefined, formData: FormData) {
 	try {
@@ -20,13 +19,8 @@ export async function authenticate(prevState: string | undefined, formData: Form
 			return { response: true }
 		}
 	} catch (error) {
-		if (error instanceof AuthError) {
-			switch (error.type) {
-				case 'CredentialsSignin':
-					return { response: false, error: "Invalid credentials" }
-				default:
-					return { response: false, error: "Something went wrong" }
-			}
+		if (error ) {
+			return { response: false, error: "Something went wrong" }
 		}
 		throw error
 	}

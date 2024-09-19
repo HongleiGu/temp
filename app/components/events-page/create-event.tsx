@@ -2,7 +2,7 @@
 
 // import Image from 'next/image';
 import Link from 'next/link';
-import { useForm } from 'react-hook-form';
+import { FieldValues, useForm } from 'react-hook-form';
 import { Input } from '../input';
 import { Button } from '../button';
 import { generateDays, generateMonths, generateYears, generateHours, generateMinutes } from '@/app/lib/utils';
@@ -27,7 +27,7 @@ export default function CreateEventPage({ imageList, organiserList }: CreateEven
 	const [eventData, setEventData] = useState(DefaultEvent); // Event data for preview
 	const [errorMessage, setErrorMessage] = useState("");
 
-	const { register, handleSubmit, formState: { errors, isValid }, setValue, watch } = useForm({
+	const { register, handleSubmit, formState: { errors, isValid }, setValue, watch } = useForm<FormData>({
 		mode: 'onChange', // Re-evaluate form validity as the user types
 	});
 

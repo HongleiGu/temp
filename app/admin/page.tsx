@@ -3,19 +3,19 @@
 import EventList from "../components/admin/events-list";
 import { redirect } from "next/navigation";
 import nextAuthOptions from "@/auth";
-import { getServerSession } from "next-auth";
+import { getServerSession, Session } from "next-auth";
 import { Button } from "../components/button";
 import Link from "next/link";
 
 
 export default async function AdminPage() {
 
-	const session = await getServerSession(nextAuthOptions)
+	const session: Session | null = await getServerSession(nextAuthOptions)
 	if (!session) { 
 		redirect('/login')
 	}
 
-	if (session.user.role !== 'admin') {
+	if (session.user?.role !== 'admin') {
 		redirect('/account')
 	}
 

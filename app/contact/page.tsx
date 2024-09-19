@@ -51,7 +51,7 @@ export default function ContactForm() {
 				<div className="lg:w-1/2 lg:pr-8 mb-8 lg:mb-0">
 					<h1 className="text-5xl md:text-7xl font-semibold mb-4 lg:mb-20">Drop us a line</h1>
 					<p className="text-lg mb-4">
-						We’d love to hear from you, whether that's a question about how we operate, inquiries about the team, or reaching out to sponsor an event.
+						We&#39;d love to hear from you, whether that&#39;s a question about how we operate, inquiries about the team, or reaching out to sponsor an event.
 					</p>
 					<p className="text-lg">
 						Please reach us by filling out the form, and one of the team will get back to you as soon as possible.

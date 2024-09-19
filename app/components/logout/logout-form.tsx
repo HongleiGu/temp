@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { logout } from "@/app/lib/actions";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 

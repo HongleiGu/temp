@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ message: 'All fields are required' }, { status: 400 });
 		}
 
-		const result = await insertContactForm({ name, email, message })
+		const result = await insertContactForm({ id: '0', name, email, message })
 
 		if (result.success) {
 			return NextResponse.json({ message: 'Form submitted successfully' }, { status: 200 });
