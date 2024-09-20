@@ -5,8 +5,7 @@ import fs from 'fs';
 import path from 'path';
 import { SocietyLogos } from "@/app/lib/utils";
 import { redirect } from "next/navigation";
-import nextAuthOptions from "@/auth";
-import { getServerSession, Session } from "next-auth";
+import { auth } from "@/auth";
 
 
 async function getImageList() {
@@ -16,7 +15,7 @@ async function getImageList() {
 }
 
 export default async function CreatePage() {
-	const session: Session | null = await getServerSession(nextAuthOptions)
+	const session = await auth()
 
 	if (!session) {
 		redirect('/login')

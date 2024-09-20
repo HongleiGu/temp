@@ -2,15 +2,14 @@
 
 import EventList from "../components/admin/events-list";
 import { redirect } from "next/navigation";
-import nextAuthOptions from "@/auth";
-import { getServerSession, Session } from "next-auth";
+import { auth } from "@/auth";
 import { Button } from "../components/button";
 import Link from "next/link";
 
 
 export default async function AdminPage() {
 
-	const session: Session | null = await getServerSession(nextAuthOptions)
+	const session = await auth()
 	if (!session) { 
 		redirect('/login')
 	}

@@ -200,13 +200,14 @@ export const PartnerLogos = [
 export const SocietyLogos = [
 	{ name: "Roar News", src: '/societies/roar.png' },
 	{ name: "KCL Politics", src: '/societies/roar.png' },
-	{ name: "EISKA (European and International Studies King's Association)", src: '/societies/roar.png' },
 	{ name: "LSE SU European Society", src: '/societies/roar.png' },
 	{ name: "Global China and Asia Study Society", src: '/societies/roar.png' },
 	{ name: "Imperial College Finance Society", src: '/societies/roar.png' },
 	{ name: "Amicus UCL", src: '/societies/roar.png' },
 	{ name: "KCL American Politics Society", src: '/societies/roar.png' },
 	{ name: "Political Engagement and Activism Society", src: '/societies/roar.png' },
+	{ name: "EISKA (European and International Studies King's Association)", src: '/societies/roar.png' },
+	{ name: "Imperial Colelge Neurotech Society", src: '/societies/roar.png' },
 	{ name: "KCL Backpackers", src: '/societies/roar.png' },
 	{ name: "KCL History Society", src: '/societies/roar.png' },
 	{ name: "KCL War Studies", src: '/societies/roar.png' },
@@ -222,7 +223,7 @@ export const SocietyLogos = [
 	{ name: "Student Startups UK", src: '/societies/roar.png' },
 	{ name: "American Society University of Westminster ", src: '/societies/roar.png' },
 	{ name: "Imperial College Law Society", src: '/societies/roar.png' },
-	{ name: "European Affairs Institute ", src: '/societies/roar.png' },
+	{ name: "European Affairs Institute", src: '/societies/roar.png' },
 ]
 
 export function returnLogo(organiser: string): { found: boolean, src?: string } {

@@ -1,9 +1,9 @@
+import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { z } from 'zod';
 import { sql } from "@vercel/postgres";
 import type { User } from "./app/lib/types";
 import bcrypt from 'bcrypt';
-import { NextAuthConfig } from "next-auth";
 
 async function getUser(email: string): Promise<User | undefined> {
 	try {
@@ -16,7 +16,7 @@ async function getUser(email: string): Promise<User | undefined> {
 }
 
 
-const nextAuthOptions: NextAuthConfig = {
+export const { auth, handlers, signIn, signOut } = NextAuth({
 	pages: {
 		signIn: '/login',
 		signOut: '/logout',
@@ -26,7 +26,7 @@ const nextAuthOptions: NextAuthConfig = {
 		maxAge: 1 * 24 * 60 * 60, // 1 day
 	},
 	providers: [Credentials({
-		async authorize(credentials) {
+		async authorize(credentials, req) {
 			const parsedCredentials = z.object({ email: z.string().email(), password: z.string().min(6) })
 				.safeParse(credentials)
 			if (parsedCredentials.success) {
@@ -49,27 +49,26 @@ const nextAuthOptions: NextAuthConfig = {
 				token.name = user.name;
 				token.email = user.email;
 				token.role = user.role;
+				// token.email_verified = !!user.email_verified;
 			}
 			return token;
 		},
 		async session({ session, token }) {
-			// session.user = {
-			// 	name: token.name,
-			// 	email: token?.email || "test@gmail.com",
-			// 	role: token?.role || "User",
-			//   };
 
-			session.user = {
-				id: token.id,
-				name: token.name,
-				email: token.email,
-				role: token.role,  // Assuming you have role management
-			};
+			session.user.role = String(token?.role) || 'No role found'
+			session.user.name = token?.name || 'No name found'
+
+			// session.user = {
+			// 	id: String(token?.id) || '',
+			// 	name: token?.name || 'No name found',
+			// 	email: token?.email || 'No email found',
+			// 	role: String(token?.role) || 'No role found',
+			// 	email_verified: !!token?.email_verified,
+			// };
 
 			return session;
 		},
 	},
 	secret: process.env.AUTH_SECRET
-};
+})
 
-export default nextAuthOptions;

@@ -18,7 +18,7 @@ export const columns: ColumnDef<Event>[] = [
 		id: "select",
 		header: ({ table }) => (
 			<Checkbox
-				checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+				checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() ? "indeterminate" : false)}
 				onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
 				className="bg-white text-black"
 				aria-label="Select all"

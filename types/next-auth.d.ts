@@ -1,10 +1,12 @@
 import NextAuth from "next-auth";
+import { AdapterUser } from "next-auth/adapters";
 
-declare module "next-auth" {
+export declare module "next-auth" {
 	interface User {
 		name: string;
 		email: string;
 		role: string;
+		email_verified: boolean;
 	}
 
 	interface Session {
