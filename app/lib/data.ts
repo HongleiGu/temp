@@ -1,5 +1,5 @@
 import { sql } from '@vercel/postgres';
-import { SQLEvent, ContactFormInput, UserInformation, RegisterFormData } from './types';
+import { SQLEvent, ContactFormInput, RegisterFormData } from './types';
 import { convertSQLEventToEvent, formatDOB, selectUniversity } from './utils';
 import bcrypt from 'bcrypt';
 
@@ -112,11 +112,11 @@ export async function insertUser(formData: RegisterFormData) {
 
 export async function insertUserInformation(formData: RegisterFormData, userId: string) {
 	const formattedDOB = formatDOB(formData.dob) // Currently just leaves in yyyy-mm-dd form
-	const university = selectUniversity(formData.university, formData.otherUniversity)
+	const university = selectUniversity(formData.university, formData.otherUniversity) // if 'other' selected, uses text input entry
 	try {
 		await sql`
 			INSERT INTO user_information (user_id, gender, birthdate, university_attended, graduation_year, course, level_of_study, newsletter_subscribe)
-        	VALUES (${userId}, ${formData.gender}, ${formattedDOB}, ${formData.university}, ${formData.graduationYear}, ${formData.degreeCourse}, ${formData.levelOfStudy}, ${formData.isNewsletterSubscribed})
+        	VALUES (${userId}, ${formData.gender}, ${formattedDOB}, ${university}, ${formData.graduationYear}, ${formData.degreeCourse}, ${formData.levelOfStudy}, ${formData.isNewsletterSubscribed})
 		`
 		return { success: true };
 	} catch (error) {

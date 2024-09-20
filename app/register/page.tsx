@@ -9,7 +9,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import { LondonUniversities } from '../lib/utils';
 
 export default function Register() {
-	const { register, handleSubmit, formState: { errors }, getValues, watch, setValue } = useForm<RegisterFormData>({
+	const { register, handleSubmit, formState: { errors }, getValues, watch } = useForm<RegisterFormData>({
 		mode: 'onSubmit'
 	});
 	const [step, setStep] = useState(0);
