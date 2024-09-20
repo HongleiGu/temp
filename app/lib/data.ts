@@ -9,7 +9,7 @@ export async function fetchEvents() {
 		return data.rows.map(convertSQLEventToEvent)
 	} catch (error) {
 		console.error('Database error:', error)
-		throw new Error('Failed to fetch revenue data')
+		throw new Error('Failed to fetch events data')
 	}
 }
 
@@ -85,7 +85,7 @@ export async function fetchAllContactForms() {
 		return data.rows
 	} catch (error) {
 		console.error('Database error:', error)
-		throw new Error('Failed to fetch revenue data')
+		throw new Error('Failed to fetch contact form data')
 	}
 }
 

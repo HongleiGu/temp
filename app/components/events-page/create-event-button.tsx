@@ -19,7 +19,7 @@ export default function CreateEventButton() {
 	};
 
 	return (
-		<div className="self-end">
+		<div className="self-center mb-12 md:mb-2 md:self-end">
 			<Button
 				variant="outline"
 				size="lg"
