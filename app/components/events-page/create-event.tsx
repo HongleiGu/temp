@@ -2,7 +2,7 @@
 
 // import Image from 'next/image';
 import Link from 'next/link';
-import { FieldValues, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Input } from '../input';
 import { Button } from '../button';
 import { generateDays, generateMonths, generateYears, generateHours, generateMinutes } from '@/app/lib/utils';
@@ -28,7 +28,7 @@ export default function CreateEventPage({ imageList, organiserList }: CreateEven
 	const [errorMessage, setErrorMessage] = useState("");
 
 	const { register, handleSubmit, formState: { errors, isValid }, setValue, watch } = useForm<FormData>({
-		mode: 'onChange', // Re-evaluate form validity as the user types
+		mode: 'onChange',
 	});
 
 	const openModal = () => setIsModalOpen(true);

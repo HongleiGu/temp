@@ -1,10 +1,13 @@
-import { insertUserInformation } from '@/app/lib/data';
+import { insertUser, insertUserInformation } from '@/app/lib/data';
 import { NextResponse } from 'next/server';
-import { createUserInformationObject } from '@/app/lib/utils';
 
 export async function POST(req: Request) {
 	const data = await req.json();
-	const userInformation = await createUserInformationObject(data);
-	const response = await insertUserInformation(userInformation)	
+	const response = await insertUser(data)	
+	if (response.success) {
+		const id = response.id as string
+		const response_two = await insertUserInformation(data, id)
+		return NextResponse.json(response_two)
+	}
 	return NextResponse.json(response)
 }

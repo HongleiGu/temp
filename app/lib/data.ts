@@ -1,6 +1,7 @@
 import { sql } from '@vercel/postgres';
-import { SQLEvent, ContactFormInput, UserInformation } from './types';
-import { convertSQLEventToEvent } from './utils';
+import { SQLEvent, ContactFormInput, UserInformation, RegisterFormData } from './types';
+import { convertSQLEventToEvent, formatDOB, selectUniversity } from './utils';
+import bcrypt from 'bcrypt';
 
 export async function fetchEvents() {
 	try {
@@ -77,6 +78,7 @@ export async function insertContactForm(form: ContactFormInput) {
 		return { success: false, error };
 	}
 }
+
 export async function fetchAllContactForms() {
 	try {
 		const data = await sql<ContactFormInput>`SELECT * FROM contact_forms`
@@ -86,15 +88,39 @@ export async function fetchAllContactForms() {
 		throw new Error('Failed to fetch revenue data')
 	}
 }
-export async function insertUserInformation(user: UserInformation) {
+
+export async function insertUser(formData: RegisterFormData) {
+	try {
+		const hashedPassword = await bcrypt.hash(formData.password, 10);
+		const username = `${formData.firstname} ${formData.surname}`
+		console.log(username, hashedPassword, formData.email)
+		const result =  await sql`
+			INSERT INTO users (name, email, password)
+			VALUES (${username}, ${formData.email}, ${hashedPassword})
+			ON CONFLICT (email) DO NOTHING
+			RETURNING id
+		`;
+
+		console.log(`Created a user with id: ${result.rows[0].id}`)
+
+		return { success: true, id: result.rows[0].id };
+	} catch (error) {
+		console.error('Error creating user:', error);
+		return { success: false, error };
+	}
+}
+
+export async function insertUserInformation(formData: RegisterFormData, userId: string) {
+	const formattedDOB = formatDOB(formData.dob) // Currently just leaves in yyyy-mm-dd form
+	const university = selectUniversity(formData.university, formData.otherUniversity)
 	try {
 		await sql`
 			INSERT INTO user_information (user_id, gender, birthdate, university_attended, graduation_year, course, level_of_study, newsletter_subscribe)
-        	VALUES (${user.user_id}, ${user.gender}, ${user.birthdate}, ${user.university_attended}, ${user.graduation_year}, ${user.course_studied}, ${user.level_of_study}, ${user.newsletter_subscribe})
+        	VALUES (${userId}, ${formData.gender}, ${formattedDOB}, ${formData.university}, ${formData.graduationYear}, ${formData.degreeCourse}, ${formData.levelOfStudy}, ${formData.isNewsletterSubscribed})
 		`
 		return { success: true };
 	} catch (error) {
-		console.error('Error creating event:', error);
+		console.error('Error creating user_information:', error);
 		return { success: false, error };
 	}
 }

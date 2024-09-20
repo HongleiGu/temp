@@ -89,54 +89,6 @@
 
 // }
 
-export async function GET() {
-	try {
-		// await client.sql`BEGIN`;
-		// await addColumnToTable();
-		// await seedContactFormTable()
-
-		// await client.sql`COMMIT`;
-
-		return Response.json({ message: 'Database updated successfully' });
-// 	} catch (error) {
-// 		await client.sql`ROLLBACK`;
-// 		return Response.json({ error }, { status: 500 });
-// 	}
-// }
-
-// const userInformation = [
-//     {
-//         user_id: '45ef371c-0cbc-4f2a-b9f1-f6078aa6638c',
-//         gender: 'Male',
-//         birthdate: '2001-05-15',
-//         university_attended: 'Imperial College London',
-//         graduation_year: '2017',
-//         course: 'Computer Science',
-//         level_of_study: 'Postgraduate',
-//         newsletter_subscribe: true
-//     },
-//     {
-//         user_id: '55ef371c-0cbc-4f2a-b9f1-f6078aa6638d',
-//         gender: 'Female',
-//         birthdate: '1998-08-22',
-//         university_attended: 'King\'s College London',
-//         graduation_year: '2020',
-//         course: 'Biomedical Engineering',
-//         level_of_study: 'Alumni',
-//         newsletter_subscribe: false
-//     },
-//     {
-//         user_id: '65ef371c-0cbc-4f2a-b9f1-f6078aa6638e',
-//         gender: 'Prefer not to say',
-//         birthdate: '2005-11-30',
-//         university_attended: 'University College London',
-//         graduation_year: '2026',
-//         course: 'Physics',
-//         level_of_study: 'Undergraduate',
-//         newsletter_subscribe: true
-//     }
-// ];
-
 // async function seedUserInformation() {
 //     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
@@ -167,16 +119,20 @@ export async function GET() {
 //     return insertedUserInformation;
 // }
 
-// export async function GET() {
-// 	try {
-// 		await client.sql`BEGIN`;
-// 		await seedUserInformation();
 
-// 		await client.sql`COMMIT`;
 
-// 		return Response.json({ message: 'Database seeded successfully' });
-	} catch (error) {
-		// await client.sql`ROLLBACK`;
-		return Response.json({ error }, { status: 500 });
-	}
+export async function GET() {
+	// try {
+		// await client.sql`BEGIN`;
+		// await addColumnToTable();
+		// await seedContactFormTable()
+
+		// await client.sql`COMMIT`;
+		// return Response.json({ message: 'Database updated successfully' });
+
+		// 	} catch (error) {
+			// 		await client.sql`ROLLBACK`;
+			// 		return Response.json({ error }, { status: 500 });
+			// 	}
+	return Response.json({ message: 'Database updated successfully' });
 }

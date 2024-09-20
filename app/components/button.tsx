@@ -18,7 +18,7 @@ export function Button({ variant, size = 'md', disabled, onClick, children, clas
 					'bg-blue-500 text-white hover:bg-blue-400 active:bg-blue-600 focus-visible:outline-blue-500': variant === 'filled',
 					'border border-blue-500 text-blue-500 hover:bg-blue-100 active:bg-blue-200 focus-visible:outline-blue-500': variant === 'outline',
 					'text-#[a3a3a3] hover:cursor-pointer hover:text-gray-100': variant === 'ghost',
-					
+
 				},
 				{
 					'h-8 text-xs': size === 'sm',

@@ -154,3 +154,38 @@
 // 		sign_up_link: "https://google.com"
 // 	}
 // ]
+
+
+
+// const userInformation = [
+//     {
+//         user_id: '45ef371c-0cbc-4f2a-b9f1-f6078aa6638c',
+//         gender: 'Male',
+//         birthdate: '2001-05-15',
+//         university_attended: 'Imperial College London',
+//         graduation_year: '2017',
+//         course: 'Computer Science',
+//         level_of_study: 'Postgraduate',
+//         newsletter_subscribe: true
+//     },
+//     {
+//         user_id: '55ef371c-0cbc-4f2a-b9f1-f6078aa6638d',
+//         gender: 'Female',
+//         birthdate: '1998-08-22',
+//         university_attended: 'King\'s College London',
+//         graduation_year: '2020',
+//         course: 'Biomedical Engineering',
+//         level_of_study: 'Alumni',
+//         newsletter_subscribe: false
+//     },
+//     {
+//         user_id: '65ef371c-0cbc-4f2a-b9f1-f6078aa6638e',
+//         gender: 'Prefer not to say',
+//         birthdate: '2005-11-30',
+//         university_attended: 'University College London',
+//         graduation_year: '2026',
+//         course: 'Physics',
+//         level_of_study: 'Undergraduate',
+//         newsletter_subscribe: true
+//     }
+// ];

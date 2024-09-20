@@ -74,6 +74,24 @@ export interface FormData {
 	signupLink?: string;
 }
 
+export interface RegisterFormData {
+    email: string;
+    password: string;
+    confirmPassword: string;
+    firstname: string;
+	surname: string;
+    gender: string;
+    dob: string;
+    university: string;
+	otherUniversity: string;
+    graduationYear: string;
+    degreeCourse: string;
+    levelOfStudy: string;
+    hasAgreedToTerms: boolean;
+    isNewsletterSubscribed: boolean;
+}
+
+
 export interface ContactFormInput {
 	id: string
 	name: string

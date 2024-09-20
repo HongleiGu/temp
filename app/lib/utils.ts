@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { SQLEvent, Event, FormData, UserInformation } from "./types";
+import { SQLEvent, Event, FormData, UserInformation, RegisterFormData } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
@@ -68,6 +68,16 @@ export function formatDateString(dateString: string, short: boolean = true): str
 	const monthName = date.toLocaleString('en-US', { month: short ? 'short' : 'long' })
 
 	return `${dayOfWeek}, ${dayInMonth} ${monthName}`
+}
+
+export function formatDOB(dob: string) {
+	console.log(dob)
+	return dob
+}
+
+export function selectUniversity(university: string, otherUniversity: string) {
+	if (university != "Other (please specify)") return university
+	else return otherUniversity
 }
 
 export const EVENT_TAG_TYPES: { [key: number]: { label: string; color: string } } = {
@@ -162,6 +172,14 @@ export async function createSQLEventObject(data: FormData): Promise<SQLEvent> {
 	};
 }
 
+export const LondonUniversities = [
+	"Imperial College London", "King's College London", "University College London", "Birkbeck, University of London", 
+	"Brunel University", "Goldsmiths, University of London", "London Business School", "Kingston University", 
+	"London School Of Economics (LSE)", "London South Bank University", "University Of Westminster", "SOAS, University Of London",
+	"Royal Veterinary College", "Royal Holloway, University of London", "Royal College of Art", "Queen Mary University Of London",
+	"Middlesex University", "University Of Greenwich", "University Of Roehampton", 
+	"Other (please specify)"
+]
 
 export const PartnerLogos = [
 	{ src: '/partners/LSEULaw.png', name: 'LSEU Law Society' },
@@ -213,18 +231,4 @@ export function returnLogo(organiser: string): { found: boolean, src?: string } 
 		return { found: true, src: logo.src };
 	}
 	return { found: false };
-}
-
-export function createUserInformationObject(data: any): UserInformation {
-	return {
-		id: "",
-		user_id: "",
-		gender: data.gender,
-		birthdate: data.birthdate,
-		university_attended: data.university_attended,
-		graduation_year: data.graduation_year,
-		course_studied: data.course_studied,
-		level_of_study: data.level_of_study,
-		newsletter_subscribe: data.newsletter_subscribe,
-	};
 }

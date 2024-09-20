@@ -43,7 +43,7 @@ export default function SlidingPartners() {
 
 
 		return controls?.stop
-	}, [xTranslation, width, duration, rerender]);
+	}, [xTranslation, width, duration, rerender, mustFinish]);
 
 	return (
 		<motion.div className="relative mx-auto flex gap-24 h-auto"

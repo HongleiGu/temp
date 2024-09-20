@@ -14,7 +14,7 @@ export default function AuthButton() {
 					Sign Out
 				</Link>
 			) : (
-				<Link href="/login" className="py-2 px-4 text-xl rounded-xl transition-all duration-300 ease-in-out hover:shadow-inner hover:bg-blue-800">
+				<Link href="/sign" className="py-2 px-4 text-xl rounded-xl transition-all duration-300 ease-in-out hover:shadow-inner hover:bg-blue-800">
 					Sign In
 				</Link>
 			)}

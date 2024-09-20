@@ -19,7 +19,7 @@ export default async function CreatePage() {
 	const session: Session | null = await getServerSession(nextAuthOptions)
 
 	if (!session) {
-		redirect('/')
+		redirect('/login')
 	}
 
 	const username = session?.user.name
