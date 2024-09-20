@@ -1,15 +1,39 @@
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Button } from './button';
 import { useState } from 'react';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import { Input } from './input';
 
 export default function Footer() {
 	const [email, setEmail] = useState('');
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		console.log(`Subscribed with: ${email}`);
-		// Add your email submission logic here, such as calling an API
+		
+		try {
+			const data = {
+				name: 'Newsletter Subscription',
+				email: email,
+				message: `Newsletter subscription request for email: ${email}`,
+			};
+
+			const response = await fetch('/api/send-email', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(data),
+			});
+
+			if (response.ok) {
+				setEmail(''); 
+			} 
+		} catch (error) {
+			console.error('Error submitting the form:', error);
+		}
+		
 	};
 
 	return (
@@ -65,20 +89,21 @@ export default function Footer() {
 				<div className="flex flex-col items-center justify-end">
 					<h2 className="w-full text-start text-sm lg:text-md text-white font-semibold mb-2 mt-2">SUBSCRIBE TO OUR NEWSLETTER</h2>
 					<form onSubmit={handleSubmit} className="flex items-center h-auto">
-						<input
+						<Input
 							type="email"
 							placeholder="Enter your email"
-							className="h-full px-4 py-2 bg-transparent text-white outline-none ring-2 ring-white/20"
+							className="h-full px-4 py-3 bg-transparent text-white outline-none ring-2 ring-white/20"
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
 							required
 						/>
-						<button
+						<Button
+							variant='outline'
 							type="submit"
-							className="h-full px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+							className="h-full py-3 rounded-none border-none"
 						>
-							→
-						</button>
+							<ArrowRightIcon className='w-4 h-4 text-white' />
+						</Button>
 					</form>
 				</div>
 			</div>
