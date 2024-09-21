@@ -7,9 +7,9 @@ import { Button } from '../button';
 import { authenticate } from '@/app/lib/actions';
 import { useRouter } from 'next/navigation';
 import { Input } from '../input';
+import toast from 'react-hot-toast';
 
 export default function LoginForm() {
-	const [errorMessage, setErrorMessage] = useState<string | null>(null)
 	const [isPending, setIsPending] = useState<boolean>(false)
 	const [showForgottenPasswordModal, setShowForgottenPasswordModal] = useState(false);
 
@@ -17,15 +17,16 @@ export default function LoginForm() {
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		setErrorMessage(null)
+		const toastId = toast.loading('Logging you in...')
 		setIsPending(true)
 
 		const formData = new FormData(e.currentTarget)
 		const result = await authenticate(undefined, formData)
 
 		if (!result.response) {
-			setErrorMessage(result.error || 'Login failed');
+			toast.error('Login failed.', { id: toastId });
 		} else {
+			toast.success('Successfully logged in!', { id: toastId })
 			router.push('/account')
 		}
 		setIsPending(false)
@@ -94,18 +95,6 @@ export default function LoginForm() {
 					>
 						Forgotten password?
 					</Button>
-					<div
-						className="flex h-8 items-end space-x-1"
-						aria-live="polite"
-						aria-atomic="true"
-					>
-						{errorMessage && (
-							<>
-								<ExclamationCircleIcon className="h-5 w-5 text-red-500" />
-								<p className="text-sm text-red-500">{errorMessage}</p>
-							</>
-						)}
-					</div>
 				</div>
 			</form>
 			{showForgottenPasswordModal && (

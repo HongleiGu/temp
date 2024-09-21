@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { RegisterFormData } from '@/app/lib/types';
 import { Button } from '../components/button';
 import { Input } from '../components/input';
@@ -12,7 +13,7 @@ export default function Register() {
 	const { register, handleSubmit, formState: { errors }, getValues, watch } = useForm<RegisterFormData>({
 		mode: 'onSubmit'
 	});
-	const [step, setStep] = useState(0);
+	const [step, setStep] = useState(1);
 	const [showPassword, setShowPassword] = useState(false);
 	const totalSteps = 5;
 
@@ -28,10 +29,32 @@ export default function Register() {
 	};
 
 	const calculateProgress = () => {
-		return ((step + 1) / (totalSteps + 1)) * 100;
+		return ((step) / (totalSteps)) * 100;
 	};
 
 	const onSubmit = async (data: RegisterFormData) => {
+		const toastId = toast.loading('Creating user...')
+		const email = data.email
+
+		try {
+			const res = await fetch('/api/user/check-email', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ email }),
+			});
+
+			const result = await res.json();
+			if (result.emailTaken) {
+				toast.error('Email already exists.', { id: toastId });
+				return
+			}
+		} catch (error) {
+			toast.error('Error checking email.', { id: toastId });
+			return
+		}
+
 		try {
 			const res = await fetch('/api/user/create', {
 				method: 'POST',
@@ -41,24 +64,27 @@ export default function Register() {
 				body: JSON.stringify(data),
 			});
 
-			const result = await res.json();
+			const result = await res.json()
 			if (result.success) {
-				console.log('User successfully created:', data);
-				nextStep();
+				toast.success('User successfully created!', { id: toastId })
+				nextStep()
 			} else {
-				console.error('Error creating user:', result.error);
+				toast.error(`Error creating user: ${result.error}`, { id: toastId })
+				console.error('Error creating user:', result.error)
 			}
 		} catch (error) {
-			console.error('Error during user creation:', error);
+			toast.error(`Error during user creation: ${error.message}`, { id: toastId })
+			console.error('Error during user creation:', error)
 		}
 	};
 
-	// Step 0: Email input
-	const EmailEntry = () => (
+
+	// Step 0 and 1: Email and Password
+	const CombinedEmailPasswordEntry = () => (
+
 		<div className='flex flex-col w-full'>
 			<h2 className="text-4xl font-semibold mb-16">Let&#39;s create your account</h2>
-			<p className="mt-4  text-gray-300">First of all, please register an email address</p>
-			{/* <p className="mt-2 text-gray-300">We will send a confirmation email to the address to begin your onboarding</p> */}
+			<p className="mt-4  text-gray-300">Please register an email address</p>
 
 			<Input
 				type="email"
@@ -68,95 +94,79 @@ export default function Register() {
 			/>
 			{errors.email && <p className="text-red-500 mt-2">{errors.email.message}</p>}
 
-			<Button variant='outline' onClick={handleSubmit(nextStep)} className="self-end mt-3 p-3 text-white rounded-lg hover:bg-slate-500">
-				Continue <ArrowRightIcon className='ml-2' width={15} height={15} />
-			</Button>
-		</div>
-	);
+			<p className="mt-10 text-gray-300">Please set a strong password for your account</p>
 
-	// Step 1: Password input
-	const PasswordEntry = () => {
+			<Input
+				type={showPassword ? 'text' : 'password'}
+				placeholder="Password"
+				className="w-full mt-4 p-3 bg-transparent"
+				{...register('password', {
+					required: 'Password is required.',
+					minLength: {
+						value: 8,
+						message: 'Password must be at least 8 characters long.',
+					},
+				})}
+			// {...register('password', { required: true, minLength: 8 })}
 
-		return (
-			<div className='flex flex-col w-full'>
-				<h2 className="text-4xl font-semibold">Let&#39;s create your account</h2>
-				<p className="mt-4 text-gray-300">Please set a strong password for your account</p>
+			/>
 
-				<Input
-					type={showPassword ? 'text' : 'password'}
-					placeholder="Password"
-					className="w-full mt-4 p-3 bg-transparent"
-					{...register('password', {
-						required: 'Password is required.',
-						minLength: {
-							value: 8,
-							message: 'Password must be at least 8 characters long.',
-						},
-					})}
-				// {...register('password', { required: true, minLength: 8 })}
+			<Input
+				type={showPassword ? 'text' : 'password'}
+				placeholder="Confirm Password"
+				className="w-full mt-4 p-3 bg-transparent"
+				{...register('confirmPassword', {
+					required: true,
+					validate: (value) => value === getValues('password') || 'Passwords do not match.',
+				})}
+			/>
+			{errors.password && <p className="text-red-500 mt-2">{errors.password.message}</p>}
+			{errors.confirmPassword && <p className="text-red-500 mt-2">{errors.confirmPassword.message}</p>}
 
-				/>
-
-				<Input
-					type={showPassword ? 'text' : 'password'}
-					placeholder="Confirm Password"
-					className="w-full mt-4 p-3 bg-transparent"
-					{...register('confirmPassword', {
-						required: true,
-						validate: (value) => value === getValues('password') || 'Passwords do not match.',
-					})}
-				/>
-				{errors.password && <p className="text-red-500 mt-2">{errors.password.message}</p>}
-				{errors.confirmPassword && <p className="text-red-500 mt-2">{errors.confirmPassword.message}</p>}
-
-				{/* Show password toggle */}
-				<div className="mt-2 self-end">
-					<label className="flex items-center">
-						<input
-							type="checkbox"
-							checked={showPassword}
-							onChange={() => setShowPassword(!showPassword)}
-							className="mr-2"
-						/>
-						Show password
-					</label>
-				</div>
-
-				{/* Terms of Service (mandatory) */}
-				<div className="mt-10">
-					<label className="flex items-start">
-						<input type="checkbox" className="mr-2 mt-1" {...register('hasAgreedToTerms', { required: 'You must agree to the terms of service to continue.' })} />
-						<span>
-							I agree to the{' '}
-							<a href="/terms-conditions" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
-								terms of service
-							</a>{' '}
-							<span className="text-red-500">*</span>
-						</span>
-					</label>
-				</div>
-				{errors.hasAgreedToTerms && <p className="text-red-500 mt-2">{errors.hasAgreedToTerms.message}</p>}
-
-				{/* Newsletter Subscription (optional) */}
-				<div className="mt-2">
-					<label className="flex items-start">
-						<input type="checkbox" className="mr-2 mt-1" {...register('isNewsletterSubscribed')} />
-						<span>Subscribe to our newsletter and communications</span>
-					</label>
-				</div>
-
-				{/* Continue button */}
-				<div className="flex justify-between mt-6 items-center">
-					<Button variant='outline' onClick={prevStep} className="p-3 bg-transparent">
-						<ArrowLeftIcon className='mr-2' width={15} height={15} /> Back
-					</Button>
-					<Button variant='outline' onClick={handleSubmit(nextStep)} className="self-end mt-3 p-3 text-white rounded-lg hover:bg-slate-500">
-						Continue <ArrowRightIcon className='ml-2' width={15} height={15} />
-					</Button>
-				</div>
+			{/* Show password toggle */}
+			<div className="mt-2 self-end">
+				<label className="flex items-center">
+					<input
+						type="checkbox"
+						checked={showPassword}
+						onChange={() => setShowPassword(!showPassword)}
+						className="mr-2"
+					/>
+					Show password
+				</label>
 			</div>
-		);
-	};
+
+			{/* Terms of Service (mandatory) */}
+			<div className="mt-10">
+				<label className="flex items-start">
+					<input type="checkbox" className="mr-2 mt-1" {...register('hasAgreedToTerms', { required: 'You must agree to the terms of service to continue.' })} />
+					<span>
+						I agree to the{' '}
+						<a href="/terms-conditions" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
+							terms of service
+						</a>{' '}
+						<span className="text-red-500">*</span>
+					</span>
+				</label>
+			</div>
+			{errors.hasAgreedToTerms && <p className="text-red-500 mt-2">{errors.hasAgreedToTerms.message}</p>}
+
+			{/* Newsletter Subscription (optional) */}
+			<div className="mt-2">
+				<label className="flex items-start">
+					<input type="checkbox" className="mr-2 mt-1" {...register('isNewsletterSubscribed')} />
+					<span>Subscribe to our newsletter and communications</span>
+				</label>
+			</div>
+
+			{/* Continue button */}
+			<div className="flex justify-end mt-6 items-center">
+				<Button variant='outline' onClick={handleSubmit(nextStep)} className="p-3 text-white rounded-lg hover:bg-slate-500">
+					Continue <ArrowRightIcon className='ml-2' width={15} height={15} />
+				</Button>
+			</div>
+		</div>
+	)
 
 	// Step 2: User Information
 	const PersonalInformationEntry = () => (
@@ -221,7 +231,7 @@ export default function Register() {
 				setIsOtherSelected(false)
 			}
 		}, [selectedUniversity])
-		
+
 		return (
 			<div>
 				<h2 className="text-4xl mb-10 font-semibold">Where are you studying?</h2>
@@ -314,11 +324,12 @@ export default function Register() {
 	return (
 		<main className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-[#041A2E] via-[#064580] to-[#083157]">
 			<div className="w-screen p-12 md:px-28">
-				{step === 0 && <EmailEntry />}
-				{step === 1 && <PasswordEntry />}
+
+				{step === 1 && <CombinedEmailPasswordEntry />}
 				{step === 2 && <PersonalInformationEntry />}
 				{step === 3 && <UniversityEntry />}
 				{step === 4 && <CourseInformationField />}
+
 
 				{step === totalSteps && (
 					<div className="text-center items-center flex flex-col">
@@ -333,7 +344,7 @@ export default function Register() {
 						<div className="flex mb-2 items-center justify-between">
 							<div>
 								<span className="text-sm font-semibold inline-block py-1 px-2 uppercase">
-									Step {step + 1} of {totalSteps + 1}
+									Step {step} of {totalSteps}
 								</span>
 							</div>
 						</div>

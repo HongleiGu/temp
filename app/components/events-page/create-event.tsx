@@ -8,7 +8,7 @@ import { Button } from '../button';
 import { generateDays, generateMonths, generateYears, generateHours, generateMinutes } from '@/app/lib/utils';
 import { useRouter } from 'next/navigation';
 import { ArrowLeftIcon, LockClosedIcon } from '@heroicons/react/24/outline';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import EventModal from "./event-modal";
 import { validateEvent, createEventObject } from '@/app/lib/utils';
 import { DefaultEvent, FormData } from '@/app/lib/types';
@@ -98,19 +98,21 @@ export default function CreateEventPage({ imageList, organiserList }: CreateEven
 	);
 
 	const DescriptionField = () => (
+
 		<div className="flex flex-col mb-4">
 			<label htmlFor="description" className="text-2xl p-6 font-semibold">Description</label>
 			{errors.description && <p className="text-red-600 text-sm self-end mb-1">Description is required</p>}
 			<textarea
 				id="description"
 				rows={4}
-				{...register('description', { required: true, maxLength: MAX_POSTGRES_STRING_LENGTH })}
+				{...register('description', { required: true })}
 				className="w-[90%] self-end block p-3 text-sm  text-gray-900 bg-transparent rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
 				placeholder="Please provide information about your event..."
 			/>
 
 		</div>
 	)
+
 
 	const OrganiserField = () => (
 		<div className="flex flex-col mb-4">

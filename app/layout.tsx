@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import SessionProviderWrapper from "./components/session-provider-wrapper";
+import { Toaster } from 'react-hot-toast';
 
 
 export const metadata: Metadata = {
@@ -24,6 +25,7 @@ export default function RootLayout({
 					<div className="overflow-hidden">
 						{children}
 					</div>
+					<Toaster position="top-right" />
 					<Footer />
 				</SessionProviderWrapper>
 			</body>

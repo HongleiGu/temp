@@ -34,27 +34,27 @@
 
 
 // async function seedEvents() {
-	// await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-	// await client.sql`
-	//   CREATE TABLE IF NOT EXISTS events (
-	// 	id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-	// 	title VARCHAR(255) NOT NULL,
-	// 	description TEXT, 
-	// 	organiser VARCHAR(225) NOT NULL,
-	// 	organiser_uid UUID NOT NULL,
-	// 	start_time VARCHAR(255),
-	// 	end_time VARCHAR(255),
-	// 	day INT NOT NULL,
-	// 	month INT NOT NULL,
-	// 	year INT NOT NULL,
-	// 	location_building VARCHAR(255),
-	// 	location_area VARCHAR(255),
-	// 	location_address VARCHAR(255),
-	// 	image_url VARCHAR(255) NOT NULL,
-	// 	event_type INT NOT NULL,
-	// 	sign_up_link VARCHAR(255)
-	//   );
-	// `;
+// await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+// await client.sql`
+//   CREATE TABLE IF NOT EXISTS events (
+// 	id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+// 	title VARCHAR(255) NOT NULL,
+// 	description TEXT, 
+// 	organiser VARCHAR(225) NOT NULL,
+// 	organiser_uid UUID NOT NULL,
+// 	start_time VARCHAR(255),
+// 	end_time VARCHAR(255),
+// 	day INT NOT NULL,
+// 	month INT NOT NULL,
+// 	year INT NOT NULL,
+// 	location_building VARCHAR(255),
+// 	location_area VARCHAR(255),
+// 	location_address VARCHAR(255),
+// 	image_url VARCHAR(255) NOT NULL,
+// 	event_type INT NOT NULL,
+// 	sign_up_link VARCHAR(255)
+//   );
+// `;
 
 // 	const insertedEvents = await Promise.all(
 // 		events.map(async (event) => {
@@ -72,6 +72,13 @@
 // 	await client.sql`
 // 	ALTER TABLE events
 // 	ADD COLUMN sign_up_link VARCHAR(255)
+// 	`
+// }
+
+// async function addDateColumnToUserTable() {
+// 	await client.sql`
+// 		ALTER TABLE users
+// 		ADD COLUMN created_at TIMESTAMP DEFAULT NOW()
 // 	`
 // }
 
@@ -122,17 +129,17 @@
 
 
 export async function GET() {
-	// try {
-		// await client.sql`BEGIN`;
-		// await addColumnToTable();
+// 	try {
+// 		await client.sql`BEGIN`;
+// 		await addDateColumnToUserTable();
 		// await seedContactFormTable()
 
-		// await client.sql`COMMIT`;
-		// return Response.json({ message: 'Database updated successfully' });
+	// 	await client.sql`COMMIT`;
+	// 	return Response.json({ message: 'Database updated successfully' });
 
-		// 	} catch (error) {
-			// 		await client.sql`ROLLBACK`;
-			// 		return Response.json({ error }, { status: 500 });
-			// 	}
+	// } catch (error) {
+	// 	await client.sql`ROLLBACK`;
+	// 	return Response.json({ error }, { status: 500 });
+	// }
 	return Response.json({ message: 'Database updated successfully' });
 }

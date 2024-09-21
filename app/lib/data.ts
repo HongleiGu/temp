@@ -1,6 +1,6 @@
 import { sql } from '@vercel/postgres';
 import { SQLEvent, ContactFormInput, RegisterFormData } from './types';
-import { convertSQLEventToEvent, formatDOB, selectUniversity } from './utils';
+import { convertSQLEventToEvent, formatDOB, selectUniversity, capitalize } from './utils';
 import bcrypt from 'bcrypt';
 
 export async function fetchEvents() {
@@ -92,8 +92,8 @@ export async function fetchAllContactForms() {
 export async function insertUser(formData: RegisterFormData) {
 	try {
 		const hashedPassword = await bcrypt.hash(formData.password, 10);
-		const username = `${formData.firstname} ${formData.surname}`
-		console.log(username, hashedPassword, formData.email)
+		const username = `${capitalize(formData.firstname)} ${capitalize(formData.surname)}`
+		
 		const result =  await sql`
 			INSERT INTO users (name, email, password)
 			VALUES (${username}, ${formData.email}, ${hashedPassword})
@@ -107,6 +107,24 @@ export async function insertUser(formData: RegisterFormData) {
 	} catch (error) {
 		console.error('Error creating user:', error);
 		return { success: false, error };
+	}
+}
+
+export async function checkEmail(email: string) {
+	try {
+		const result = await sql`
+			SELECT id from users
+			WHERE email = ${email}
+			LIMIT 1
+		`
+		if (result.rows.length > 0) {
+			return { success: true, emailTaken: true }
+		} else {
+			return { success: true, emailTaken: false }
+		}
+	} catch (error) {
+		console.error('Error checking email:', error)
+		return { success: false, error }
 	}
 }
 

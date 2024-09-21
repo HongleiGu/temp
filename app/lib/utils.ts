@@ -6,6 +6,10 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
 }
 
+export const capitalize = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};
+
 export function convertSQLEventToEvent(sqlEvent: SQLEvent): Event {
 	const date = `${String(sqlEvent.day).padStart(2, '0')}/${String(sqlEvent.month).padStart(2, '0')}/${sqlEvent.year}`;
 	const time = `${sqlEvent.start_time} - ${sqlEvent.end_time}`;
@@ -200,6 +204,7 @@ export const PartnerLogos = [
 export const SocietyLogos = [
 	{ name: "Roar News", src: '/societies/roar.png' },
 	{ name: "KCL Politics", src: '/societies/roar.png' },
+	{ name: "Imperial Colelge Neurotech Society", src: '/societies/roar.png' },
 	{ name: "LSE SU European Society", src: '/societies/roar.png' },
 	{ name: "Global China and Asia Study Society", src: '/societies/roar.png' },
 	{ name: "Imperial College Finance Society", src: '/societies/roar.png' },
@@ -207,7 +212,6 @@ export const SocietyLogos = [
 	{ name: "KCL American Politics Society", src: '/societies/roar.png' },
 	{ name: "Political Engagement and Activism Society", src: '/societies/roar.png' },
 	{ name: "EISKA (European and International Studies King's Association)", src: '/societies/roar.png' },
-	{ name: "Imperial Colelge Neurotech Society", src: '/societies/roar.png' },
 	{ name: "KCL Backpackers", src: '/societies/roar.png' },
 	{ name: "KCL History Society", src: '/societies/roar.png' },
 	{ name: "KCL War Studies", src: '/societies/roar.png' },
