@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
-import { KeyIcon, ExclamationCircleIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { KeyIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from '../button';
 import { authenticate } from '@/app/lib/actions';

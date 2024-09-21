@@ -2,13 +2,14 @@
 
 // import Image from 'next/image';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import { Input } from '../input';
 import { Button } from '../button';
 import { generateDays, generateMonths, generateYears, generateHours, generateMinutes } from '@/app/lib/utils';
 import { useRouter } from 'next/navigation';
 import { ArrowLeftIcon, LockClosedIcon } from '@heroicons/react/24/outline';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import EventModal from "./event-modal";
 import { validateEvent, createEventObject } from '@/app/lib/utils';
 import { DefaultEvent, FormData } from '@/app/lib/types';
@@ -25,7 +26,6 @@ interface CreateEventPageProps {
 export default function CreateEventPage({ imageList, organiserList }: CreateEventPageProps) {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [eventData, setEventData] = useState(DefaultEvent); // Event data for preview
-	const [errorMessage, setErrorMessage] = useState("");
 
 	const { register, handleSubmit, formState: { errors, isValid }, setValue, watch } = useForm<FormData>({
 		mode: 'onChange',
@@ -37,14 +37,13 @@ export default function CreateEventPage({ imageList, organiserList }: CreateEven
 
 
 	const onSubmit = async (data: FormData) => {
+		const toastId = toast.loading('Uploading event...')
 		const error = validateEvent(data);
 
 		if (error) {
-			console.log(error);
-			setErrorMessage(error)
+			toast.error(`Event is invalid: ${error}`, { id: toastId })
 			return;
 		}
-
 
 		try {
 			const res = await fetch('/api/events/create', {
@@ -57,13 +56,13 @@ export default function CreateEventPage({ imageList, organiserList }: CreateEven
 
 			const result = await res.json();
 			if (result.success) {
-				console.log('Event successfully created:', data);
+				toast.success('Event successfully created!', { id: toastId })
 				router.push('/events');
 			} else {
-				console.error('Error creating event:', result.error);
+				toast.error(`Error creating event: ${result.error}.`, { id: toastId })
 			}
 		} catch (error) {
-			console.error('Error during event submission:', error);
+			toast.error(`Error during event submission: ${error}.`, { id: toastId })
 		}
 	};
 
@@ -71,8 +70,7 @@ export default function CreateEventPage({ imageList, organiserList }: CreateEven
 		const error = validateEvent(data);
 
 		if (error) {
-			console.log(error);
-			setErrorMessage(error)
+			toast.error(`Invalid event entry: ${error}`)
 			return
 		}
 
@@ -98,7 +96,6 @@ export default function CreateEventPage({ imageList, organiserList }: CreateEven
 	);
 
 	const DescriptionField = () => (
-
 		<div className="flex flex-col mb-4">
 			<label htmlFor="description" className="text-2xl p-6 font-semibold">Description</label>
 			{errors.description && <p className="text-red-600 text-sm self-end mb-1">Description is required</p>}
@@ -314,9 +311,7 @@ export default function CreateEventPage({ imageList, organiserList }: CreateEven
 				<Button variant='ghost' size='sm' className='text-lg hover:text-gray-500' onClick={() => router.back()}>
 					<ArrowLeftIcon width={30} height={30} />Back
 				</Button>
-				{errorMessage && (
-					<p className='text-red-600 p-2 truncate'>{`Error: ${errorMessage}`}</p>
-				)}
+
 				<div className="space-x-0 space-y-2 md:space-y-0 md:space-x-4 flex flex-col md:flex-row items-center">
 					<Button
 						variant="outline"
