@@ -6,8 +6,7 @@ import toast from 'react-hot-toast';
 import { SocietyRegisterFormData } from '@/app/lib/types';
 import { Button } from '../../components/button';
 import { Input } from '../../components/input';
-import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
-import { LondonUniversities } from '../../lib/utils';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
 export default function SocietyRegistrationForm() {
 	const { register, handleSubmit, formState: { errors }, getValues, watch } = useForm<SocietyRegisterFormData>({
@@ -148,7 +147,7 @@ export default function SocietyRegistrationForm() {
 			<div className='flex flex-col w-full'>
 				<p className="mt-4  text-gray-300"><i>Optional</i>: Please upload your society's logo</p>
 
-				
+
 
 				{/* Terms of Service (mandatory) */}
 				<div className="mt-10">

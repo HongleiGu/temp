@@ -84,7 +84,7 @@ export default function LoginForm() {
 							</div>
 						</div>
 					</div>
-					<Button variant="filled" size="md" className="mt-4 w-full" aria-disabled={isPending}>
+					<Button variant="filled" size="md" type='submit' className="mt-4 w-full" aria-disabled={isPending}>
 						Log in <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
 					</Button>
 					<Button
@@ -166,7 +166,7 @@ function ForgottenPasswordModal({ onClose }: { onClose: () => void }) {
 						className='bg-transparet text-black'
 						disabled={inputDisabled}
 					/>
-					<Button variant="filled" size="md" className="w-full" disabled={inputDisabled}>
+					<Button variant="filled" size="md" className="w-full justify-center self-center" disabled={inputDisabled}>
 						Submit
 					</Button>
 					{status && <p className="mt-2 text-sm text-center text-gray-600">{status}</p>}

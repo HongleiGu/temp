@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import { UserRegisterFormData } from '@/app/lib/types';
 import { Button } from '../../components/button';
 import { Input } from '../../components/input';
-import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
+import { ArrowLeftIcon, ArrowRightIcon, FlagIcon } from '@heroicons/react/24/outline';
 import { LondonUniversities } from '../../lib/utils';
 
 export default function UserRegistrationForm() {
@@ -94,7 +94,7 @@ export default function UserRegistrationForm() {
 			/>
 			{errors.email && <p className="text-red-500 mt-2">{errors.email.message}</p>}
 
-			<p className="mt-10 text-gray-300">Please set a strong password for your account</p>
+			<p className="mt-10 text-gray-300">Please set a <i>strong</i> password for your account</p>
 
 			<Input
 				type={showPassword ? 'text' : 'password'}
@@ -315,7 +315,7 @@ export default function UserRegistrationForm() {
 					<ArrowLeftIcon className='mr-2' width={15} height={15} /> Back
 				</Button>
 				<Button variant='outline' onClick={handleSubmit(onSubmit)} className="self-end mt-3 p-3 text-white rounded-lg hover:bg-slate-500">
-					Submit <ArrowRightIcon className='ml-2' width={15} height={15} />
+					Submit <FlagIcon className='ml-2' width={15} height={15} />
 				</Button>
 			</div>
 		</div>
