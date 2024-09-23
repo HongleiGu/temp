@@ -39,7 +39,7 @@ const testEvents: Event[] = [
 export default async function EventsCalendarView() {
 	const allEvents = await fetchEvents();
 
-	const monthYearGroupings = convertEventsToMonthYearGroupings(allEvents.concat(testEvents))
+	const monthYearGroupings = convertEventsToMonthYearGroupings(allEvents)
 	
 	const sortedMonthYearKeys = Object.keys(monthYearGroupings).sort((a, b) => {
 		const [monthA, yearA] = a.split('/');

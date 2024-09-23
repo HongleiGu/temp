@@ -204,7 +204,7 @@ export const PartnerLogos = [
 export const SocietyLogos = [
 	{ name: "Roar News", src: '/societies/roar.png' },
 	{ name: "KCL Politics", src: '/societies/roar.png' },
-	{ name: "Imperial Colelge Neurotech Society", src: '/societies/roar.png' },
+	{ name: "Imperial College Neurotech Society", src: '/societies/roar.png' },
 	{ name: "LSE SU European Society", src: '/societies/roar.png' },
 	{ name: "Global China and Asia Study Society", src: '/societies/roar.png' },
 	{ name: "Imperial College Finance Society", src: '/societies/roar.png' },
