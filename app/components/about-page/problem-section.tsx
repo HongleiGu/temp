@@ -16,7 +16,7 @@ export default function ProblemSection() {
                     Building careers.
                 </p>
                 <p className="text-2xl text-left font-light mb-8 mt-8 text-gray-300">
-                    London’s student community faces fragmentation and lack of representation.
+                    London&#39;s student community faces fragmentation and a lack of representation.
                 </p>
                 <p className="text-2xl text-left font-light mb-8 text-gray-300">
                     Traditional organisations struggle to connect students city-wide, leaving many feeling isolated and missing opportunities. LSN aims to create a vibrant, interconnected community that empowers individuals and fosters collaboration across London.

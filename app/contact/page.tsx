@@ -49,9 +49,9 @@ export default function ContactForm() {
 		<main className="min-h-screen w-screen bg-gradient-to-b from-[#083157]  to-[#064580]">
 			<div className="flex flex-col lg:flex-row lg:justify-between p-8 lg:py-16">
 				<div className="lg:w-1/2 lg:pr-8 mb-8 lg:mb-0">
-					<h1 className="text-5xl md:text-7xl font-semibold mb-4 lg:mb-20">Drop us a line</h1>
+					<h1 className="text-5xl md:text-7xl font-semibold mb-4 lg:mb-20">Get in touch with us</h1>
 					<p className="text-lg mb-4">
-						We&#39;d love to hear from you, whether that&#39;s a question about how we operate, inquiries about the team, or reaching out to sponsor an event.
+						Whether you have questions about how we operate, enquiries about the team, or are interested in sponsoring an events, we&#39;d love to hear from you.
 					</p>
 					<p className="text-lg">
 						Please reach us by filling out the form, and one of the team will get back to you as soon as possible.

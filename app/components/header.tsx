@@ -42,7 +42,7 @@ export default function Header() {
 function Logo({ closeMenu }: { closeMenu: () => void }) {
 	return (
 		<Link href='/' onClick={closeMenu} className="flex items-center space-x-2">
-			<Image src='/logo/LSN LOGO 2.png' alt='LSN logo' width={20} height={20} className='w-20 md:w-24' />
+			<Image src='/logo/LSN LOGO 1.png' alt='LSN logo' width={96} height={96} className='w-20 md:w-24' />
 		</Link>
 	)
 }

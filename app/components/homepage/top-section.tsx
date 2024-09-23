@@ -21,7 +21,7 @@ function JoinButton({ text, className, href }: { text: string, className?: strin
 	return (
 		<Link href={href} className={clsx("flex items-center space-x-2 group", className)}>
 			<div>
-				<span className="relative text-lg font-medium flex items-center space-x-2 text-white">
+				<span className="relative text-lg flex items-center space-x-2 text-white font-semibold capitalize tracking-wide">
 					{text}
 					<Image
 						src="/icons/arrow-right.svg"
@@ -43,8 +43,8 @@ function Title() {
 			<h1 className="text-white text-3xl sm:text-4xl md:text-6xl font-bold uppercase tracking-widest ml-2 text-center">
 				London Student Network
 			</h1>
-			<div className="w-auto flex flex-row p-10 space-x-20">
-				<p className="font-bold text-lg md:text-xl text-white">Connecting 500,000 students</p>
+			<div className="w-auto flex flex-col p-10 space-y-8 items-center">
+				<p className="font-bold text-lg md:text-xl text-white">Connecting <i>500,000</i> students</p>
 				<JoinButton href="/sign" text="Join us" />
 			</div>
 		</section>
@@ -58,10 +58,10 @@ function ForStudents() {
 				<span className="text-white mr-4">1. </span>For Students
 			</h2>
 			<p className="text-white text-xl md:text-3xl mt-20 mr-12 self-end">
-				Every event, opportunity, group and skill all in one place. <br /> <br />
-				Become unbound by your university and become a student of the City.
+				Every event, opportunity, group and skill all in one place. <br /><br />
+				Become a student of the city.
 			</p>
-			<JoinButton href="/sign" className="self-end mr-12 mt-12" text="Create your account with us today" />
+			<JoinButton href="/sign" className="self-end mr-12 mt-12" text="Create your account" />
 		</section>
 	)
 }
@@ -73,10 +73,9 @@ function ForSocieties() {
 				<span className="text-white mr-4">2. </span>For Clubs and Societies
 			</h2>
 			<p className="text-white text-xl md:text-3xl mt-20 ml-12">
-				Export your society to the city. Student leaders work
-				tirelessly to put on great events. Through LSN every student
-				in London can interface with you.  <br /> <br />
-				Connect and Collaborate with ease!
+				Showcase your society to the city. <br /> <br />Student leaders work
+				tirelessly to create exceptional events. Through LSN, every student
+				in London can experience what you have to offer.
 			</p>
 			<JoinButton href="/sign" className="ml-20 mt-12" text="Share your events through us today" />
 		</section>
@@ -90,12 +89,12 @@ function ForSponsors() {
 				<span className="text-white mr-4">3. </span>For Sponsors
 			</h2>
 			<p className="text-white text-xl md:text-3xl mt-20 mr-12 self-end">
-				We help put on events that reach the entire
-				London university student population. <br /> <br />
-				If you are interested in sponsoring any of
-				our activities, get in contact today!
+				We help organise events that reach the entire
+				university student community across London. <br /> <br />
+				Interested in sponsoring our exciting activities? Reach out today
+				and be a part of something extraordinary
 			</p>
-			<JoinButton href="/contact" className="self-end mr-12 mt-12" text="Contact our team today" />
+			<JoinButton href="/contact" className="self-end mr-12 mt-12" text="Contact our team" />
 		</section>
 	)
 }
