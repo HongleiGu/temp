@@ -1,5 +1,5 @@
 import { sql } from '@vercel/postgres';
-import { SQLEvent, ContactFormInput, RegisterFormData } from './types';
+import { SQLEvent, ContactFormInput, SocietyRegisterFormData, UserRegisterFormData } from './types';
 import { convertSQLEventToEvent, formatDOB, selectUniversity, capitalize } from './utils';
 import bcrypt from 'bcrypt';
 
@@ -88,7 +88,24 @@ export async function fetchAllContactForms() {
 	}
 }
 
-export async function insertUser(formData: RegisterFormData) {
+export async function insertOrganiser(formData: SocietyRegisterFormData) {
+	try {
+		const hashedPassword = await bcrypt.hash(formData.password, 10);
+		
+		const result =  await sql`
+			INSERT INTO users (name, email, password, role)
+			VALUES (${formData.name}, ${formData.email}, ${hashedPassword}, organiser)
+			ON CONFLICT (email) DO NOTHING
+		`;
+
+		return { success: true };
+	} catch (error) {
+		console.error('Error creating user:', error);
+		return { success: false, error };
+	}
+}
+
+export async function insertUser(formData: UserRegisterFormData) {
 	try {
 		const hashedPassword = await bcrypt.hash(formData.password, 10);
 		const username = `${capitalize(formData.firstname)} ${capitalize(formData.surname)}`

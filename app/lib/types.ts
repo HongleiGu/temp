@@ -75,7 +75,7 @@ export interface FormData {
 	signupLink?: string;
 }
 
-export interface RegisterFormData {
+export interface UserRegisterFormData {
     email: string;
     password: string;
     confirmPassword: string;
@@ -90,6 +90,14 @@ export interface RegisterFormData {
     levelOfStudy: string;
     hasAgreedToTerms: boolean;
     isNewsletterSubscribed: boolean;
+}
+
+export interface SocietyRegisterFormData {
+	name: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    hasAgreedToTerms: boolean;
 }
 
 

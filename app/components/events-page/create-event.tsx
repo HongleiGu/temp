@@ -337,7 +337,7 @@ export default function CreateEventPage({ organiserList }: CreateEventPageProps)
 
 						<div className="self-end relative w-full min-w-[100px] h-[200px] border border-black overflow-hidden">
 							<Image
-								src={previewImage || '/images/placeholders/football.jpg'}
+								src={previewImage || selectedImage}
 								alt={selectedImage}
 								fill
 								className="w-[90%] h-64 object-cover border-2  border-black/70"
