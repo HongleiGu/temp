@@ -1,18 +1,9 @@
 "use server";
 
 import CreateEventPage from "@/app/components/events-page/create-event";
-import fs from 'fs';
-import path from 'path';
 import { SocietyLogos } from "@/app/lib/utils";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-
-
-async function getImageList() {
-	const placeholdersDir = path.join(process.cwd(), 'public/images/placeholders');
-	const files = fs.readdirSync(placeholdersDir);
-	return files.filter(file => file.endsWith('.jpg'));
-}
 
 export default async function CreatePage() {
 	const session = await auth()
@@ -25,11 +16,10 @@ export default async function CreatePage() {
 
 	const organiserList = await getAuthorisedOrganiserList(username);
 
-	const imageList = await getImageList();
 
 	return (
 		<main className="min-h-screen w-screen bg-gradient-to-b from-[#083157]  to-[#064580]">
-			<CreateEventPage imageList={imageList} organiserList={organiserList} />
+			<CreateEventPage organiserList={organiserList} />
 		</main>
 	)
 

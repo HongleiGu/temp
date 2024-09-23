@@ -1,29 +1,28 @@
 "use client";
 
-// import Image from 'next/image';
-import Link from 'next/link';
+import Image from 'next/image';
 import toast from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import { Input } from '../input';
 import { Button } from '../button';
-import { generateDays, generateMonths, generateYears, generateHours, generateMinutes } from '@/app/lib/utils';
+import { generateDays, generateMonths, generateYears, generateHours, generateMinutes, placeholderImages } from '@/app/lib/utils';
 import { useRouter } from 'next/navigation';
-import { ArrowLeftIcon, LockClosedIcon } from '@heroicons/react/24/outline';
-import { useState } from 'react';
+import { ArrowLeftIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { useState, useEffect, useRef } from 'react';
 import EventModal from "./event-modal";
 import { validateEvent, createEventObject } from '@/app/lib/utils';
 import { DefaultEvent, FormData } from '@/app/lib/types';
 import TagsField from './create-event-tags';
+import { upload } from '@vercel/blob/client';
 
 
 const MAX_POSTGRES_STRING_LENGTH = 255;
 
 interface CreateEventPageProps {
-	imageList: string[]
 	organiserList: string[]
 }
 
-export default function CreateEventPage({ imageList, organiserList }: CreateEventPageProps) {
+export default function CreateEventPage({ organiserList }: CreateEventPageProps) {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [eventData, setEventData] = useState(DefaultEvent); // Event data for preview
 
@@ -35,6 +34,7 @@ export default function CreateEventPage({ imageList, organiserList }: CreateEven
 	const closeModal = () => setIsModalOpen(false);
 	const router = useRouter()
 
+	const eventTagValue = watch('event_tag', 0); // Default value is 0
 
 	const onSubmit = async (data: FormData) => {
 		const toastId = toast.loading('Uploading event...')
@@ -45,13 +45,32 @@ export default function CreateEventPage({ imageList, organiserList }: CreateEven
 			return;
 		}
 
+		let imageUrl = data.selectedImage
+
+		if (data.uploadedImage && typeof data.uploadedImage !== 'string') {
+			try {
+				const newBlob = await upload(data.uploadedImage.name, data.uploadedImage, {
+					access: 'public',
+					handleUploadUrl: '/api/upload-image',
+				})
+
+				imageUrl = newBlob.url
+			} catch (error) {
+				toast.error(`Error uploading image: ${error.message}`, { id: toastId })
+				return
+			}
+		}
+
 		try {
 			const res = await fetch('/api/events/create', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify(data),
+				body: JSON.stringify({
+					...data,
+					selectedImage: imageUrl
+				}),
 			});
 
 			const result = await res.json();
@@ -74,7 +93,15 @@ export default function CreateEventPage({ imageList, organiserList }: CreateEven
 			return
 		}
 
-		const event = createEventObject(data);
+		let imageUrl = data.selectedImage
+		if (data.uploadedImage) {
+			imageUrl = URL.createObjectURL(data.uploadedImage)
+		}
+
+		const event = createEventObject({
+			...data,
+			selectedImage: imageUrl
+		});
 
 		setEventData(event);
 		openModal();
@@ -225,7 +252,7 @@ export default function CreateEventPage({ imageList, organiserList }: CreateEven
 	}
 
 	const TagsFieldWrapper = () => {
-		const eventTagValue = watch('event_tag', 0); // Default value is 0
+		register('event_tag')
 
 		return (
 			<TagsField
@@ -236,28 +263,101 @@ export default function CreateEventPage({ imageList, organiserList }: CreateEven
 	};
 
 
-	const ImagePickerField = () => (
-		<div className="flex flex-col mb-4">
-			<label className="text-2xl p-6 font-semibold">Image</label>
-			<div className='flex flex-col w-[50%] self-end'>
-				<p className='text-sm self-end text-gray-500 mb-2'>Please choose from one of our placeholders</p>
-				<select
-					className="p-4 text-sm w-full bg-transparent border border-gray-300"
-					{...register('selectedImage', { required: true })}
-				>
-					<option value="" disabled>Select an image</option>
-					{imageList.map((image) => (
-						<option key={image} value={`/images/placeholders/${image}`} >{image.split('.')[0].replaceAll('-', ' ').toUpperCase()}</option>
-					))}
-				</select>
-				<p className='text-sm self-end text-gray-500 mt-2'>...or upload your own</p>
-				<Link href="" className='flex flex-row items-center self-end text-gray-700 aria-disabled:cursor-not-allowed cursor-not-allowed opacity-50'>
-					<LockClosedIcon width={10} height={10} className='mr-1' />
-					Coming Soon
-				</Link>
+	const ImagePickerField = () => {
+		const [uploadedImage, setUploadedImage] = useState<File | null>(null)
+		const [previewImage, setPreviewImage] = useState<string | null>(null)
+
+		const selectedImage = watch('selectedImage')
+		const formUploadedImage = watch('uploadedImage')
+
+		const inputRef = useRef<HTMLInputElement>(null)
+
+		register('uploadedImage')
+
+		const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+			e.preventDefault();
+			if (!inputRef || !inputRef.current) return;
+
+			inputRef.current?.click();
+		}
+
+		const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+			const file = event.target.files?.[0]
+			if (file) {
+				setUploadedImage(file)
+				setValue('uploadedImage', file)
+				setPreviewImage(URL.createObjectURL(file))
+			}
+		}
+
+		const clearUploadedImage = () => {
+			setUploadedImage(null);
+			setValue('uploadedImage', null);
+			setPreviewImage(null);
+			setValue('selectedImage', selectedImage); // Return to selected placeholder image
+		}
+
+		useEffect(() => {
+			if (formUploadedImage) {
+				setUploadedImage(formUploadedImage)
+				setPreviewImage(URL.createObjectURL(formUploadedImage))
+			} else if (!uploadedImage) {
+				setPreviewImage(selectedImage)
+			}
+		}, [formUploadedImage, selectedImage, uploadedImage]);
+
+		return (
+			<div className="flex flex-col mb-4">
+				<label className="text-2xl p-6 font-semibold">Image</label>
+				<div className='flex flex-col w-[50%] self-end'>
+					<p className='text-sm self-end text-gray-500 mb-2'>Please choose from one of our placeholders</p>
+					<select
+						className="p-3 text-sm w-full bg-transparent border border-gray-300"
+						{...register('selectedImage', { required: !uploadedImage })}
+					>
+						<option value="" disabled>Select an image</option>
+						{placeholderImages.map((image, index) => (
+							<option key={index} value={image.src} >{image.name}</option>
+						))}
+					</select>
+
+
+					<div className='self-end flex flex-col w-full'>
+						<button className='my-2 self-end w-fit px-4 items-center font-light text-gray-700 border border-gray-300 hover:bg-gray-200 rounded-sm text-sm h-10' onClick={handleButtonClick}>
+							... or upload your own
+						</button>
+						<input
+							ref={inputRef}
+							type='file'
+							accept='image/*'
+							hidden
+							onChange={handleImageUpload}
+						/>
+
+
+						<div className="self-end relative w-full min-w-[100px] h-[200px] border border-black overflow-hidden">
+							<Image
+								src={previewImage || '/images/placeholders/football.jpg'}
+								alt={selectedImage}
+								fill
+								className="w-[90%] h-64 object-cover border-2  border-black/70"
+							/>
+						</div>
+						{uploadedImage && (
+							<Button
+								variant='ghost'
+								className='self-end text-sm text-red-600 hover:text-red-900'
+								onClick={clearUploadedImage}
+							>
+								<TrashIcon width={10} height={10} className='mr-1' />
+								Clear uploaded image
+							</Button>
+						)}
+					</div>
+				</div>
 			</div>
-		</div>
-	);
+		)
+	}
 
 	const LocationField = () => (
 		<div className="flex flex-col mb-4">

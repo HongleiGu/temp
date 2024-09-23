@@ -148,7 +148,7 @@ export function createEventObject(data: FormData): Event {
 		location_area: data.location.area,
 		location_address: data.location.address,
 		image_url: data.selectedImage,
-		event_type: data.event_tag, 
+		event_type: data.event_tag || 0, 
 		sign_up_link: data.signupLink || undefined,
 	};
 }
@@ -171,7 +171,7 @@ export async function createSQLEventObject(data: FormData): Promise<SQLEvent> {
 		location_area: data.location.area,
 		location_address: data.location.address,
 		image_url: data.selectedImage,
-		event_type: data.event_tag,
+		event_type: data.event_tag || 0,
 		sign_up_link: data.signupLink || undefined,
 	};
 }
@@ -237,3 +237,15 @@ export function returnLogo(organiser: string): { found: boolean, src?: string } 
 	}
 	return { found: false };
 }
+
+
+export const placeholderImages = [
+	{ src: '/images/placeholders/lecture-hall-1.jpg', name: 'Lecture'},
+	{ src: '/images/placeholders/teaching.jpg', name: 'Education'},
+	{ src: '/images/placeholders/social.jpg', name: 'Social Gathering'},
+	{ src: '/images/placeholders/running.jpg', name: 'Sports'},
+	{ src: '/images/placeholders/band-practice.jpg', name: 'Music Practice'},
+	{ src: '/images/placeholders/brainstorm.jpg', name: 'Brainstorm'},
+	{ src: '/images/placeholders/pub.jpg', name: 'Pub'},
+	{ src: '/images/placeholders/football.jpg', name: 'Football'},
+]

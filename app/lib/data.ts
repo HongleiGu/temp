@@ -42,7 +42,6 @@ export async function insertEvent(event: SQLEvent) {
 }
 
 
-
 export async function deleteEvents(eventIds: string[]): Promise<void> {
 	try {
 		if (eventIds.length === 0) {

@@ -70,6 +70,7 @@ export interface FormData {
 		address: string;
 	};
 	selectedImage: string;
+	uploadedImage: File | null;
 	event_tag: number;
 	signupLink?: string;
 }
@@ -97,31 +98,6 @@ export interface ContactFormInput {
 	name: string
 	email: string
 	message: string
-}
-
-export interface FormData {
-	title: string;
-	description: string;
-	organiser: string;
-	date: {
-		day: number;
-		month: number;
-		year: number;
-	};
-	time: {
-		startHour: number;
-		startMinute: number;
-		endHour: number;
-		endMinute: number;
-	};
-	location: {
-		building: string;
-		area: string;
-		address: string;
-	};
-	selectedImage: string;
-	event_tag: number;
-	signupLink?: string;
 }
 
 export interface UserInformation {
