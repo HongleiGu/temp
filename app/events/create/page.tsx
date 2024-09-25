@@ -4,6 +4,7 @@ import CreateEventPage from "@/app/components/events-page/create-event";
 import { SocietyLogos } from "@/app/lib/utils";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { User } from "next-auth";
 
 export default async function CreatePage() {
 	const session = await auth()
@@ -12,14 +13,15 @@ export default async function CreatePage() {
 		redirect('/login')
 	}
 
-	const username = session?.user.name
+	const user = session?.user
+	const user_id = user.id
 
-	const organiserList = await getAuthorisedOrganiserList(username);
+	const organiserList = await getAuthorisedOrganiserList(user);
 
 
 	return (
 		<main className="min-h-screen w-screen bg-gradient-to-b from-[#083157]  to-[#064580]">
-			<CreateEventPage organiserList={organiserList} />
+			<CreateEventPage organised_id={user_id} organiserList={organiserList} />
 		</main>
 	)
 
@@ -27,11 +29,14 @@ export default async function CreatePage() {
 
 
 // Returns the list of Organisers a user is allowed to post for
-async function getAuthorisedOrganiserList(username: string | undefined | null): Promise<string[]> {
+async function getAuthorisedOrganiserList(user: User): Promise<string[]> {
 	
 	try {
-		if (username) {
-			return [username, ...SocietyLogos.map(society => society.name)]
+		if (user?.role === 'admin') {
+			return SocietyLogos.map(society => society.name)
+		} 
+		if (user?.name) {
+			return [user?.name]
 		} else {
 			throw new Error('User is not authenticated');
 		}
