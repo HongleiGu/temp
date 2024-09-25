@@ -1,20 +1,20 @@
-
-import EventsCalendarView from '../components/events-page/events-calendar-view';
+import { fetchAllUpcomingEvents } from '../lib/data';
+import FilteredEventsPage from '../components/events-page/filtered-events-page';
 import CreateEventButton from '../components/events-page/create-event-button';
-import EventKeys from '../components/events-page/events-key';
 
+export const revalidate = 3600 // Once per hour
 
-export default function EventPage() {
+export default async function EventPage() {
+
+	const allEvents = await fetchAllUpcomingEvents()
 	
 	return (
-		<main className='relative flex flex-col min-h-screen mx-auto p-8 pt-28 bg-gradient-to-b from-[#041A2E] via-[#064580] to-[#083157] '>
+		<main className='relative flex flex-col min-h-screen mx-auto p-8 pt-16 bg-gradient-to-b from-[#041A2E] via-[#064580] to-[#083157] '>
+			<h1 className="text-4xl font-bold mb-8 text-center">Upcoming Events</h1>
+			
 			<CreateEventButton />
 
-			<h1 className="text-4xl font-bold mb-8 text-center">UPCOMING EVENTS</h1>
-
-			<EventsCalendarView />
-
-			<EventKeys />
+			<FilteredEventsPage allEvents={allEvents} />
 
 		</main>
 	)

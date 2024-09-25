@@ -203,6 +203,7 @@ export const PartnerLogos = [
 ]
 
 export const SocietyLogos = [
+	{ name: "London Student Network", src: '/societies/LSN.png' },
 	{ name: "Roar News", src: '/societies/roar.png' },
 	{ name: "KCL Politics", src: '/societies/roar.png' },
 	{ name: "Imperial College Neurotech Society", src: '/societies/roar.png' },

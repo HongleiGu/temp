@@ -21,14 +21,15 @@ export default function CreateEventButton() {
 	return (
 		<div className="self-center mb-12 md:mb-2 md:self-end">
 			<Button
-				variant="outline"
+				variant="ghost"
 				size="lg"
-				className="text-xl mb-2 text-white hover:bg-slate-800"
+				className="text-xl  text-white hover:bg-slate-800"
 				onClick={handleCreateEvent}
 			>
 				<PlusIcon width={18} height={18} className="mr-2" />
-				Add Event
+				Create An Event
 			</Button>
+			<hr className="border-t-1 border-gray-300" />
 		</div>
 	);
 }
