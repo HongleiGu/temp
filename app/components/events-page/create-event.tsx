@@ -19,10 +19,11 @@ import { upload } from '@vercel/blob/client';
 const MAX_POSTGRES_STRING_LENGTH = 255;
 
 interface CreateEventPageProps {
+	organiser_id: string
 	organiserList: string[]
 }
 
-export default function CreateEventPage({ organiserList }: CreateEventPageProps) {
+export default function CreateEventPage({ organiser_id, organiserList }: CreateEventPageProps) {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [eventData, setEventData] = useState(DefaultEvent); // Event data for preview
 
@@ -35,6 +36,7 @@ export default function CreateEventPage({ organiserList }: CreateEventPageProps)
 	const router = useRouter()
 
 	const eventTagValue = watch('event_tag', 0); // Default value is 0
+	setValue('organiser_uid', organiser_id)
 
 	const onSubmit = async (data: FormData) => {
 		const toastId = toast.loading('Uploading event...')
@@ -337,7 +339,7 @@ export default function CreateEventPage({ organiserList }: CreateEventPageProps)
 
 						<div className="self-end relative w-full min-w-[100px] h-[200px] border border-black overflow-hidden">
 							<Image
-								src={previewImage || '/images/placeholders/football.jpg'}
+								src={previewImage || selectedImage}
 								alt={selectedImage}
 								fill
 								className="w-[90%] h-64 object-cover border-2  border-black/70"
@@ -404,6 +406,20 @@ export default function CreateEventPage({ organiserList }: CreateEventPageProps)
 		</div>
 	);
 
+	const ForExternalsField = () => (
+		<div className="flex flex-col mb-4">
+			<label className='flex flex-row items-center'><p className='text-2xl p-6 font-semibold'>Please provide any information for external students</p> <p className='text-lg p-2'>(optional)</p></label>
+			{errors.description && <p className="text-red-600 text-sm self-end mb-1">Description is required</p>}
+			<textarea
+				id="forExternals"
+				rows={4}
+				{...register('forExternals')}
+				className="w-[90%] self-end block p-3 text-sm  text-gray-900 bg-transparent rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+				placeholder="e.g. Who to contact to get building access on the day..."
+			/>
+		</div>
+	);
+
 
 	return (
 		<div className="relative bg-white p-10 overflow-auto text-black">
@@ -447,6 +463,7 @@ export default function CreateEventPage({ organiserList }: CreateEventPageProps)
 				<LocationField />
 				<ImagePickerField />
 				<SignupLinkField />
+				<ForExternalsField />
 			</form>
 
 			{isModalOpen && <EventModal event={eventData} onClose={closeModal} />}

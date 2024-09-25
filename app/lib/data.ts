@@ -1,5 +1,5 @@
 import { sql } from '@vercel/postgres';
-import { SQLEvent, ContactFormInput, RegisterFormData } from './types';
+import { SQLEvent, ContactFormInput, SocietyRegisterFormData, UserRegisterFormData } from './types';
 import { convertSQLEventToEvent, formatDOB, selectUniversity, capitalize } from './utils';
 import bcrypt from 'bcrypt';
 
@@ -10,6 +10,20 @@ export async function fetchEvents() {
 	} catch (error) {
 		console.error('Database error:', error)
 		throw new Error('Failed to fetch events data')
+	}
+}
+
+export async function fetchAllUpcomingEvents() {
+	try {
+		const data = await sql<SQLEvent>`
+			SELECT * FROM events
+			WHERE (year, month, day) >= (EXTRACT(YEAR FROM CURRENT_DATE), EXTRACT(MONTH FROM CURRENT_DATE), EXTRACT(DAY FROM CURRENT_DATE))
+			ORDER BY year, month, day
+		`;
+		return data.rows.map(convertSQLEventToEvent);
+	} catch (error) {
+		console.error('Database error:', error);
+		throw new Error('Failed to fetch upcoming events');
 	}
 }
 
@@ -31,8 +45,8 @@ export async function fetchUpcomingEvents() {
 export async function insertEvent(event: SQLEvent) {
 	try {
 		await sql`
-		INSERT INTO events (title, description, organiser, organiser_uid, start_time, end_time, day, month, year, location_building, location_area, location_address, image_url, event_type, sign_up_link)
-		VALUES (${event.title}, ${event.description}, ${event.organiser}, ${event.organiser_uid}, ${event.start_time}, ${event.end_time}, ${event.day}, ${event.month}, ${event.year}, ${event.location_building}, ${event.location_area}, ${event.location_address}, ${event.image_url}, ${event.event_type}, ${event.sign_up_link ?? null})
+		INSERT INTO events (title, description, organiser, organiser_uid, start_time, end_time, day, month, year, location_building, location_area, location_address, image_url, event_type, sign_up_link, for_externals)
+		VALUES (${event.title}, ${event.description}, ${event.organiser}, ${event.organiser_uid}, ${event.start_time}, ${event.end_time}, ${event.day}, ${event.month}, ${event.year}, ${event.location_building}, ${event.location_area}, ${event.location_address}, ${event.image_url}, ${event.event_type}, ${event.sign_up_link ?? null}, ${event.for_externals ?? null})
 		`
 		return { success: true };
 	} catch (error) {
@@ -88,7 +102,25 @@ export async function fetchAllContactForms() {
 	}
 }
 
-export async function insertUser(formData: RegisterFormData) {
+export async function insertOrganiser(formData: SocietyRegisterFormData) {
+	try {
+		const hashedPassword = await bcrypt.hash(formData.password, 10);
+		const name = formData.name.split(' ').map(capitalize).join(' ')
+		
+		await sql`
+			INSERT INTO users (name, email, password, role, logo_url)
+			VALUES (${name}, ${formData.email}, ${hashedPassword}, ${'organiser'}, ${formData.imageUrl})
+			ON CONFLICT (email) DO NOTHING
+		`;
+
+		return { success: true };
+	} catch (error) {
+		console.error('Error creating user:', error);
+		return { success: false, error };
+	}
+}
+
+export async function insertUser(formData: UserRegisterFormData) {
 	try {
 		const hashedPassword = await bcrypt.hash(formData.password, 10);
 		const username = `${capitalize(formData.firstname)} ${capitalize(formData.surname)}`
@@ -109,10 +141,29 @@ export async function insertUser(formData: RegisterFormData) {
 	}
 }
 
+export async function checkSocietyName(name: string) {
+	try {
+		const societyName = name.split(' ').map(capitalize).join(' ')
+		const result = await sql`
+			SELECT name FROM users
+			WHERE name = ${societyName}
+			LIMIT 1
+		`
+		if (result.rows.length > 0) {
+			return { success: true, nameTaken: true }
+		} else {
+			return { success: true, nameTaken: false }
+		}
+	} catch (error) {
+		console.error('Error checking name:', error)
+		return { success: false, error }
+	}
+}
+
 export async function checkEmail(email: string) {
 	try {
 		const result = await sql`
-			SELECT id from users
+			SELECT id FROM users
 			WHERE email = ${email}
 			LIMIT 1
 		`
@@ -127,7 +178,7 @@ export async function checkEmail(email: string) {
 	}
 }
 
-export async function insertUserInformation(formData: RegisterFormData, userId: string) {
+export async function insertUserInformation(formData: UserRegisterFormData, userId: string) {
 	const formattedDOB = formatDOB(formData.dob) // Currently just leaves in yyyy-mm-dd form
 	const university = selectUniversity(formData.university, formData.otherUniversity) // if 'other' selected, uses text input entry
 	try {

@@ -73,7 +73,7 @@ export default function EventModal({ event, onClose }: EventModalProps) {
 							className="w-[90%] h-64 object-cover border-2  border-black/70"
 						/>
 						<div className='flex flex-col'>
-							{ societyLogo.found && (
+							{societyLogo.found && (
 								<Image
 									src={societyLogo.src || '/images/societies/roar.png'}
 									alt="Society Logo"
@@ -108,15 +108,23 @@ export default function EventModal({ event, onClose }: EventModalProps) {
 							<p className="text-gray-600">{event.description}</p>
 						</div>
 
+						{event.for_externals && (
+							<div className='mt-6'>
+								<h3 className="text-lg font-semibold mb-2 text-gray-500">Information for external students</h3>
+								<hr className="border-t-1 border-gray-300 m-2" />
+								<p className="text-gray-600">{event.for_externals}</p>
+							</div>
+						)}
+
 						{event.sign_up_link && (
 							<div className="mt-10 self-end w-full flex flex-row justify-start">
 								<Button
-									variant='filled'
-									size='lg' 
-									className="text-gray-600 text-lg rounded-md bg-[#e75b28] border-[#e2531f] hover:bg-[#f57141] uppercase font-semibold tracking-widest p-6"
+									variant='outline'
+									size='lg'
+									className="text-gray-600 text-lg rounded-md  border-[#e2531f] uppercase font-semibold tracking-widest px-20"
 								>
 									<Link href={event.sign_up_link} target="_blank" rel="noreferrer">
-									Sign-up
+										Sign-up
 									</Link>
 								</Button>
 							</div>

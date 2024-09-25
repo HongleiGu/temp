@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import Link from 'next/link'
 import Image from 'next/image';
 import AuthButton from './auth-button';
+import AccountButton from './account-button';
 import { Button } from './button';
 import { useSession } from 'next-auth/react';
 
@@ -25,7 +26,7 @@ export default function Header() {
 
 			<div className="flex items-center space-x-4">
 				<div className="hidden md:flex">
-					<AuthButton />
+					<AccountButton />
 
 				</div>
 				<Button variant='ghost' onClick={toggleMenu} className='md:hidden'>Menu</Button>
@@ -42,7 +43,7 @@ export default function Header() {
 function Logo({ closeMenu }: { closeMenu: () => void }) {
 	return (
 		<Link href='/' onClick={closeMenu} className="flex items-center space-x-2">
-			<Image src='/logo/LSN LOGO 1.png' alt='LSN logo' width={96} height={96} className='w-20 md:w-24' />
+			<Image src='/logo/LSN LOGO 1.png' alt='LSN logo' priority width={96} height={96} className='w-20 md:w-24' />
 		</Link>
 	)
 }
@@ -98,23 +99,3 @@ function FullScreenMenu({ closeMenu, pathname }: { closeMenu: () => void, pathna
 	);
 }
 
-
-// function SideMenu({ closeMenu, headerHeight, pathname }: { closeMenu: () => void, headerHeight: number, pathname: string }) {
-// 	return (
-// 		<motion.div
-// 			initial={{ x: "100%" }}
-// 			animate={{ x: "0%" }}
-// 			exit={{ x: "100%" }}
-// 			transition={{ duration: 0.5, ease: "easeInOut" }}
-// 			className="fixed top-0 right-0 w-3/4 h-screen bg-slate-800 text-white p-8 border-t-2 border-gray-300 border-opacity-25 space-y-8 flex flex-col shadow-lg z-40 md:hidden"
-// 			style={{ top: headerHeight }}
-// 		>
-// 			<NavLinks pathname={pathname} onClick={closeMenu} className="flex flex-col space-y-4" />
-
-// 			<div className="border-t border-gray-600 my-4" />
-
-// 			<AuthButton />
-
-// 		</motion.div>
-// 	)
-// }

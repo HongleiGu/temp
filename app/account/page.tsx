@@ -42,6 +42,9 @@ export default function AccountPage() {
 					<p className="text-sm">
 						<span className="mr-10 font-semibold">Email:</span> {user?.email || 'test@lsn.co.uk'}
 					</p>
+					<p className="text-sm capitalize">
+						<span className="mr-12 font-semibold">Role:</span> {user?.role || 'user'}
+					</p>
 				</div>
 
 				<div className="border-b border-gray-300 pb-4 ml-4 mb-10 space-y-6">

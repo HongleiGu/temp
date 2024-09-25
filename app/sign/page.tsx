@@ -19,7 +19,7 @@ export default function SignPage() {
                 <div className="flex flex-col items-center space-y-4 p-12">
                     <h2 className="text-3xl font-medium text-center pb-20">New to LSN?</h2>
 
-					<JoinButton href="/register" text="Join us" />
+					<JoinButton href="/register" text="Create an account" />
                 </div>
             </div>
         </div>

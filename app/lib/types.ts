@@ -12,6 +12,7 @@ export interface Event {
 	image_url: string;
 	event_type: number;
 	sign_up_link?: string;
+	for_externals?: string;
 }
 
 export interface SQLEvent {
@@ -31,6 +32,7 @@ export interface SQLEvent {
 	image_url: string;
 	event_type: number;
 	sign_up_link?: string;
+	for_externals?: string;
 }
 
 export type User = {
@@ -53,6 +55,7 @@ export interface FormData {
 	title: string;
 	description: string;
 	organiser: string;
+	organiser_uid: string;
 	date: {
 		day: number;
 		month: number;
@@ -73,9 +76,10 @@ export interface FormData {
 	uploadedImage: File | null;
 	event_tag: number;
 	signupLink?: string;
+	forExternals?: string;
 }
 
-export interface RegisterFormData {
+export interface UserRegisterFormData {
     email: string;
     password: string;
     confirmPassword: string;
@@ -90,6 +94,16 @@ export interface RegisterFormData {
     levelOfStudy: string;
     hasAgreedToTerms: boolean;
     isNewsletterSubscribed: boolean;
+}
+
+export interface SocietyRegisterFormData {
+	name: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    hasAgreedToTerms: boolean;
+	uploadedImage: File | null;
+	imageUrl: string | null;
 }
 
 
