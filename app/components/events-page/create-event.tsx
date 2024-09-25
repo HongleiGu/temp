@@ -19,11 +19,11 @@ import { upload } from '@vercel/blob/client';
 const MAX_POSTGRES_STRING_LENGTH = 255;
 
 interface CreateEventPageProps {
-	organised_id: string
+	organiser_id: string
 	organiserList: string[]
 }
 
-export default function CreateEventPage({ organised_id, organiserList }: CreateEventPageProps) {
+export default function CreateEventPage({ organiser_id, organiserList }: CreateEventPageProps) {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [eventData, setEventData] = useState(DefaultEvent); // Event data for preview
 
@@ -36,6 +36,7 @@ export default function CreateEventPage({ organised_id, organiserList }: CreateE
 	const router = useRouter()
 
 	const eventTagValue = watch('event_tag', 0); // Default value is 0
+	setValue('organiser_uid', organiser_id)
 
 	const onSubmit = async (data: FormData) => {
 		const toastId = toast.loading('Uploading event...')

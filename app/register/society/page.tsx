@@ -18,9 +18,6 @@ export default function SocietyRegistrationForm() {
 	const [showPassword, setShowPassword] = useState(false);
 	const totalSteps = 2;
 
-	const currentYear = new Date().getFullYear();
-	const graduationYears = Array.from({ length: 11 }, (_, i) => currentYear + i);
-
 	const nextStep = () => {
 		if (step < totalSteps) setStep(step + 1);
 	};
@@ -112,8 +109,8 @@ export default function SocietyRegistrationForm() {
 	const EmailPasswordNameEntry = () => (
 
 		<div className='flex flex-col w-full'>
-			<h2 className="text-4xl font-semibold mb-16">Let&#39;s create your <i>society</i>'s account</h2>
-			<p className="mt-4  text-gray-300">What is your society's official name?</p>
+			<h2 className="text-4xl font-semibold mb-16">Let&#39;s create your <i>society</i>&#39;s account</h2>
+			<p className="mt-4  text-gray-300">What is your society&#39;s official name?</p>
 
 			<Input
 				type="text"
@@ -207,7 +204,7 @@ export default function SocietyRegistrationForm() {
 
 		return (
 			<div className='flex flex-col w-full'>
-				<p className="mt-4 text-gray-300"><i>Optional</i>: Please upload your society's logo</p>
+				<p className="mt-4 text-gray-300"><i>Optional</i>: Please upload your society&#39;s logo</p>
 
 				<div className='flex flex-col items-center'>
 					<button className='flex flex-row self-start my-2 w-fit px-4 items-center font-light text-white border border-gray-300 hover:bg-gray-200 rounded-sm text-sm h-10' onClick={handleButtonClick}>

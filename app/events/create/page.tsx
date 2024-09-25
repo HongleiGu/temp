@@ -21,7 +21,7 @@ export default async function CreatePage() {
 
 	return (
 		<main className="min-h-screen w-screen bg-gradient-to-b from-[#083157]  to-[#064580]">
-			<CreateEventPage organised_id={user_id} organiserList={organiserList} />
+			<CreateEventPage organiser_id={user_id} organiserList={organiserList} />
 		</main>
 	)
 
