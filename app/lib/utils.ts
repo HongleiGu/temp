@@ -27,6 +27,7 @@ export function convertSQLEventToEvent(sqlEvent: SQLEvent): Event {
 		image_url: sqlEvent.image_url,
 		event_type: sqlEvent.event_type,
 		sign_up_link: sqlEvent.sign_up_link,
+		for_externals: sqlEvent.for_externals,
 	};
 }
 
