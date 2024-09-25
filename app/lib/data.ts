@@ -91,10 +91,11 @@ export async function fetchAllContactForms() {
 export async function insertOrganiser(formData: SocietyRegisterFormData) {
 	try {
 		const hashedPassword = await bcrypt.hash(formData.password, 10);
+		const name = formData.name.split(' ').map(capitalize).join(' ')
 		
-		const result =  await sql`
-			INSERT INTO users (name, email, password, role)
-			VALUES (${formData.name}, ${formData.email}, ${hashedPassword}, organiser)
+		await sql`
+			INSERT INTO users (name, email, password, role, logo_url)
+			VALUES (${name}, ${formData.email}, ${hashedPassword}, ${'organiser'}, ${formData.imageUrl})
 			ON CONFLICT (email) DO NOTHING
 		`;
 
@@ -126,10 +127,29 @@ export async function insertUser(formData: UserRegisterFormData) {
 	}
 }
 
+export async function checkSocietyName(name: string) {
+	try {
+		const societyName = name.split(' ').map(capitalize).join(' ')
+		const result = await sql`
+			SELECT name FROM users
+			WHERE name = ${societyName}
+			LIMIT 1
+		`
+		if (result.rows.length > 0) {
+			return { success: true, nameTaken: true }
+		} else {
+			return { success: true, nameTaken: false }
+		}
+	} catch (error) {
+		console.error('Error checking name:', error)
+		return { success: false, error }
+	}
+}
+
 export async function checkEmail(email: string) {
 	try {
 		const result = await sql`
-			SELECT id from users
+			SELECT id FROM users
 			WHERE email = ${email}
 			LIMIT 1
 		`
@@ -144,7 +164,7 @@ export async function checkEmail(email: string) {
 	}
 }
 
-export async function insertUserInformation(formData: RegisterFormData, userId: string) {
+export async function insertUserInformation(formData: UserRegisterFormData, userId: string) {
 	const formattedDOB = formatDOB(formData.dob) // Currently just leaves in yyyy-mm-dd form
 	const university = selectUniversity(formData.university, formData.otherUniversity) // if 'other' selected, uses text input entry
 	try {

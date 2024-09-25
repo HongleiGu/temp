@@ -129,10 +129,9 @@
 
 
 export async function GET() {
-// 	try {
-// 		await client.sql`BEGIN`;
-// 		await addDateColumnToUserTable();
-		// await seedContactFormTable()
+	// try {
+	// 	await client.sql`BEGIN`;
+	// 	await addLogoColumnToUserTable();
 
 	// 	await client.sql`COMMIT`;
 	// 	return Response.json({ message: 'Database updated successfully' });
@@ -141,5 +140,5 @@ export async function GET() {
 	// 	await client.sql`ROLLBACK`;
 	// 	return Response.json({ error }, { status: 500 });
 	// }
-	return Response.json({ message: 'Database updated successfully' });
+	return Response.json({ message: 'Nothing to see here' });
 }

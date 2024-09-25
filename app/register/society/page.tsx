@@ -1,15 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { SocietyRegisterFormData } from '@/app/lib/types';
 import { Button } from '../../components/button';
 import { Input } from '../../components/input';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import Image from 'next/image';
+import { ArrowRightIcon, ArrowUpTrayIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { upload } from '@vercel/blob/client';
 
 export default function SocietyRegistrationForm() {
-	const { register, handleSubmit, formState: { errors }, getValues, watch } = useForm<SocietyRegisterFormData>({
+	const { register, handleSubmit, formState: { errors }, getValues, setValue } = useForm<SocietyRegisterFormData>({
 		mode: 'onSubmit'
 	});
 	const [step, setStep] = useState(1);
@@ -29,7 +31,6 @@ export default function SocietyRegistrationForm() {
 
 	const onSubmit = async (data: SocietyRegisterFormData) => {
 		const toastId = toast.loading('Creating your society\'s account...')
-		const email = data.email
 
 		try {
 			const res = await fetch('/api/user/check-email', {
@@ -37,7 +38,7 @@ export default function SocietyRegistrationForm() {
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ email }),
+				body: JSON.stringify({ email: data.email }),
 			});
 
 			const result = await res.json();
@@ -48,6 +49,39 @@ export default function SocietyRegistrationForm() {
 		} catch (error) {
 			toast.error('Error checking email.', { id: toastId });
 			return
+		}
+
+		try {
+			const res = await fetch('/api/society/check-name', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ name: data.name }),
+			});
+
+			const result = await res.json();
+			if (result.nameTaken) {
+				toast.error('Society name already exists.', { id: toastId });
+				return
+			}
+		} catch (error) {
+			toast.error('Error checking name.', { id: toastId });
+			return
+		}
+
+		if (data.uploadedImage && typeof data.uploadedImage !== 'string') {
+			try {
+				const newBlob = await upload(data.uploadedImage.name, data.uploadedImage, {
+					access: 'public',
+					handleUploadUrl: '/api/upload-image',
+				})
+
+				data.imageUrl = newBlob.url
+			} catch (error) {
+				toast.error(`Error uploading image: ${error.message}`, { id: toastId })
+				return
+			}
 		}
 
 		try {
@@ -79,12 +113,12 @@ export default function SocietyRegistrationForm() {
 
 		<div className='flex flex-col w-full'>
 			<h2 className="text-4xl font-semibold mb-16">Let&#39;s create your <i>society</i>'s account</h2>
-			<p className="mt-4  text-gray-300">What is your society's name?</p>
+			<p className="mt-4  text-gray-300">What is your society's official name?</p>
 
 			<Input
 				type="text"
 				placeholder="Name"
-				className="w-full mt-4 bg-transparent capitalize"
+				className="w-full mt-4 bg-transparent"
 				{...register('name', { required: 'Name is required.' })}
 			/>
 			{errors.name && <p className="text-red-500 mt-2">{errors.name.message}</p>}
@@ -143,11 +177,69 @@ export default function SocietyRegistrationForm() {
 	)
 
 	const LogoEntry = () => {
+		const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+		const [previewImage, setPreviewImage] = useState<string | null>(null);
+		register('uploadedImage')
+
+		const inputRef = useRef<HTMLInputElement>(null)
+
+		const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+			e.preventDefault();
+			if (!inputRef || !inputRef.current) return;
+
+			inputRef.current?.click();
+		}
+
+		const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+			const file = event.target.files?.[0]
+			if (file) {
+				setUploadedImage(file)
+				setValue('uploadedImage', file)
+				setPreviewImage(URL.createObjectURL(file))
+			}
+		}
+
+		const clearUploadedImage = () => {
+			setUploadedImage(null)
+			setValue('uploadedImage', null)
+			setPreviewImage(null)
+		}
+
 		return (
 			<div className='flex flex-col w-full'>
-				<p className="mt-4  text-gray-300"><i>Optional</i>: Please upload your society's logo</p>
+				<p className="mt-4 text-gray-300"><i>Optional</i>: Please upload your society's logo</p>
 
+				<div className='flex flex-col items-center'>
+					<button className='flex flex-row self-start my-2 w-fit px-4 items-center font-light text-white border border-gray-300 hover:bg-gray-200 rounded-sm text-sm h-10' onClick={handleButtonClick}>
+						<ArrowUpTrayIcon width={15} height={15} className='mr-2' /> Upload your logo here
+					</button>
+					<input
+						ref={inputRef}
+						type='file'
+						accept='image/*'
+						hidden
+						onChange={handleImageUpload}
+					/>
 
+					{uploadedImage && (
+						<Button
+							variant='ghost'
+							className='self-start text-sm text-red-600 hover:text-red-900'
+							onClick={clearUploadedImage}
+						>
+							<TrashIcon width={10} height={10} className='mr-1' />
+							Clear uploaded logo
+						</Button>
+					)}
+					<div className="relative self-start w-[100px] h-[100px] border border-black overflow-hidden">
+						<Image
+							src={previewImage || '/images/no-image-found.png'}
+							alt={'Your Logo'}
+							fill
+							className="w-[90%] h-64 object-cover border-2  border-black/70"
+						/>
+					</div>
+				</div>
 
 				{/* Terms of Service (mandatory) */}
 				<div className="mt-10">

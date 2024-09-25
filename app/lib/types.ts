@@ -98,6 +98,8 @@ export interface SocietyRegisterFormData {
     password: string;
     confirmPassword: string;
     hasAgreedToTerms: boolean;
+	uploadedImage: File | null;
+	imageUrl: string | null;
 }
 
 

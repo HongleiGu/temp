@@ -6,7 +6,7 @@ import Link from 'next/link';
 export default function Register() {
 	return (
 		<main className="flex flex-col items-center min-h-screen bg-gradient-to-b from-[#041A2E] via-[#064580] to-[#083157] p-10">
-			<h1 className='text-2xl p-10 text-center y-8 sm:my-12 tracking-wide'>WOULD YOU LIKE TO REGISTER A <i>Student</i> OR  <i>Society</i> ACCOUNT?</h1>
+			<h1 className='text-2xl p-10 text-center y-8 sm:my-12 tracking-wide capitalize'>Would you like to register a <i>Student</i> or <i>Society</i> account?</h1>
 			<div className='flex flex-col sm:flex-row items-center justify-center w-[80%] h-fit'>
 				<OptionButton name='student' />
 				<OptionButton name='society' />
@@ -37,3 +37,4 @@ function OptionButton({ name }: { name: 'student' | 'society' }) {
 		</Link>
 	)
 }
+
