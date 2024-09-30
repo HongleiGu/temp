@@ -162,6 +162,11 @@ export default function CreateEventPage({ organiser_id, organiserList }: CreateE
 		const months = generateMonths();
 		const years = generateYears(2024, 10); // Start from 2024 and allow 10 years
 
+		const today = new Date();
+		const currentDay = today.getDate();
+		const currentMonth = today.getMonth() + 1;
+		const currentYear = today.getFullYear();
+
 		return (
 			<div className="flex flex-col space-x-2 mb-4">
 				<label htmlFor="date" className="text-2xl p-6 font-semibold">Date</label>
@@ -169,7 +174,7 @@ export default function CreateEventPage({ organiser_id, organiserList }: CreateE
 
 					<div className="flex flex-col p-2">
 						<label className="text-sm font-semibold">Day</label>
-						<select {...register('date.day', { required: true })} className="w-full bg-transparent">
+						<select {...register('date.day', { required: true })} className="w-full bg-transparent" defaultValue={currentDay} >
 							<option value="" disabled>Select Day</option>
 							{days.map(day => (
 								<option key={day} value={day}>{day}</option>
@@ -180,7 +185,7 @@ export default function CreateEventPage({ organiser_id, organiserList }: CreateE
 
 					<div className="flex flex-col p-2">
 						<label className="text-sm font-semibold">Month</label>
-						<select {...register('date.month', { required: true })} className="w-full bg-transparent">
+						<select {...register('date.month', { required: true })} className="w-full bg-transparent" defaultValue={currentMonth}>
 							<option value="" disabled>Select Month</option>
 							{months.map((month, index) => (
 								<option key={index} value={index + 1}>{month}</option>
@@ -191,7 +196,7 @@ export default function CreateEventPage({ organiser_id, organiserList }: CreateE
 
 					<div className="flex flex-col p-2">
 						<label className="text-sm font-semibold">Year</label>
-						<select {...register('date.year', { required: true })} className="w-full bg-transparent">
+						<select {...register('date.year', { required: true })} className="w-full bg-transparent" defaultValue={currentYear}>
 							<option value="" disabled>Select Year</option>
 							{years.map(year => (
 								<option key={year} value={year}>{year}</option>
@@ -215,7 +220,7 @@ export default function CreateEventPage({ organiser_id, organiserList }: CreateE
 					<div className="flex flex-col items-center p-2">
 						<label className="text-sm font-semibold mb-1 text-center w-full">Start Time</label>
 						<div className="flex space-x-2">
-							<select {...register('time.startHour', { required: true })} className="bg-transparent text-center">
+							<select {...register('time.startHour', { required: true })} className="bg-transparent text-center" defaultValue={12}>
 								<option value="" disabled>Select Hour</option>
 								{hours.map(hour => (
 									<option key={hour} value={hour}>{hour}</option>
@@ -234,7 +239,7 @@ export default function CreateEventPage({ organiser_id, organiserList }: CreateE
 					<div className="flex flex-col items-center sm:border-l-2 border-gray-300 p-2">
 						<label className="text-sm font-semibold mb-1 text-center w-full">End Time</label>
 						<div className="flex space-x-2">
-							<select {...register('time.endHour', { required: true })} className="bg-transparent text-center">
+							<select {...register('time.endHour', { required: true })} className="bg-transparent text-center" defaultValue={14}>
 								<option value="" disabled>Select Hour</option>
 								{hours.map(hour => (
 									<option key={hour} value={hour}>{hour}</option>
@@ -269,7 +274,7 @@ export default function CreateEventPage({ organiser_id, organiserList }: CreateE
 		const [uploadedImage, setUploadedImage] = useState<File | null>(null)
 		const [previewImage, setPreviewImage] = useState<string | null>(null)
 
-		const selectedImage = watch('selectedImage')
+		const selectedImage = watch('selectedImage', '/images/placeholders/lecture-hall-1.jpg')
 		const formUploadedImage = watch('uploadedImage')
 
 		const inputRef = useRef<HTMLInputElement>(null)
