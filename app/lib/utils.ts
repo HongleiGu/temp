@@ -125,8 +125,8 @@ export function validateEvent(formData: FormData): string | undefined {
 
 	// Validate Time
 	const { startHour, startMinute, endHour, endMinute } = formData.time;
-	const startTime = new Date(year, month - 1, day, startHour, startMinute);
-	const endTime = new Date(year, month - 1, day, endHour, endMinute);
+	const startTime = new Date(year, month - 1, day, Number(startHour), Number(startMinute));
+	const endTime = new Date(year, month - 1, day, Number(endHour), Number(endMinute));
 
 	if (startTime > endTime) {
 		return "Timings are invalid!"
