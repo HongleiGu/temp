@@ -5,7 +5,7 @@ import Header from "./components/header";
 import Footer from "./components/footer";
 import SessionProviderWrapper from "./components/session-provider-wrapper";
 import { Toaster } from 'react-hot-toast';
-import { Analytics } from '@vercel/analytics/react'
+import { Analytics } from "@vercel/analytics/react"
 
 
 export const metadata: Metadata = {

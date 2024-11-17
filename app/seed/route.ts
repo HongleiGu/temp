@@ -70,8 +70,13 @@
 
 // async function addColumnToTable() {
 // 	await client.sql`
-// 	ALTER TABLE events
-// 	ADD COLUMN sign_up_link VARCHAR(255)
+// 	ALTER TABLE user_information
+// 	ADD COLUMN referrer VARCHAR(255)
+// 	`
+
+// 	await client.sql`
+// 	ALTER TABLE users
+// 	DROP COLUMN IF EXISTS referrer 
 // 	`
 // }
 
@@ -131,7 +136,7 @@
 export async function GET() {
 	// try {
 	// 	await client.sql`BEGIN`;
-	// 	await addExternalsColumnToEventTable()
+	// 	await addColumnToTable()
 
 	// 	await client.sql`COMMIT`;
 	// 	return Response.json({ message: 'Database updated successfully' });

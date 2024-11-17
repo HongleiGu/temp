@@ -92,6 +92,7 @@ export interface UserRegisterFormData {
     graduationYear: string;
     degreeCourse: string;
     levelOfStudy: string;
+	referrer: string;
     hasAgreedToTerms: boolean;
     isNewsletterSubscribed: boolean;
 }

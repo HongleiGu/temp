@@ -165,6 +165,20 @@ export async function insertOrganiser(formData: SocietyRegisterFormData) {
 	}
 }
 
+// /register/student: Fetches all organisers in order to identify referrers 
+export async function fetchOrganisers() {
+	try {
+		const data = await sql<{ name: string }>`
+			SELECT name FROM users
+			WHERE role = 'organiser' AND name != 'Just A Little Test Society'
+		`;
+		return data.rows.map(row => row.name);
+	} catch (error) {
+		console.error('Database error:', error);
+		throw new Error('Failed to fetch organisers');
+	}
+}
+
 export async function insertUser(formData: UserRegisterFormData) {
 	try {
 		const hashedPassword = await bcrypt.hash(formData.password, 10);
@@ -228,8 +242,8 @@ export async function insertUserInformation(formData: UserRegisterFormData, user
 	const university = selectUniversity(formData.university, formData.otherUniversity) // if 'other' selected, uses text input entry
 	try {
 		await sql`
-			INSERT INTO user_information (user_id, gender, birthdate, university_attended, graduation_year, course, level_of_study, newsletter_subscribe)
-        	VALUES (${userId}, ${formData.gender}, ${formattedDOB}, ${university}, ${formData.graduationYear}, ${formData.degreeCourse}, ${formData.levelOfStudy}, ${formData.isNewsletterSubscribed})
+			INSERT INTO user_information (user_id, gender, birthdate, referrer, university_attended, graduation_year, course, level_of_study, newsletter_subscribe)
+        	VALUES (${userId}, ${formData.gender}, ${formattedDOB}, ${formData.referrer}, ${university}, ${formData.graduationYear}, ${formData.degreeCourse}, ${formData.levelOfStudy}, ${formData.isNewsletterSubscribed})
 		`
 		return { success: true };
 	} catch (error) {
