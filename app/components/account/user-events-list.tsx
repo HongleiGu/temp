@@ -1,7 +1,8 @@
-import { fetchUserEvents } from "@/app/lib/data"
-import EventCard from "../events-page/event-card";
+"use client";
 
-export const revalidate = 3600 // once an hour
+import { useState, useEffect } from "react";
+import FilteredEventsList from "../events-page/filtered-events-list";
+import { Event } from "@/app/lib/types";
 
 interface UserEventsListProps {
 	user_id: string
@@ -9,18 +10,55 @@ interface UserEventsListProps {
 
 /* TODO: Make api call to get events for user_id */
 
-export default async function UserEventsList({ user_id }: UserEventsListProps) {
-	console.log('Fetching for user id ', user_id)
-	return (
-		<p>Hi</p>
-	)
-	// const userEvents = await fetchUserEvents(user_id);
+export default function UserEventsList({ user_id }: UserEventsListProps) {
+	const [userEvents, setUserEvents] = useState<Event[]>([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
-	// return (
-	// 	<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-	// 		{userEvents.map((event, index) => (
-	// 			<EventCard key={index} event={event} />
-	// 		))}
-	// 	</div>
-	// )
+	useEffect(() => {
+		const fetchUserEvents = async () => {
+			try {
+				const response = await fetch('/api/account/events', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ user_id }),
+				});
+
+				if (!response.ok) {
+					throw new Error('Failed to fetch user events');
+				}
+
+				const events = await response.json();
+				setUserEvents(events);
+			} catch (error) {
+				console.error('Error fetching user events:', error);
+				setError('Failed to load events');
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchUserEvents();
+	}, [user_id]);
+
+	if (loading) {
+		return <p>Loading events...</p>;
+	}
+
+	if (error) {
+		return <p>{error}</p>;
+	}
+
+	return (
+		<div>
+			<FilteredEventsList 
+				allEvents={userEvents} 
+				activeTags={[1, 2, 4]} // MARK: UPDATE if TAGS change
+				editEvent={true}
+			/>
+		</div>
+	);
+
 }

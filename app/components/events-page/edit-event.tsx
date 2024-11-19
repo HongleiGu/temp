@@ -9,7 +9,7 @@ import { Event, FormData } from '@/app/lib/types';
 import { Input } from '../input';
 import { Button } from '../button';
 import { ArrowLeftIcon, TrashIcon } from '@heroicons/react/24/outline';
-import { validateEvent, createEventObject } from '@/app/lib/utils';
+import { validateEvent } from '@/app/lib/utils';
 import TagsField from './create-event-tags';
 import { useRouter } from 'next/navigation';
 import { upload } from '@vercel/blob/client';
@@ -23,12 +23,28 @@ const MAX_POSTGRES_STRING_LENGTH = 255;
 
 export default function EditEventComponent({ event }: EditEventComponentProps) {
 
+	const [organisers, setOrganisers] = useState([event.organiser]);
+
 	const { register, handleSubmit, formState: { errors, isValid }, setValue, watch } = useForm<FormData>({
 		mode: 'onChange',
 	});
 
 	const eventTagValue = watch('event_tag', 0); // Default value is 0
 	const router = useRouter()
+
+	const fetchOrganisersData = async () => {
+		try {
+			const response = await fetch('/api/organisers');
+			if (response.ok) {
+				const data = await response.json();
+				setOrganisers(data);
+			} else {
+				console.error('Failed to fetch organisers:', response.statusText);
+			}
+		} catch (error) {
+			console.error('Error fetching organisers:', error);
+		}
+	}
 
 	const mapEventToFormData = (event: Event): FormData => {
 		const [startHour, startMinute] = event.time.split(' - ')[0].split(':').map(Number);
@@ -53,8 +69,8 @@ export default function EditEventComponent({ event }: EditEventComponentProps) {
 			time: {
 				startHour: formattedStartHour,
 				startMinute: formattedStartMinute,
-				endHour: formattedEndHour, 
-				endMinute: formattedEndMinute, 
+				endHour: formattedEndHour,
+				endMinute: formattedEndMinute,
 			},
 			location: {
 				building: event.location_building,
@@ -69,14 +85,28 @@ export default function EditEventComponent({ event }: EditEventComponentProps) {
 		};
 	};
 
-
 	useEffect(() => {
 		const formData = mapEventToFormData(event);
 
 		Object.keys(formData).forEach((key) => {
-			setValue(key as keyof FormData, (formData as any)[key]);
+			const formDataKey = key as keyof FormData;
+
+			if (typeof formData[formDataKey] === 'object' && formData[formDataKey] !== null) {
+				// Nested objects
+				Object.keys(formData[formDataKey] as object).forEach((nestedKey) => {
+					setValue(`${key}.${nestedKey}` as keyof FormData, formData[formDataKey][nestedKey]);
+				});
+			} else {
+				// Non-nested fields
+				setValue(formDataKey, formData[formDataKey]);
+			}
 		});
 	}, [event, setValue]);
+
+	useEffect(() => {
+		fetchOrganisersData()
+		// console.log(`Response organisers: ${organisers}`)
+	}, []);
 
 	const onSubmit = async (data: FormData) => {
 		const toastId = toast.loading('Updating event....')
@@ -159,6 +189,22 @@ export default function EditEventComponent({ event }: EditEventComponentProps) {
 		</div>
 	)
 
+	const OrganiserField = () => (
+		<div className="flex flex-col mb-4">
+			<label htmlFor="organiser" className="text-2xl p-6 font-semibold">Organiser</label>
+			<select
+				id="organiser"
+				{...register('organiser', { required: true })}
+				className="border border-gray-300 p-4 text-sm w-[90%] self-end bg-transparent rounded-lg"
+			>
+				<option value="" disabled>Select an organiser</option>
+				{organisers.map((org) => (
+					<option key={org} value={org}>{org}</option>
+				))}
+			</select>
+			{errors.organiser && <p className="text-red-600">Organiser is required</p>}
+		</div>
+	);
 
 	const DateField = () => {
 		const days = generateDays();
@@ -462,6 +508,7 @@ export default function EditEventComponent({ event }: EditEventComponentProps) {
 
 				<TitleField />
 				<DescriptionField />
+				<OrganiserField />
 				<DateField />
 				<TimeField />
 				<TagsFieldWrapper />

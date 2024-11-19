@@ -1,39 +1,19 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
-import EditEventComponent from "@/app/components/events-page/edit-event";
-import { DefaultEvent } from "@/app/lib/types";
+import { Suspense } from "react";
+import EditPageComponent from "@/app/components/edit/edit-page";
 
 export default function EditPage() {
 
-	const searchParams = useSearchParams()
-
-	const [event, setEvent] = useState<Event>(DefaultEvent)
-
-	useEffect(() => {
-		const data = searchParams.get('data')
-		if (data) {
-			try {
-				const decodedData = decodeURIComponent(data as string)
-				const parsedEvent: Event = JSON.parse(decodedData)
-				setEvent(parsedEvent)
-			} catch (error) {
-				console.error('Error decoding event data:', error)
-			}
-		}
-	}, [searchParams]);
-
-	if (!event) return LoadingScreen()
-
 	return (
 		<main className="min-h-screen w-screen bg-gradient-to-b from-[#083157]  to-[#064580]">
-			<EditEventComponent event={event} />
-		</main>
+				<Suspense fallback={<LoadingScreen />} >
+					<EditPageComponent />
+				</Suspense>
+			</main>
 	)
 
 }
-
 
 
 function LoadingScreen() {

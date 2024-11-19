@@ -7,7 +7,7 @@ import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/app/components/button';
 import UserEventsList from '../components/account/user-events-list';
 
-export default async function AccountPage() {
+export default function AccountPage() {
 	const { data: session, status } = useSession()
 	const router = useRouter()
 

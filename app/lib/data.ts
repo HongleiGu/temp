@@ -45,8 +45,7 @@ export async function fetchUpcomingEvents() {
 export async function fetchUserEvents(organiser_uid: string) {
 	try {
         const events = await sql`
-            SELECT *
-            FROM events
+            SELECT * FROM events
             WHERE organiser_uid = ${organiser_uid}
             ORDER BY start_time ASC
         `;
@@ -79,6 +78,7 @@ export async function updateEvent(event: SQLEvent) {
 			SET
 				title = ${event.title},
 				description = ${event.description},
+				organiser = ${event.organiser},
 				start_time = ${event.start_time},
 				end_time = ${event.end_time},
 				day = ${event.day},
