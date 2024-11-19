@@ -42,9 +42,19 @@ export async function fetchUpcomingEvents() {
 	}
 }
 
-// /account: Fetches a user's events
-export async function fetchUserEvents() {
-
+export async function fetchUserEvents(organiser_uid: string) {
+	try {
+        const events = await sql`
+            SELECT * FROM events
+            WHERE organiser_uid = ${organiser_uid}
+            ORDER BY start_time ASC
+        `;
+        
+        return events.rows.map(convertSQLEventToEvent)
+    } catch (error) {
+        console.error('Error fetching user events:', error);
+        throw new Error('Unable to fetch user\'s events')
+    }
 }
 
 export async function insertEvent(event: SQLEvent) {
@@ -56,6 +66,36 @@ export async function insertEvent(event: SQLEvent) {
 		return { success: true };
 	} catch (error) {
 		console.error('Error creating event:', error);
+		return { success: false, error };
+	}
+}
+
+export async function updateEvent(event: SQLEvent) {
+	console.log('SQL query for ', event.id)
+	try {
+		await sql`
+			UPDATE events
+			SET
+				title = ${event.title},
+				description = ${event.description},
+				organiser = ${event.organiser},
+				start_time = ${event.start_time},
+				end_time = ${event.end_time},
+				day = ${event.day},
+				month = ${event.month},
+				year = ${event.year},
+				location_building = ${event.location_building},
+				location_area = ${event.location_area},
+				location_address = ${event.location_address},
+				image_url = ${event.image_url},
+				event_type = ${event.event_type},
+				sign_up_link = ${event.sign_up_link ?? null},
+				for_externals = ${event.for_externals ?? null}
+			WHERE id = ${event.id}
+		`;
+		return { success: true };
+	} catch (error) {
+		console.error('Error updating event:', error);
 		return { success: false, error };
 	}
 }

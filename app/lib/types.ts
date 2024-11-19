@@ -62,10 +62,10 @@ export interface FormData {
 		year: number;
 	};
 	time: {
-		startHour: number;
-		startMinute: number;
-		endHour: number;
-		endMinute: number;
+		startHour: string;
+		startMinute: string;
+		endHour: string;
+		endMinute: string;
 	};
 	location: {
 		building: string;
