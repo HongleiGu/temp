@@ -237,7 +237,7 @@ export const SocietyLogos = [
 	{ name: "KCL History Society", src: '/societies/LSN.png' },
 	{ name: "KCL War Studies", src: '/societies/LSN.png' },
 	{ name: "Boundless Compassion Charity Support", src: '/societies/LSN.png' },
-	{ name: "KCL Men's Football", src: '/societies/kcl-mens-football.png' },
+	{ name: "KCL Football (Men's)", src: '/societies/kcl-mens-football.png' },
 	{ name: "Women and Politics", src: '/societies/LSN.png' },
 	{ name: "KCL European Society", src: '/societies/LSN.png' },
 	{ name: "KCL Political Economy Society", src: '/societies/LSN.png' },
