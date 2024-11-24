@@ -225,6 +225,7 @@ export const SocietyLogos = [
 	{ name: "KCL Politics Society", src: '/societies/kcl-politics.png' },
 	{ name: "Imperial College Neurotech Society", src: '/societies/icl-neurotech.png' },
 	{ name: "Imperial College Radio Society", src: '/societies/ic-radio.svg' },
+	{ name: "KCL Neurotech Society", src: '/societies/kcl-neurotech.jpeg' },
 	{ name: "LSE SU European Society", src: '/societies/LSN.png' },
 	{ name: "Global China and Asia Study Society", src: '/societies/LSN.png' },
 	{ name: "Imperial College Finance Society", src: '/societies/LSN.png' },
