@@ -399,6 +399,20 @@ export default function CreateEventPage({ organiser_id, organiserList }: CreateE
 		</div>
 	)
 
+	const CapacityField = () => (
+		<div className="flex flex-col mb-4">
+			<label htmlFor="capacity" className="text-2xl p-6 font-semibold">Ticketing Capacity</label>
+			{errors.capacity && <p className="text-red-600 text-sm self-end mb-1">Capacity must be a number</p>}
+			<input
+				id="capacity"
+				type="number"
+				{...register('capacity', { required: false })}
+				className="w-[90%] self-end block p-3 text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+				placeholder="No ticketing limit imposed"
+			/>
+		</div>
+	);
+
 	const SignupLinkField = () => (
 		<div className="flex flex-col mb-4">
 			<label className='flex flex-row items-center'><p className='text-2xl p-6 font-semibold'>Sign-up link</p> <p className='text-lg p-2'>(optional)</p></label>
@@ -466,6 +480,7 @@ export default function CreateEventPage({ organiser_id, organiserList }: CreateE
 				<TimeField />
 				<TagsFieldWrapper />
 				<LocationField />
+				<CapacityField />
 				<ImagePickerField />
 				<SignupLinkField />
 				<ForExternalsField />

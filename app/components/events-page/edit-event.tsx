@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { generateDays, generateMonths, generateYears, generateHours, generateMinutes, placeholderImages } from '@/app/lib/utils';
-import { Event, FormData } from '@/app/lib/types';
+import { Event, FormData, Registrations } from '@/app/lib/types';
 import { Input } from '../input';
 import { Button } from '../button';
 import { ArrowLeftIcon, TrashIcon } from '@heroicons/react/24/outline';
@@ -13,6 +13,7 @@ import { validateEvent } from '@/app/lib/utils';
 import TagsField from './create-event-tags';
 import { useRouter } from 'next/navigation';
 import { upload } from '@vercel/blob/client';
+import RegistrationsModal from './registrations-modal';
 
 
 interface EditEventComponentProps {
@@ -22,8 +23,9 @@ interface EditEventComponentProps {
 const MAX_POSTGRES_STRING_LENGTH = 255;
 
 export default function EditEventComponent({ event }: EditEventComponentProps) {
-
+	const [viewRegistrationsModal, setViewRegistrationsModal] = useState(false)
 	const [organisers, setOrganisers] = useState([event.organiser]);
+	const [registrations, setRegistrations] = useState<Registrations[]>([])
 
 	const { register, handleSubmit, formState: { errors, isValid }, setValue, watch } = useForm<FormData>({
 		mode: 'onChange',
@@ -31,6 +33,34 @@ export default function EditEventComponent({ event }: EditEventComponentProps) {
 
 	const eventTagValue = watch('event_tag', 0); // Default value is 0
 	const router = useRouter()
+
+	const closeModal = () => setViewRegistrationsModal(false)
+
+	const viewRegistrations = async () => {
+		const toastId = toast.loading('Fetching event registration data...')
+		try {
+			const res = await fetch('/api/events/registrations', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					event_id: event.id
+				}),
+			})
+			const result = await res.json();
+			if (result.success) {
+				toast.success('Event registrations loaded!', { id: toastId })
+				setRegistrations(result.registrations)
+			} else {
+				toast.error('Error fetching event registrations!', { id: toastId })
+			}
+		} catch (error) {
+			toast.error('Error fetching event registrations!', { id: toastId })
+		}
+
+		setViewRegistrationsModal(true)
+	}
 
 	const fetchOrganisersData = async () => {
 		try {
@@ -80,12 +110,14 @@ export default function EditEventComponent({ event }: EditEventComponentProps) {
 			selectedImage: event.image_url,
 			uploadedImage: null, // Assuming it's handled later in the UI
 			event_tag: event.event_type,
+			capacity: event.capacity,
 			signupLink: event.sign_up_link || '',
 			forExternals: event.for_externals || '',
 		};
 	};
 
 	useEffect(() => {
+		// Sets form's regsitered values to those of `event`
 		const formData = mapEventToFormData(event);
 
 		Object.keys(formData).forEach((key) => {
@@ -105,7 +137,6 @@ export default function EditEventComponent({ event }: EditEventComponentProps) {
 
 	useEffect(() => {
 		fetchOrganisersData()
-		// console.log(`Response organisers: ${organisers}`)
 	}, []);
 
 	const onSubmit = async (data: FormData) => {
@@ -188,6 +219,8 @@ export default function EditEventComponent({ event }: EditEventComponentProps) {
 
 		</div>
 	)
+
+	
 
 	const OrganiserField = () => (
 		<div className="flex flex-col mb-4">
@@ -448,6 +481,21 @@ export default function EditEventComponent({ event }: EditEventComponentProps) {
 		</div>
 	)
 
+	const CapacityField = () => (
+		<div className="flex flex-col mb-4">
+			<label htmlFor="capacity" className="text-2xl p-6 font-semibold">Ticketing Capacity</label>
+			{errors.capacity && <p className="text-red-600 text-sm self-end mb-1">Capacity must be a number</p>}
+			<input
+				id="capacity"
+				type="number"
+				{...register('capacity', { required: false })}
+				className="w-[90%] self-end block p-3 text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+				placeholder="No ticketing limit imposed"
+			/>
+		</div>
+	);
+
+
 	const SignupLinkField = () => (
 		<div className="flex flex-col mb-4">
 			<label className='flex flex-row items-center'><p className='text-2xl p-6 font-semibold'>Sign-up link</p> <p className='text-lg p-2'>(optional)</p></label>
@@ -482,15 +530,14 @@ export default function EditEventComponent({ event }: EditEventComponentProps) {
 				</Button>
 
 				<div className="space-x-0 space-y-2 md:space-y-0 md:space-x-4 flex flex-col md:flex-row items-center">
-					{/* <Button
+					<Button
 						variant="outline"
 						size="sm"
-						disabled={!isValid}
 						className='px-10 bg-purple-400 text-gray-950 md:text-xl'
-						onClick={handleSubmit(onPreview)}
+						onClick={viewRegistrations}
 					>
-						Preview
-					</Button> */}
+						View Registrations
+					</Button>
 					<Button
 						className='px-10 md:text-xl border-black'
 						variant="outline"
@@ -513,10 +560,13 @@ export default function EditEventComponent({ event }: EditEventComponentProps) {
 				<TimeField />
 				<TagsFieldWrapper />
 				<LocationField />
+				<CapacityField />
 				<ImagePickerField />
 				<SignupLinkField />
 				<ForExternalsField />
 			</form>
+
+			{viewRegistrationsModal && <RegistrationsModal registrations={registrations} onClose={closeModal} />}
 
 		</div>
 	);

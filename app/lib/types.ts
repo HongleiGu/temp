@@ -11,6 +11,7 @@ export interface Event {
 	location_address: string;
 	image_url: string;
 	event_type: number;
+	capacity?: number;
 	sign_up_link?: string;
 	for_externals?: string;
 }
@@ -31,6 +32,7 @@ export interface SQLEvent {
 	location_address: string;
 	image_url: string;
 	event_type: number;
+	capacity?: number;
 	sign_up_link?: string;
 	for_externals?: string;
 }
@@ -75,6 +77,7 @@ export interface FormData {
 	selectedImage: string;
 	uploadedImage: File | null;
 	event_tag: number;
+	capacity?: number;
 	signupLink?: string;
 	forExternals?: string;
 }
@@ -127,6 +130,22 @@ export interface UserInformation {
 	newsletter_subscribe: boolean;
 }
 
+export interface Registrations {
+	user_id: string;
+	user_name: string;
+	user_email: string;
+	date_registered: string;
+}
+
+export interface SQLRegistrations {
+	id: string;
+	user_id: string;
+	event_id: string;
+	name: string;
+	email: string;
+	created_at: string;
+}
+
 export const DefaultEvent: Event = {
 	id: '',
 	title: 'Sample Event',
@@ -139,5 +158,6 @@ export const DefaultEvent: Event = {
 	location_address: 'Prince Consort Road, SW7 2BP',
 	image_url: '/images/placeholders/football.jpg',
 	event_type: 7, 
+	capacity: 150,
 	sign_up_link: 'https://google.co.uk',
 };

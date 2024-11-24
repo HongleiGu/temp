@@ -1,7 +1,8 @@
 "use client";
+
+import Image from "next/image";
 import { useState } from "react";
 import { Event } from "@/app/lib/types";
-import Image from "next/image";
 import { formatDateString } from "@/app/lib/utils";
 import EventCardTags from "./event-tags";
 import EventModal from "./event-modal";
