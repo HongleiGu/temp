@@ -1,6 +1,6 @@
 import { sql } from '@vercel/postgres';
 import { SQLEvent, ContactFormInput, SocietyRegisterFormData, UserRegisterFormData, SQLRegistrations } from './types';
-import { convertSQLEventToEvent, formatDOB, selectUniversity, capitalize, convertSQLRegistrationsToRegistrations } from './utils';
+import { convertSQLEventToEvent, formatDOB, selectUniversity, capitalize, convertSQLRegistrationsToRegistrations, capitalizeFirst } from './utils';
 import bcrypt from 'bcrypt';
 
 export async function fetchEvents() {
@@ -203,7 +203,7 @@ export async function insertUser(formData: UserRegisterFormData) {
 
 export async function checkSocietyName(name: string) {
 	try {
-		const societyName = name.split(' ').map(capitalize).join(' ')
+		const societyName = name.split(' ').map(capitalizeFirst).join(' ')
 		const result = await sql`
 			SELECT name FROM users
 			WHERE name = ${societyName}
@@ -294,10 +294,3 @@ export async function getRegistrationsForEvent(event_id: string) {
 		return { success: false }
 	}
 }
-
-
-/* 
-SELECT reg.name
-FROM event_registrations reg
-JOIN events ev ON ev.id::text = reg.event_id
-*/

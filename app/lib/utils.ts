@@ -10,6 +10,10 @@ export const capitalize = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 };
 
+export const capitalizeFirst = (str: string) => {
+	return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
 export function convertSQLEventToEvent(sqlEvent: SQLEvent): Event {
 	const date = `${String(sqlEvent.day).padStart(2, '0')}/${String(sqlEvent.month).padStart(2, '0')}/${sqlEvent.year}`;
 	const time = `${sqlEvent.start_time} - ${sqlEvent.end_time}`;
