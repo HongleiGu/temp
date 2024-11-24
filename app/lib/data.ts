@@ -1,6 +1,6 @@
 import { sql } from '@vercel/postgres';
-import { SQLEvent, ContactFormInput, SocietyRegisterFormData, UserRegisterFormData } from './types';
-import { convertSQLEventToEvent, formatDOB, selectUniversity, capitalize } from './utils';
+import { SQLEvent, ContactFormInput, SocietyRegisterFormData, UserRegisterFormData, SQLRegistrations } from './types';
+import { convertSQLEventToEvent, formatDOB, selectUniversity, capitalize, convertSQLRegistrationsToRegistrations } from './utils';
 import bcrypt from 'bcrypt';
 
 export async function fetchEvents() {
@@ -60,8 +60,8 @@ export async function fetchUserEvents(organiser_uid: string) {
 export async function insertEvent(event: SQLEvent) {
 	try {
 		await sql`
-		INSERT INTO events (title, description, organiser, organiser_uid, start_time, end_time, day, month, year, location_building, location_area, location_address, image_url, event_type, sign_up_link, for_externals)
-		VALUES (${event.title}, ${event.description}, ${event.organiser}, ${event.organiser_uid}, ${event.start_time}, ${event.end_time}, ${event.day}, ${event.month}, ${event.year}, ${event.location_building}, ${event.location_area}, ${event.location_address}, ${event.image_url}, ${event.event_type}, ${event.sign_up_link ?? null}, ${event.for_externals ?? null})
+		INSERT INTO events (title, description, organiser, organiser_uid, start_time, end_time, day, month, year, location_building, location_area, location_address, image_url, event_type, sign_up_link, for_externals, capacity)
+		VALUES (${event.title}, ${event.description}, ${event.organiser}, ${event.organiser_uid}, ${event.start_time}, ${event.end_time}, ${event.day}, ${event.month}, ${event.year}, ${event.location_building}, ${event.location_area}, ${event.location_address}, ${event.image_url}, ${event.event_type}, ${event.sign_up_link ?? null}, ${event.for_externals ?? null}, ${event.capacity ?? null})
 		`
 		return { success: true };
 	} catch (error) {
@@ -90,7 +90,8 @@ export async function updateEvent(event: SQLEvent) {
 				image_url = ${event.image_url},
 				event_type = ${event.event_type},
 				sign_up_link = ${event.sign_up_link ?? null},
-				for_externals = ${event.for_externals ?? null}
+				for_externals = ${event.for_externals ?? null},
+				capacity = ${event.capacity ?? null}
 			WHERE id = ${event.id}
 		`;
 		return { success: true };
@@ -251,3 +252,52 @@ export async function insertUserInformation(formData: UserRegisterFormData, user
 		return { success: false, error };
 	}
 }
+
+export async function checkIfRegistered(event_id: string, user_id: string) {
+	try {
+		const result = await sql`
+			SELECT id FROM event_registrations
+			WHERE event_id = ${event_id} AND user_id = ${user_id}
+			LIMIT 1
+		`;
+		return result.rows.length > 0;
+	} catch (error) {
+		console.error('Error checking registration status:', error)
+		return false // Assume unregistered
+	}
+}
+
+export async function registerForEvent(user_id: string, user_email: string, user_name: string, event_id: string) {
+	try {
+		await sql`
+		INSERT INTO event_registrations (event_id, user_id, name, email)
+		VALUES (${event_id}, ${user_id}, ${user_name}, ${user_email})
+		`
+		return { success: true }
+	} catch (error) {
+		console.error('Error registering user for event:', error)
+		return { success: false, registered: false }
+	}
+}
+
+export async function getRegistrationsForEvent(event_id: string) {
+	try {
+		const result = await sql<SQLRegistrations>`
+		SELECT user_id, name, email, created_at
+		FROM event_registrations
+		WHERE event_id = ${event_id}
+		`
+		const registrations = result.rows.map(convertSQLRegistrationsToRegistrations);
+		console.log(`Got back ${registrations}`)
+		return { success: true, registrations: registrations }
+	} catch (error) {
+		return { success: false }
+	}
+}
+
+
+/* 
+SELECT reg.name
+FROM event_registrations reg
+JOIN events ev ON ev.id::text = reg.event_id
+*/
