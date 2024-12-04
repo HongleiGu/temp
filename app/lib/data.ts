@@ -148,6 +148,35 @@ export async function fetchAllContactForms() {
 	}
 }
 
+export async function fetchDescription(id: string) {
+	try {
+		const data = await sql`
+		SELECT description 
+		FROM users
+		WHERE id = ${id} 
+		LIMIT 1
+		`
+		return data.rows[0];
+	} catch (error) {
+		console.error('Database error:', error)
+		throw new Error('Failed to fetch dsecription from users table')
+	}
+}
+
+export async function updateDescription(id: string, newDescription: string) {
+	try {
+		const data = await sql`
+		UPDATE users
+		SET description = ${newDescription}
+		WHERE id = ${id} 
+		`
+		return { success: true };
+	} catch (error) {
+		console.error('Database error:', error)
+		throw new Error('Failed to update description in users table')
+	}
+}
+
 export async function insertOrganiser(formData: SocietyRegisterFormData) {
 	try {
 		const hashedPassword = await bcrypt.hash(formData.password, 10);

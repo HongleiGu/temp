@@ -1,16 +1,17 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/app/components/button';
 import UserEventsList from '../components/account/user-events-list';
+import DescriptionField from '../components/account/description-field';
 
 export default function AccountPage() {
 	const { data: session, status } = useSession()
-	const router = useRouter()
 
+	const router = useRouter()
 	useEffect(() => {
 		if (!session) {
 			if (status !== "loading") {
@@ -27,9 +28,9 @@ export default function AccountPage() {
 		)
 	}
 
-
 	if (session) {
 		const { user } = session;
+		console.log(session);
 
 		return (
 			<div className="min-h-screen flex flex-col justify-start p-10 bg-gradient-to-b from-[#041A2E] via-[#064580] to-[#083157] overflow-x-hidden">
@@ -46,6 +47,7 @@ export default function AccountPage() {
 					<p className="text-sm capitalize">
 						<span className="mr-12 font-semibold">Role:</span> {user?.role || 'user'}
 					</p>
+					{ user.role==='organiser' && < DescriptionField id={user.id} role={user.role}/> }
 				</div>
 
 				<div className="border-b border-gray-300 pb-4 ml-4 mb-10 space-y-6">
