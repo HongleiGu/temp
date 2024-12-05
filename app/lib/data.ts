@@ -148,10 +148,10 @@ export async function fetchAllContactForms() {
 	}
 }
 
-export async function fetchDescription(id: string) {
+export async function fetchAccountInfo(id: string) {
 	try {
 		const data = await sql`
-		SELECT description 
+		SELECT logo_url, description, website, tags
 		FROM users
 		WHERE id = ${id} 
 		LIMIT 1
@@ -159,7 +159,22 @@ export async function fetchDescription(id: string) {
 		return data.rows[0];
 	} catch (error) {
 		console.error('Database error:', error)
-		throw new Error('Failed to fetch dsecription from users table')
+		throw new Error('Failed to fetch account information from users table')
+	}
+}
+
+export async function fetchAccountLogo(id: string) {
+	try {
+		const data = await sql`
+		SELECT logo_url
+		FROM users
+		WHERE id = ${id} 
+		LIMIT 1
+		`
+		return data.rows[0];
+	} catch (error) {
+		console.error('Database error:', error)
+		throw new Error('Failed to fetch account logo from users table')
 	}
 }
 
@@ -174,6 +189,30 @@ export async function updateDescription(id: string, newDescription: string) {
 	} catch (error) {
 		console.error('Database error:', error)
 		throw new Error('Failed to update description in users table')
+	}
+}
+
+export async function updateAccountInfo(
+	id: string, 
+	newLogo: string, 
+	newDescription: string, 
+	newWebsite: string, 
+	newTags: Array<string>
+  ) {
+	try {
+	  	const data = await sql`
+		UPDATE users
+		SET 
+		  logo_url = ${newLogo},
+		  description = ${newDescription},
+		  website = ${newWebsite},
+		  tags = ARRAY[${newTags.join(', ')}] 
+		WHERE id = ${id}
+	    `;
+	  	return { success: true };
+	} catch (error) {
+	  	console.error('Database error:', error);
+	  	throw new Error('Failed to update account information in users table');
 	}
 }
 

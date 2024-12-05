@@ -6,7 +6,8 @@ import { useEffect } from 'react';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/app/components/button';
 import UserEventsList from '../components/account/user-events-list';
-import DescriptionField from '../components/account/description-field';
+import AccountFields from '../components/account/account-fields';
+import AccountLogo from '../components/account/account-logo';
 
 export default function AccountPage() {
 	const { data: session, status } = useSession()
@@ -38,6 +39,7 @@ export default function AccountPage() {
 
 				<div className="border-b border-gray-300 pb-4 ml-4 mb-10 space-y-6">
 					<h2 className="text-2xl italic mb-2 ml-2">Your details</h2>
+					{ user.role==='organiser' && < AccountLogo id={user.id} role={user.role}/> }
 					<p className="text-sm">
 						<span className="mr-10 font-semibold">Name:</span> {user?.name || 'Test User'}
 					</p>
@@ -47,7 +49,7 @@ export default function AccountPage() {
 					<p className="text-sm capitalize">
 						<span className="mr-12 font-semibold">Role:</span> {user?.role || 'user'}
 					</p>
-					{ user.role==='organiser' && < DescriptionField id={user.id} role={user.role}/> }
+					{ user.role==='organiser' && < AccountFields id={user.id} role={user.role}/> }
 				</div>
 
 				<div className="border-b border-gray-300 pb-4 ml-4 mb-10 space-y-6">

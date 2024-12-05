@@ -110,6 +110,18 @@ export interface SocietyRegisterFormData {
 	imageUrl: string | null;
 }
 
+export interface OrganiserAccountEditFormData {
+	uploadedImage: File | null;
+	imageUrl: string | null;
+	description: string | null;
+	website: string | null;
+	tags: Array<string> | null;
+}
+
+export interface ImageUploadProps {
+	register: any;  // `register` from react-hook-form
+	setValue: any;  // `setValue` from react-hook-form
+}
 
 export interface ContactFormInput {
 	id: string
