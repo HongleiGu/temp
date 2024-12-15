@@ -110,6 +110,18 @@ export interface SocietyRegisterFormData {
 	imageUrl: string | null;
 }
 
+export interface OrganiserAccountEditFormData {
+	uploadedImage: File | null;
+	imageUrl: string | null;
+	description: string | null;
+	website: string | null;
+	tags: Array<string> | null;
+}
+
+export type Tag = {
+	label: string;
+	value: string | number;
+};
 
 export interface ContactFormInput {
 	id: string

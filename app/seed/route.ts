@@ -154,16 +154,18 @@
 // }
 
 export async function GET() {
-	// try {
-	// 	await client.sql`BEGIN`;
-	// 	await addCapacityColumnToEventTable()
+// 	try {
+// 		await client.sql`BEGIN`;
+// 		await addCapacityColumnToEventTable()
 
-	// 	await client.sql`COMMIT`;
-	// 	return Response.json({ message: 'Database updated successfully' });
+// 		await client.sql`COMMIT`;
+	// return Response.json({ message: 'Database updated successfully' });
 
-	// } catch (error) {
-	// 	await client.sql`ROLLBACK`;
-	// 	return Response.json({ error }, { status: 500 });
-	// }
-	return Response.json({ message: 'Nothing to see here' });
+// 	} catch (error) {
+// 		await client.sql`ROLLBACK`;
+// 		return Response.json({ error }, { status: 500 });
+// 	}
+// 	return Response.json({ message: 'Nothing to see here' });
 }
+
+

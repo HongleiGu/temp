@@ -1,16 +1,22 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
+// note for improvement, use suspense or similar library to handle initial loading of tags, as it shows an unpleasent
+// unknown(number) value, while the tags are loaded in in the initial render. It only shows for less than a second however. 
+// You can also just remove the fetch-predefined-tags component and couple the logic where it is needed.
+
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/app/components/button';
 import UserEventsList from '../components/account/user-events-list';
+import AccountFields from '../components/account/account-fields';
+import AccountLogo from '../components/account/account-logo';
 
 export default function AccountPage() {
 	const { data: session, status } = useSession()
-	const router = useRouter()
 
+	const router = useRouter()
 	useEffect(() => {
 		if (!session) {
 			if (status !== "loading") {
@@ -18,6 +24,7 @@ export default function AccountPage() {
 			}
 		}
 	}, [session, status, router]);
+	
 
 	if (status === 'loading') {
 		return (
@@ -27,9 +34,9 @@ export default function AccountPage() {
 		)
 	}
 
-
 	if (session) {
 		const { user } = session;
+		console.log(session);
 
 		return (
 			<div className="min-h-screen flex flex-col justify-start p-10 bg-gradient-to-b from-[#041A2E] via-[#064580] to-[#083157] overflow-x-hidden">
@@ -37,6 +44,7 @@ export default function AccountPage() {
 
 				<div className="border-b border-gray-300 pb-4 ml-4 mb-10 space-y-6">
 					<h2 className="text-2xl italic mb-2 ml-2">Your details</h2>
+					{ user.role==='organiser' && < AccountLogo id={user.id} role={user.role}/> }
 					<p className="text-sm">
 						<span className="mr-10 font-semibold">Name:</span> {user?.name || 'Test User'}
 					</p>
@@ -46,6 +54,7 @@ export default function AccountPage() {
 					<p className="text-sm capitalize">
 						<span className="mr-12 font-semibold">Role:</span> {user?.role || 'user'}
 					</p>
+					{ user.role==='organiser' && < AccountFields id={user.id} role={user.role}/> }
 				</div>
 
 				<div className="border-b border-gray-300 pb-4 ml-4 mb-10 space-y-6">
