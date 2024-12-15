@@ -4,37 +4,45 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import Select from 'react-select'; // For tag selection
 import ImageUpload from '@/app/components/account/logo-edit';
+import getPredefinedTags from '@/app/components/account/get-predefined-tags';
 import { OrganiserAccountEditFormData } from '@/app/lib/types';
 import { upload } from '@vercel/blob/client';
 import { Input } from '../../components/input';
+import { Button } from '@/app/components/button';
 
-const predefinedTags = [
-    { value: 'tag1', label: 'Tag 1' },
-    { value: 'tag2', label: 'Tag 2' },
-    { value: 'tag3', label: 'Tag 3' },
-];
 
 export default function EditDetailsPage() {
-    const [initialLogo, setInitialLogo] = useState('');
-    const [initialDescription, setInitialDescription] = useState('');
-    const [initialWebsite, setInitialWebsite] = useState('');
-    const [initialTags, setInitialTags] = useState([]);
-    const [loading, setLoading] = useState(false);
+
+    const [predefinedTags, setPredefinedTags] = useState([]); 
+
+    useEffect(() => {
+        const fetchTags = async () => {
+            const tags = await getPredefinedTags();
+            setPredefinedTags(tags); 
+        };
+
+        fetchTags(); 
+    }, []); 
 
     const { data: session, status } = useSession();
     const router = useRouter();
 
-    const { register, handleSubmit, formState: { errors }, getValues, setValue } = useForm<OrganiserAccountEditFormData>({
-		mode: 'onSubmit'
+    const { register, handleSubmit, setValue, control } = useForm<OrganiserAccountEditFormData>({
+		mode: 'onSubmit',
+        defaultValues: {
+            tags: [], // Make sure tags is initialized as an empty array
+        },
 	});
 
     const onSubmit = async (data: OrganiserAccountEditFormData) => {
+        console.log('Form Data:', data); // Log all form data, including tags
+
         const toastId = toast.loading('Editing your society\'s account...');
 
-        if(typeof data.uploadedImage !== 'string') {
+        if (data.uploadedImage && typeof data.uploadedImage !== 'string') {
             try {
 				const newBlob = await upload(data.uploadedImage.name, data.uploadedImage, {
 					access: 'public',
@@ -49,17 +57,18 @@ export default function EditDetailsPage() {
         }
 
 		try {
-			const res = await fetch('/api/society/create', {
+			const res = await fetch('/api/user/update-account-fields', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify(data),
+				body: JSON.stringify({ id: session?.user?.id, data: data }),
 			});
 
 			const result = await res.json()
 			if (result.success) {
 				toast.success('Society edited succesfully!', { id: toastId })
+                router.push('/account')
 			} else {
 				toast.error(`Error editing account: ${result.error}`, { id: toastId })
 				console.error('Error editing account:', result.error)
@@ -79,31 +88,13 @@ export default function EditDetailsPage() {
                 body: JSON.stringify(id),
             });
             const { description, website, tags } = await res.json();
-            setInitialDescription(description);
-            setInitialWebsite(website);
-            setInitialTags(tags);
             setValue('description', description);
             setValue('website', website);
-            setValue('tags', tags.map((tag: string) => ({ value: tag, label: tag })));
+            setValue('tags', tags);
         } catch (error) {
             console.error('Error loading account details:', error);
         }
     };
-
-    const fetchAccountLogo = async (id: string) => {
-        try {
-            const res = await fetch('/api/user/get-account-logo', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(id),
-            });
-            const { logo_url } = await res.json();
-            setInitialLogo(logo_url);
-            setValue('imageUrl', logo_url);
-        } catch (error) {
-            console.error('Error loading logo:', error);
-        }
-    }; 
 
     useEffect(() => {
         if (!session) {
@@ -112,7 +103,6 @@ export default function EditDetailsPage() {
             }
         } else {
             fetchAccountInfo(session?.user?.id);
-            fetchAccountLogo(session?.user?.id);
         }
     }, [session, status, router]);
 
@@ -131,7 +121,7 @@ export default function EditDetailsPage() {
             <h1 className="text-3xl font-semibold mb-6">Edit Details</h1>
             <div>
                 <label className="block text-white font-bold mb-1">Society Logo</label>
-                <ImageUpload register={register} setValue={setValue} initialLogo={initialLogo} />
+                <ImageUpload register={register} setValue={setValue} id={session?.user?.id} />
             </div>
             <div>
                 <label className="block text-white font-bold mb-1">Name</label>
@@ -178,15 +168,50 @@ export default function EditDetailsPage() {
                     {...register('website')}
                 />
             </div>
-            <div>
+            <div className='pb-[100px]'>
                 <label className="block text-white font-bold mb-1">Tags</label>
-                <Input 
-                    type="text"
-                    placeholder="Tags help students find your society"
-                    className="w-full text-black p-2 border border-gray-300 rounded"
-                    {...register('tags')}
+                <Controller
+                name="tags"
+                control={control}
+                render={({ field }) => (
+                    <Select
+                    {...field}
+                    options={predefinedTags} // Directly use the predefinedTags array
+                    isMulti
+                    value={field.value.map((tag) => predefinedTags.find((t) => t.value === tag))} // Map selected values to { label, value }
+                    onChange={(selectedTags) => {
+                        const selectedValues = selectedTags.map((tag) => tag.value); // Extract values
+                        field.onChange(selectedValues); // Update form with selected values
+                    }}
+                    getOptionLabel={(e) => e.label} // Render label
+                    getOptionValue={(e) => e.value} // Use value for comparison
+                    styles={{
+                        option: (provided) => ({
+                          ...provided,
+                          color: 'black', // Change to your desired color
+                        }),
+                    }}
+                    />
+                )}
                 />
             </div>
+
+            <div>
+                {/* Save changes button */}
+                <div className="flex justify-end mt-6 items-center">
+                    <Button variant='outline' onClick={handleSubmit(onSubmit)} className="p-3 text-white rounded-lg hover:bg-slate-500">
+                        Save changes
+                    </Button>
+                </div>
+
+                {/* Cancel button */}
+                <div className="flex justify-end mt-6 items-center">
+                    <Button variant='outline' onClick={() => router.push('/account')} className="bg-gray-400 text-white px-4 py-2 rounded">
+                        Cancel
+                    </Button>
+                </div>
+            </div>
+
             <div className="my-5">
                 If you would like to change any of the greyed-out fields, please get in touch at londonstudentnetwork@gmail.com, and one of the team will be in touch.
             </div>

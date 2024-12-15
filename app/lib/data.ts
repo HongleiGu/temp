@@ -1,7 +1,8 @@
 import { sql } from '@vercel/postgres';
-import { SQLEvent, ContactFormInput, SocietyRegisterFormData, UserRegisterFormData, SQLRegistrations } from './types';
+import { SQLEvent, ContactFormInput, SocietyRegisterFormData, UserRegisterFormData, SQLRegistrations, OrganiserAccountEditFormData } from './types';
 import { convertSQLEventToEvent, formatDOB, selectUniversity, capitalize, convertSQLRegistrationsToRegistrations, capitalizeFirst } from './utils';
 import bcrypt from 'bcrypt';
+import { Tag } from './types';
 
 export async function fetchEvents() {
 	try {
@@ -178,9 +179,44 @@ export async function fetchAccountLogo(id: string) {
 	}
 }
 
+export async function seedPredefinedTags(predefinedTags: Tag[]) {
+	try {
+		for (const tag of predefinedTags) {
+			await sql`
+			INSERT INTO tags (label, value)
+			VALUES (${tag.label}, ${tag.value})
+			ON CONFLICT (value) DO NOTHING
+			`;
+		}
+		console.log('Tags seeded successfully!');
+		return { success: true };
+	} catch (error) {
+        console.error('Error seeding tags:', error);
+		throw new Error('Failed to seed tags');
+	}
+}
+
+export async function fetchPredefinedTags() {
+    try {
+        // Assuming you have some database query function like `sql`
+        const tags = await sql`
+            SELECT value, label FROM tags;
+        `;
+        
+        // Return the fetched tags in the format { value, label }
+        return tags.rows.map(tag => ({
+            value: tag.value,
+            label: tag.label
+        }));
+    } catch (error) {
+        console.error('Error fetching predefined tags:', error);
+        throw new Error('Failed to fetch predefined tags');
+    }
+}
+
 export async function updateDescription(id: string, newDescription: string) {
 	try {
-		const data = await sql`
+		await sql`
 		UPDATE users
 		SET description = ${newDescription}
 		WHERE id = ${id} 
@@ -192,21 +228,17 @@ export async function updateDescription(id: string, newDescription: string) {
 	}
 }
 
-export async function updateAccountInfo(
-	id: string, 
-	newLogo: string, 
-	newDescription: string, 
-	newWebsite: string, 
-	newTags: Array<string>
-  ) {
+export async function updateAccountInfo(id: string, data: OrganiserAccountEditFormData) {
 	try {
-	  	const data = await sql`
+		// console.log(data.tags); // debugging
+		const formattedTags = `{${data.tags.join(',')}}`; // Format as an array string. Below, cast from string[] to text[]
+	  	await sql`
 		UPDATE users
 		SET 
-		  logo_url = ${newLogo},
-		  description = ${newDescription},
-		  website = ${newWebsite},
-		  tags = ARRAY[${newTags.join(', ')}] 
+			logo_url = ${data.imageUrl},
+			description = ${data.description},
+			website = ${data.website},
+			tags = ${formattedTags}::text[] 
 		WHERE id = ${id}
 	    `;
 	  	return { success: true };

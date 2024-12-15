@@ -118,10 +118,10 @@ export interface OrganiserAccountEditFormData {
 	tags: Array<string> | null;
 }
 
-export interface ImageUploadProps {
-	register: any;  // `register` from react-hook-form
-	setValue: any;  // `setValue` from react-hook-form
-}
+export type Tag = {
+	label: string;
+	value: string | number;
+};
 
 export interface ContactFormInput {
 	id: string

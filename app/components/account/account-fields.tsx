@@ -1,12 +1,24 @@
+
 import { Button } from "../button";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
+import getPredefinedTags from "./get-predefined-tags";
 
 export default function AccountFields({id, role}: {id: string, role: string}) {
 
 	const [ description, setDescription ] = useState('')
 	const [ website, setWebsite ] = useState('')
 	const [ tags, setTags ] = useState([])
+	const [predefinedTags, setPredefinedTags] = useState([]); 
+
+    useEffect(() => {
+        const fetchTags = async () => {
+            const tags = await getPredefinedTags();
+            setPredefinedTags(tags); 
+        };
+
+        fetchTags(); 
+    }, []); 
 
     const fetchAccountInfo = async (id: string) => {
 		try {
@@ -41,12 +53,20 @@ export default function AccountFields({id, role}: {id: string, role: string}) {
 			<p className="text-sm capitalize">
             	<span className="mr-12 font-semibold">Description:</span> {description || 'no description found'}
             </p>
-			<p className="text-sm capitalize">
+			<p className="text-sm">
             	<span className="mr-12 font-semibold">Website:</span> {website || 'no website found'}
             </p>
 			<p className="text-sm capitalize">
-            	<span className="mr-12 font-semibold">Tags:</span> {tags || 'no description found'}
-            </p>
+				<span className="mr-12 font-semibold">Tags:</span>
+				{tags.length > 0 
+					? tags
+						.map((tag) => {
+							const foundTag = predefinedTags.find((t) => t.value === tag);
+							return foundTag ? foundTag.label : `Unknown (${tag})`;
+						})
+						.join(', ')
+					: 'No tags found'}
+			</p>
             <Button
                 variant="filled"
                 className="bg-blue-600 text-white my-4 py-2 px-4 rounded-full"

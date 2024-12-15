@@ -1,5 +1,9 @@
 'use client';
 
+// note for improvement, use suspense or similar library to handle initial loading of tags, as it shows an unpleasent
+// unknown(number) value, while the tags are loaded in in the initial render. It only shows for less than a second however. 
+// You can also just remove the fetch-predefined-tags component and couple the logic where it is needed.
+
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
@@ -20,6 +24,7 @@ export default function AccountPage() {
 			}
 		}
 	}, [session, status, router]);
+	
 
 	if (status === 'loading') {
 		return (

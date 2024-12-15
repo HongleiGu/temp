@@ -1,14 +1,36 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { Button } from '../../components/button'; // Assuming Button is custom
+import { useState, useRef, useEffect } from 'react';
+import { Button } from '../../components/button'; 
 import Image from 'next/image';
 import { ArrowUpTrayIcon, TrashIcon } from '@heroicons/react/24/outline';
-import { ImageUploadProps } from '@/app/lib/types';
+import { UseFormRegister, UseFormSetValue } from 'react-hook-form';
+import { OrganiserAccountEditFormData } from '@/app/lib/types';
 
-const ImageUpload = ({ register, setValue, initialLogo }: { register: any, setValue: any, initialLogo: string} ) => {
+
+const ImageUpload = ({ id, register, setValue }: { id: string, register: UseFormRegister<OrganiserAccountEditFormData>, setValue: UseFormSetValue<OrganiserAccountEditFormData> }) => {
     const [uploadedImage, setUploadedImage] = useState<File | null>(null);
-    const [previewImage, setPreviewImage] = useState<string | null>(initialLogo);
+    const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+    const fetchAccountLogo = async (id: string) => {
+        try {
+            const res = await fetch('/api/user/get-account-logo', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(id),
+            });
+            const { logo_url } = await res.json();
+            setPreviewImage(logo_url);
+            console.log('logo_url: ',logo_url);
+            setValue('imageUrl', logo_url);
+        } catch (error) {
+            console.error('Error loading logo:', error);
+        }
+    }; 
+
+    useEffect(()=> {
+        fetchAccountLogo(id);
+    }, [])
 
     register('uploadedImage');
     const inputRef = useRef<HTMLInputElement>(null);
@@ -22,21 +44,20 @@ const ImageUpload = ({ register, setValue, initialLogo }: { register: any, setVa
         const file = event.target.files?.[0];
         if (file) {
             setUploadedImage(file);
-            setValue('uploadedImage', file); // Register the file with react-hook-form
+            setValue('uploadedImage', file); 
             setPreviewImage(URL.createObjectURL(file)); // Generate image preview
         }
     };
 
     const clearUploadedImage = () => {
         setUploadedImage(null);
-        setValue('uploadedImage', null); // Clear react-hook-form value
+        setValue('uploadedImage', null); 
         setPreviewImage(null); // Clear preview
     };
 
     return (
-        <div className="flex flex-col w-full">
-
         <div className="flex flex-col items-center">
+
             {/* Upload Button */}
             <button
                 className="flex flex-row self-start my-2 w-fit px-4 items-center font-light text-white border border-gray-300 hover:bg-gray-200 rounded-sm text-sm h-10"
@@ -72,8 +93,8 @@ const ImageUpload = ({ register, setValue, initialLogo }: { register: any, setVa
                 fill
                 className="w-[90%] h-64 object-cover border-2 border-black/70"
             />
+
             </div>
-        </div>
         </div>
     );
 };
