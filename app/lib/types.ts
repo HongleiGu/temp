@@ -123,6 +123,15 @@ export type Tag = {
 	value: string | number;
 };
 
+export type Partner = {
+	id: number; 
+	name: string;
+	tags: number[]; 
+	description: string;
+	website: string;
+	logo_url: string;
+};
+
 export interface ContactFormInput {
 	id: string
 	name: string

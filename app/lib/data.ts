@@ -248,6 +248,20 @@ export async function updateAccountInfo(id: string, data: OrganiserAccountEditFo
 	}
 }
 
+export async function getOrganiserCards() {
+	try{
+		const data = await sql`
+		SELECT id, name, description, website, tags, logo_url
+		FROM users
+		WHERE role = 'organiser'
+		`
+		return data.rows;
+	} catch(error) {
+		console.error('Database error:', error);
+		throw new Error('Failed to get all organiser card details');	
+	}
+}
+
 export async function insertOrganiser(formData: SocietyRegisterFormData) {
 	try {
 		const hashedPassword = await bcrypt.hash(formData.password, 10);
