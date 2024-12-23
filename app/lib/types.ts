@@ -16,6 +16,14 @@ export interface Event {
 	for_externals?: string;
 }
 
+export interface EmailData {
+	id: string;
+	email: string;
+	subject: string;
+	text?: string;
+	html?: string;
+}
+
 export interface SQLEvent {
 	id: string;
 	title: string;
@@ -132,11 +140,31 @@ export type Partner = {
 	logo_url: string;
 };
 
+export type FormattedPartner = {
+	id: number;
+	name: string;
+	keywords: string[]; // no keywords represented by empty array
+	description: string | null; // it really should be enforced to set a description
+	website: string | null;
+	logo: string | null;
+};
+
+export type PartnersProps = {
+    setPartners: React.Dispatch<React.SetStateAction<Partner[]>>; // State setter function for partners
+    filteredPartners: FormattedPartner[]; // The filtered partners passed as props
+};
+
 export interface ContactFormInput {
 	id: string
 	name: string
 	email: string
 	message: string
+}
+
+export interface SocietyMessageFormData {
+	userEmail: string;
+	subject: string;
+	message: string;	
 }
 
 export interface UserInformation {
