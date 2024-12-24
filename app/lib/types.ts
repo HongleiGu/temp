@@ -20,8 +20,7 @@ export interface EmailData {
 	id: string;
 	email: string;
 	subject: string;
-	text?: string;
-	html?: string;
+	text: string;
 }
 
 export interface SQLEvent {
@@ -112,6 +111,9 @@ export interface SocietyRegisterFormData {
 	name: string;
     email: string;
     password: string;
+	description: string | null;
+	website: string | null;
+	tags: Array<string> | null;
     confirmPassword: string;
     hasAgreedToTerms: boolean;
 	uploadedImage: File | null;
@@ -162,9 +164,14 @@ export interface ContactFormInput {
 }
 
 export interface SocietyMessageFormData {
-	userEmail: string;
 	subject: string;
 	message: string;	
+}
+
+export interface EmailPayloadType {
+	email: string;
+	subject: string;
+	text: string;
 }
 
 export interface UserInformation {

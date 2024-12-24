@@ -319,14 +319,16 @@ export async function getAllOrganiserCards() {
 	}
 }
 
-export async function insertOrganiser(formData: SocietyRegisterFormData) {
+export async function insertOrganiser(formData: SocietyRegisterFormData) { 
 	try {
 		const hashedPassword = await bcrypt.hash(formData.password, 10);
 		const name = formData.name.split(' ').map(capitalize).join(' ')
+
+		const formattedTags = `{${formData.tags.join(',')}}`; // Format as an array string. Below, cast from string[] to text[]
 		
 		await sql`
-			INSERT INTO users (name, email, password, role, logo_url)
-			VALUES (${name}, ${formData.email}, ${hashedPassword}, ${'organiser'}, ${formData.imageUrl})
+			INSERT INTO users (name, email, password, role, logo_url, description, website, tags)
+			VALUES (${name}, ${formData.email}, ${hashedPassword}, ${'organiser'}, ${formData.imageUrl}, ${formData.description}, ${formData.website}, ${formattedTags}::text[])
 			ON CONFLICT (email) DO NOTHING
 		`;
 
@@ -417,7 +419,7 @@ export async function getEmail(id: string) {
 			WHERE role='organiser' and id = ${id} --- we really want to ensure no user email is leaked by accident
 			LIMIT 1
 		`
-
+		
 		return data.rows[0] || null;
 	} catch (error) {
 		console.error('Error checking email:', error)

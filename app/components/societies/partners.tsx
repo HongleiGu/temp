@@ -1,4 +1,4 @@
-import { FormattedPartner, PartnersProps } from "@/app/lib/types";
+import { FormattedPartner } from "@/app/lib/types";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -50,10 +50,10 @@ function Partners({ filteredPartners }: { filteredPartners: FormattedPartner[] }
                 </div>
       
                 {/* Links */}
-                <div className="flex items-center gap-4 relative bottom-[-10px] justify-start w-full">
+                <div className="flex items-center gap-4 relative bottom-[-10px] justify-center w-full pr-10">
 
                     <Link href={`/societies/message/${partner.id}`} passHref>
-                        <button className="bg-transparent text-white py-2 px-4 rounded-lg hover:bg-[#083157] transition text-sm">
+                        <button className="bg-transparent text-white py-2 px-4 rounded-lg hover:bg-[#083157] transition text-sm mr-0">
                             <div className='flex'>
                                 <p className="mt-[6px]">Message</p>
                                 <Image
@@ -75,7 +75,7 @@ function Partners({ filteredPartners }: { filteredPartners: FormattedPartner[] }
                         rel="noopener noreferrer"
                         className="text-white hover:text-gray-400 px-4 py-2 rounded-lg transition text-sm"
                         >
-                        Visit Website
+                        Website
                         </a>
                     )}
     

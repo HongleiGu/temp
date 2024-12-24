@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import debounce from 'lodash.debounce';
-import { fetchPartners, fetchAllPartners } from '@/app/lib/utils';
+import { fetchPartners } from '@/app/lib/utils';
 import CardSkeleton from '@/app/components/skeletons/card';
 import Partners from '@/app/components/societies/partners';
 import { FormattedPartner } from '@/app/lib/types';

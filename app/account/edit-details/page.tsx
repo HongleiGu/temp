@@ -1,5 +1,7 @@
 'use client'
 
+// for future improvement, componetize some of the fields to be used with register and other forms
+
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -38,7 +40,6 @@ export default function EditDetailsPage() {
 	});
 
     const onSubmit = async (data: OrganiserAccountEditFormData) => {
-        console.log('Form Data:', data); // Log all form data, including tags
 
         const toastId = toast.loading('Editing your society\'s account...');
 
@@ -97,12 +98,12 @@ export default function EditDetailsPage() {
     };
 
     useEffect(() => {
+        if (status === 'loading') return;
+
         if (!session) {
-            if (status !== 'loading') {
-                router.push('/login');
-            }
+            router.push('/login');
         } else {
-            fetchAccountInfo(session?.user?.id);
+            fetchAccountInfo(session.user.id);
         }
     }, [session, status, router]);
 
@@ -176,19 +177,19 @@ export default function EditDetailsPage() {
                 render={({ field }) => (
                     <Select
                     {...field}
-                    options={predefinedTags} // Directly use the predefinedTags array
+                    options={predefinedTags}
                     isMulti
-                    value={field.value.map((tag) => predefinedTags.find((t) => t.value === tag))} // Map selected values to { label, value }
+                    value={field.value.map((tag) => predefinedTags.find((t) => t.value === tag))}
                     onChange={(selectedTags) => {
-                        const selectedValues = selectedTags.map((tag) => tag.value); // Extract values
-                        field.onChange(selectedValues); // Update form with selected values
+                        const selectedValues = selectedTags.map((tag) => tag.value);
+                        field.onChange(selectedValues);
                     }}
-                    getOptionLabel={(e) => e.label} // Render label
-                    getOptionValue={(e) => e.value} // Use value for comparison
+                    getOptionLabel={(e) => e.label}
+                    getOptionValue={(e) => e.value}
                     styles={{
                         option: (provided) => ({
                           ...provided,
-                          color: 'black', // Change to your desired color
+                          color: 'black',
                         }),
                     }}
                     />

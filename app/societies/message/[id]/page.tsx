@@ -2,20 +2,21 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'; 
-import { useForm, Controller } from 'react-hook-form';
+import { useSession } from 'next-auth/react';
+import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Button } from '@/app/components/button'; // Assume you have a custom button component
 import { SocietyMessageFormData } from '@/app/lib/types';
-import { useParams, usePathname } from 'next/navigation';
+import { useParams } from 'next/navigation';
 
 export default function SendEmailPage() {
   const [partner, setPartner] = useState({name: ''});
   const { id } = useParams(); // Use useParams for dynamic routing to get the dynamic id from the URL
-  const pathname = usePathname(); // Optional: Useful for debugging to know the current path
-  const { register, handleSubmit, control, setValue } = useForm<SocietyMessageFormData>({
+  const { data: session, status } = useSession()
+  const { register, handleSubmit } = useForm<SocietyMessageFormData>({
+
     mode: 'onSubmit',
     defaultValues: {
-      userEmail: '',
       subject: '',
       message: '',
     },
@@ -54,7 +55,18 @@ export default function SendEmailPage() {
   }, [id])
 
   const onSubmit = async (data: SocietyMessageFormData) => {
-    console.log('Form Data:', data); // Log all form data for debugging
+    if (!session) {
+      if (status !== "loading") {
+        toast.error("Please log in to send a message");
+        console.error("User not logged in, message not sent");
+        return;
+      }
+    }
+    if (!session.user.email) {
+      toast.error("Please contact suppport to set email");
+      console.error("No email found for user object");
+      return;
+    }
 
     const toastId = toast.loading('Sending email...');
 
@@ -66,10 +78,9 @@ export default function SendEmailPage() {
         },
         body: JSON.stringify({
           id,
-          email: data.userEmail,
+          email: session.user.email,
           subject: data.subject,
           text: data.message,
-          html: `<p>${data.message.replace(/\n/g, '<br>')}</p>`, // Ensure line breaks are converted to <br> tags
         }),
       });
 
@@ -90,20 +101,16 @@ export default function SendEmailPage() {
   return (
     <div className="min-h-screen flex flex-col justify-start p-10 bg-gradient-to-b from-[#041A2E] via-[#064580] to-[#083157]">
       <h1 className="text-3xl font-semibold mb-6 ml-10 text-white">Send a Message to {partner.name}</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-lg bg-transparent p-6 rounded-lg mb-10 mt-10">
-        {/* User Email */}
-        <div className="mb-4">
-          <label className="block text-white font-bold mb-1">Your Email</label>
-          <input
-            type="email"
-            placeholder="Enter your email"
-            {...register('userEmail', { required: true })}
-            className="w-full p-2 border border-gray-300 rounded bg-transparent text-white placeholder-gray-500"
-          />
-        </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full px-6 mb-10 mt-10">
+        {/* Must be logged in message */}
+        {!session && (
+          <div className="mb-4">
+            <h2 className="text-white">Please log in to submit a message</h2>
+          </div>
+        )}
 
         {/* Email Subject */}
-        <div className="mb-4">
+        <div className="mb-4 w-full max-w-[1200px] min-w-[600px] ml-4 mr-auto">
           <label className="block text-white font-bold mb-1">Subject</label>
           <input
             type="text"
@@ -114,8 +121,8 @@ export default function SendEmailPage() {
         </div>
 
         {/* Email Message */}
-        <div className="mb-4">
-          <label className="block text-white font-bold mb-1">Message</label>
+        <div className="mb-4 w-full max-w-[1200px] min-w-[600px] ml-4 mr-auto">
+          <label className="block text-white font-bold">Message</label>
           <textarea
             rows={6}
             placeholder="Enter your message"
