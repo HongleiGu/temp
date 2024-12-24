@@ -227,6 +227,10 @@ export default function SocietyRegistrationForm() {
 						classNamePrefix="custom-select" // Add a custom prefix for classNames
 						value={field.value.map((tag) => predefinedTags.find((t) => t.value === tag))}
 						onChange={(selectedTags) => {
+						if (selectedTags.length > 3) {
+							toast.error('You can only select up to 3 tags');
+							return; // Prevent further selection
+						}
 						const selectedValues = selectedTags.map((tag) => tag.value);
 						field.onChange(selectedValues);
 						}}
