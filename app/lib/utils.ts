@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { SQLEvent, Event, FormData, Registrations, SQLRegistrations } from "./types";
+import { SQLEvent, Event, FormData, Registrations, SQLRegistrations, Partner, Tag } from "./types";
+
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
@@ -67,6 +68,124 @@ export function getMonthName(month: string): string {
 	const monthIndex = parseInt(month, 10) - 1;
 	return monthNames[monthIndex] || "Invalid month";
 }
+
+//
+
+export async function fetchPartners(page: number, limit: number) {
+	try {
+		const response = await fetch('/api/societies/get-organiser-cards', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ page, limit }), // Sending page and limit in the body
+		});
+
+		if (!response.ok) {
+			throw new Error('Failed to fetch organisers card data');
+		}
+
+		const data = await response.json();
+
+		// Fetch predefined tags once
+		const predefinedTags = await getPredefinedTags();
+
+		// Map predefined tags into a lookup object for efficient access
+		const tagLookup: Record<string, string> = predefinedTags.reduce((acc: Record<string, string>, tag: Tag) => {
+			acc[tag.value] = tag.label;
+			return acc;
+		}, {});
+
+		// Map the response to the desired format
+		const formattedPartners = data.map((partner: Partner) => ({
+			id: partner.id,
+			name: partner.name || 'Unknown Name',
+			keywords: (partner.tags || []).map((tag: number) => {
+				// Convert tag to a string
+				const tagKey = tag.toString();
+				return tagLookup[tagKey] || 'Unknown Tag';
+			}),
+			description: partner.description || 'No description provided',
+			website: partner.website || 'No website available',
+			logo: partner.logo_url || null,
+
+		}));
+		
+		return formattedPartners;
+	} catch (err) {
+		console.error('failed to retrieve partners', err);
+	}
+}
+
+export async function fetchAllPartners() {
+	try {
+		const response = await fetch('/api/societies/get-all-organiser-cards');
+
+		if (!response.ok) {
+			throw new Error('Failed to fetch organisers card data');
+		}
+
+		const data = await response.json();
+
+		// Fetch predefined tags once
+		const predefinedTags = await getPredefinedTags();
+
+		// Map predefined tags into a lookup object for efficient access
+		const tagLookup: Record<string, string> = predefinedTags.reduce((acc: Record<string, string>, tag: Tag) => {
+			acc[tag.value] = tag.label;
+			return acc;
+		}, {});
+
+		// Map the response to the desired format
+		const formattedPartners = data.map((partner: Partner) => ({
+			id: partner.id,
+			name: partner.name || 'Unknown Name',
+			keywords: (partner.tags || []).map((tag: number) => {
+				// Convert tag to a string
+				const tagKey = tag.toString();
+				return tagLookup[tagKey] || 'Unknown Tag';
+			}),
+			description: partner.description || 'No description provided',
+			website: partner.website || 'No website available',
+			logo: partner.logo_url || null,
+
+		}));
+		
+		return formattedPartners;
+	} catch (err) {
+		console.error('failed to retrieve partners', err);
+	}
+}
+
+const fetchPredefinedTags = async () => { // this function might not need the map, should be tested
+    try {
+        const response = await fetch('/api/user/fetch-predefined-tags');
+        if (!response.ok) {
+            throw new Error(`Failed to fetch predefined tags: ${response.statusText}`);
+        }
+        const data = await response.json();
+
+        const predefinedTags: Tag[] = data.map((tag: Tag): Tag => ({
+            label: tag.label,
+            value: tag.value, 
+        }));
+
+        return predefinedTags;
+
+    } catch (error) {
+        console.error('Error fetching predefined tags:', error);
+        return []; 
+    }
+}
+
+export async function getPredefinedTags() {
+    const predefinedTags = await fetchPredefinedTags();
+    return predefinedTags;
+}
+
+export default getPredefinedTags;
+
+//
 
 export function sortEventsByDate(events: Event[]): Event[] {
 	return events.sort((a, b) => {

@@ -17,12 +17,10 @@ export default function AccountPage() {
 	const { data: session, status } = useSession()
 
 	const router = useRouter()
+
 	useEffect(() => {
-		if (!session) {
-			if (status !== "loading") {
-				router.push('/login')
-			}
-		}
+		if (status === 'loading') return;
+		if (!session) router.push('/login');
 	}, [session, status, router]);
 	
 

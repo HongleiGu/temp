@@ -1,7 +1,10 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { useForm } from 'react-hook-form';
+// for future improvement, componetize some of the fields to be used with register and other forms
+// also, replace upload with ImageUpload component
+
+import { useState, useEffect, useRef } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { SocietyRegisterFormData } from '@/app/lib/types';
 import { Button } from '../../components/button';
@@ -9,14 +12,30 @@ import { Input } from '../../components/input';
 import Image from 'next/image';
 import { ArrowRightIcon, ArrowUpTrayIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { upload } from '@vercel/blob/client';
+import Select from 'react-select'; // For tag selection
+import getPredefinedTags from '@/app/lib/utils';
+
 
 export default function SocietyRegistrationForm() {
-	const { register, handleSubmit, formState: { errors }, getValues, setValue } = useForm<SocietyRegisterFormData>({
-		mode: 'onSubmit'
+	const { register, handleSubmit, formState: { errors }, getValues, setValue, control } = useForm<SocietyRegisterFormData>({
+		mode: 'onSubmit',
+		defaultValues: {
+            tags: [], // Make sure tags is initialized as an empty array
+        },
 	});
 	const [step, setStep] = useState(1);
 	const [showPassword, setShowPassword] = useState(false);
 	const totalSteps = 2;
+	const [predefinedTags, setPredefinedTags] = useState([]); 
+
+	useEffect(() => {
+		const fetchTags = async () => {
+			const tags = await getPredefinedTags();
+			setPredefinedTags(tags); 
+		};
+
+		fetchTags(); 
+	}, []); 
 
 	const nextStep = () => {
 		if (step < totalSteps) setStep(step + 1);
@@ -105,7 +124,7 @@ export default function SocietyRegistrationForm() {
 	};
 
 
-	// Email, Name, and Password
+	// Email, Name, and Password entry
 	const EmailPasswordNameEntry = () => (
 
 		<div className='flex flex-col w-full'>
@@ -173,6 +192,73 @@ export default function SocietyRegistrationForm() {
 		</div>
 	)
 
+	// Description, Website and Tags entry
+	const DescriptionWebsiteTagsEntry = () => (
+		<div>
+			<div>
+				<label className="mt-10 text-gray-300">Description</label>
+					<Input 
+						type="text"
+						placeholder="Society Description"
+						className="w-full mt-4 bg-transparent mb-[30px]"
+						{...register('description')}
+					/>
+			</div>
+			<div>
+				<label className="mt-10 text-gray-300">Website</label>
+					<Input 
+						type="text"
+						placeholder="Official Website Link"
+						className="w-full mt-4 bg-transparent mb-[30px]"
+						{...register('website')}
+					/>
+			</div>
+			<div className='pb-[10px]'>
+				<label className="mt-10 text-gray-300">Tags</label>
+				<Controller
+					name="tags"
+					control={control}
+					render={({ field }) => (
+					<Select
+						{...field}
+						options={predefinedTags}
+						isMulti
+						className="w-full mt-4 bg-transparent"
+						classNamePrefix="custom-select" // Add a custom prefix for classNames
+						value={field.value.map((tag) => predefinedTags.find((t) => t.value === tag))}
+						onChange={(selectedTags) => {
+						if (selectedTags.length > 3) {
+							toast.error('You can only select up to 3 tags');
+							return; // Prevent further selection
+						}
+						const selectedValues = selectedTags.map((tag) => tag.value);
+						field.onChange(selectedValues);
+						}}
+						getOptionLabel={(e) => e.label}
+						getOptionValue={(e) => e.value}
+						styles={{
+							control: (provided) => ({
+								...provided,
+								backgroundColor: 'transparent', // Make the control (select box) transparent
+								border: '1px solid #ddd', 
+							}),
+							option: (provided) => ({
+								...provided,
+								color: 'black', // Option text color
+							}),
+							input: (provided) => ({
+								...provided,
+								color: 'white', // Make the search input text white
+							}),
+						}}
+					/>
+					)}
+				/>
+			</div>
+		</div>
+	)
+
+	// Logo entry
 	const LogoEntry = () => {
 		const [uploadedImage, setUploadedImage] = useState<File | null>(null);
 		const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -268,6 +354,7 @@ export default function SocietyRegistrationForm() {
 			<div className="w-screen p-12 md:px-28">
 
 				{step === 1 && <EmailPasswordNameEntry />}
+				{step === 1 && <DescriptionWebsiteTagsEntry />}
 				{step === 1 && <LogoEntry />}
 
 

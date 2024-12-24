@@ -2,7 +2,7 @@
 import { Button } from "../button";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
-import getPredefinedTags from "./get-predefined-tags";
+import fetchPredefinedTags from "@/app/lib/utils";
 
 export default function AccountFields({id, role}: {id: string, role: string}) {
 
@@ -13,7 +13,7 @@ export default function AccountFields({id, role}: {id: string, role: string}) {
 
     useEffect(() => {
         const fetchTags = async () => {
-            const tags = await getPredefinedTags();
+            const tags = await fetchPredefinedTags();
             setPredefinedTags(tags); 
         };
 

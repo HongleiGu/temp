@@ -167,33 +167,7 @@
 //     }
 // };
 
-const fetchPredefinedTags = async () => {
-    try {
-        const response = await fetch('/api/user/fetch-predefined-tags');
-        if (!response.ok) {
-            throw new Error(`Failed to fetch predefined tags: ${response.statusText}`);
-        }
-        const data = await response.json();
 
-        const predefinedTags = data.map(tag => ({
-            label: tag.label,
-            value: tag.value, 
-        }));
-
-        return predefinedTags;
-
-    } catch (error) {
-        console.error('Error fetching predefined tags:', error);
-        return []; 
-    }
-}
-
-export async function getPredefinedTags() {
-    const predefinedTags = await fetchPredefinedTags();
-    return predefinedTags;
-}
-
-export default getPredefinedTags;
 
 // export { seed };
 
