@@ -121,11 +121,11 @@ export default function EditDetailsPage() {
         <div className="min-h-screen flex flex-col justify-start p-10 bg-gradient-to-b from-[#041A2E] via-[#064580] to-[#083157]">
             <h1 className="text-3xl font-semibold mb-6">Edit Details</h1>
             <div>
-                <label className="block text-white font-bold mb-1">Society Logo</label>
+                <label className="block text-white font-bold mt-4 mb-1">Society Logo</label>
                 <ImageUpload register={register} setValue={setValue} id={session?.user?.id} />
             </div>
             <div>
-                <label className="block text-white font-bold mb-1">Name</label>
+                <label className="block text-white font-bold mt-4 mb-1">Name</label>
                 <input
                     type="text"
                     value={user.name}
@@ -134,7 +134,7 @@ export default function EditDetailsPage() {
                 />
             </div>
             <div>   
-                <label className="block text-white font-bold mb-1">Email</label>
+                <label className="block text-white font-bold mt-4 mb-1">Email</label>
                 <input
                     type="email"
                     value={user.email}
@@ -143,7 +143,7 @@ export default function EditDetailsPage() {
                 />
             </div>
             <div>
-                <label className="block text-white font-bold mb-1">Role</label>
+                <label className="block text-white font-bold mt-4 mb-1">Role</label>
                 <input
                     type="text"
                     value={user.role}
@@ -152,25 +152,25 @@ export default function EditDetailsPage() {
                 />
             </div>
             <div>
-                <label className="block text-white font-bold mb-1">Description</label>
+                <label className="block text-white font-bold mt-4 mb-1">Description</label>
                 <Input 
                     type="text"
                     placeholder="Society Description"
-                    className="w-full text-black p-2 border border-gray-300 rounded"
+                    className="w-full text-white p-2 border border-gray-300 rounded bg-transparent"
                     {...register('description')}
                 />
             </div>
             <div>
-                <label className="block text-white font-bold mb-1">Website</label>
+                <label className="block text-white font-bold mt-4 mb-1">Website</label>
                 <Input 
                     type="text"
                     placeholder="Official Website Link"
-                    className="w-full text-black p-2 border border-gray-300 rounded"
+                    className="w-full text-white p-2 border border-gray-300 rounded bg-transparent"
                     {...register('website')}
                 />
             </div>
             <div className='pb-[100px]'>
-                <label className="block text-white font-bold mb-1">Tags</label>
+                <label className="block text-white font-bold mt-4 mb-1">Tags</label>
                 <Controller
                 name="tags"
                 control={control}
