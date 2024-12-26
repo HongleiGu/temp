@@ -374,6 +374,28 @@ export async function insertUser(formData: UserRegisterFormData) {
 	}
 }
 
+export async function updatePassword(email: string, password: string) {
+	console.log(`Resetting ${email} password to ${password}`)
+	try {
+		const hashedPassword = await bcrypt.hash(password, 10);
+		await sql`
+			UPDATE users
+			SET 
+				password = ${hashedPassword}
+			WHERE email = ${email} --- Email is UNIQUE among users table
+		`
+		// Delete the reset_password entry
+		await sql`
+			DELETE FROM reset_password
+            WHERE email = ${email}
+		`;
+		return { success: true }
+	} catch (error) {
+		console.error('Error updating user password')
+		return { success: false, error }
+	}
+}
+
 export async function checkSocietyName(name: string) {
 	try {
 		const societyName = name.split(' ').map(capitalizeFirst).join(' ')
@@ -411,7 +433,7 @@ export async function checkEmail(email: string) {
 	}
 }
 
-export async function getEmail(id: string) {
+export async function getEmailFromId(id: string) {
 	try {
 		const data = await sql`
 			SELECT email 
@@ -481,5 +503,57 @@ export async function getRegistrationsForEvent(event_id: string) {
 		return { success: true, registrations: registrations }
 	} catch (error) {
 		return { success: false }
+	}
+}
+
+export async function insertResetToken(email: string, token: string): Promise<void> {
+	try {
+		await sql`
+            INSERT INTO reset_password (email, token, expires_at)
+            VALUES (${email}, ${token}, CURRENT_TIMESTAMP + INTERVAL '1 day')
+            ON CONFLICT (email) DO UPDATE 
+            SET token = ${token}, expires_at = CURRENT_TIMESTAMP + INTERVAL '1 day';
+        `;
+		console.log(`Reset token for email ${email} inserted/updated successfully.`);
+	} catch (error) {
+		console.error('Error inserting reset token:', error);
+		throw new Error('Failed to insert reset token');
+	}
+}
+
+export async function getEmailFromResetPasswordToken(token: string) {
+	try {
+		const result = await sql`
+			SELECT email
+			FROM reset_password
+			WHERE token = ${token}
+			LIMIT 1
+		`
+		const email = result.rows.map(row => row.email)[0]
+		return { success: true, email }
+	} catch (error) {
+		console.log('Error fetching email for token:', error)
+		return { success: false, error }
+	}
+}
+
+export async function validateToken(token: string): Promise<string> {
+	try {
+		const result = await sql`
+			SELECT expires_at FROM reset_password
+			WHERE token = ${token}
+			LIMIT 1
+		`;
+		if (result.rows.length === 0) return 'invalid'
+		const tokenExpiry = new Date(result.rows[0].expires_at)
+		const currentTime = new Date()
+
+		if (tokenExpiry < currentTime) {
+			return 'expired' // Token has expired
+		}
+		return 'valid'
+	} catch (error) {
+		console.error('Error checking password reset token:', error)
+		return 'invalid' // Assume invalid token
 	}
 }

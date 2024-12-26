@@ -109,37 +109,33 @@ export default function LoginForm() {
 
 function ForgottenPasswordModal({ onClose }: { onClose: () => void }) {
 	const [inputEmail, setInputEmail] = useState('');
-	const [status, setStatus] = useState<string | null>(null);
 	const [inputDisabled, setInputDisabled] = useState(false)
 
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		setInputDisabled(true)
-		setStatus('Sending...');
-		try {
-			const data = {
-				name: 'Forgotten Password',
-				email: inputEmail,
-				message: `Forgotten Password request for email: ${inputEmail}`,
-			};
 
-			const response = await fetch('/api/send-email', {
+		const toastId = toast.loading('Sending password reset email...')
+
+		try {
+			const response = await fetch('/api/forgotten-email', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify(data),
+				body: JSON.stringify({ email: inputEmail }),
 			});
 
 			if (response.ok) {
-				setStatus('Password reset email sent!');
+				toast.success('Password reset email sent!', { id: toastId });
 			} else {
-				setStatus('Failed to send the email.');
+				toast.error('Failed to send the email.', { id: toastId });
 			}
 		} catch (error) {
 			console.error('Error sending the email:', error);
-			setStatus('An error occurred. Please try again.');
+			toast.error('An error occurred. Please try again.', { id: toastId });
 		}
+		setInputDisabled(false)
 	};
 
 	return (
@@ -169,7 +165,6 @@ function ForgottenPasswordModal({ onClose }: { onClose: () => void }) {
 					<Button variant="filled" size="md" className="w-full justify-center self-center" disabled={inputDisabled}>
 						Submit
 					</Button>
-					{status && <p className="mt-2 text-sm text-center text-gray-600">{status}</p>}
 				</form>
 			</div>
 		</div>
