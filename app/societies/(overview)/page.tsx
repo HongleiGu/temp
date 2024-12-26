@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import debounce from 'lodash.debounce';
 import { fetchPartners } from '@/app/lib/utils';
 import CardSkeleton from '@/app/components/skeletons/card';
@@ -19,39 +19,6 @@ export default function SocietyPage() {
 	const pageSize: number = 10;
 	const maxCards: number = 100; // Max number of cards per page
 
-	// Fetch partners for the current page
-	const fetchPartnersData = async () => {
-		setLoading(true);
-		const result = await fetchPartners(currentPage, pageSize);
-		if (result.length === 0) {
-			setHasMore(false); // No more data to fetch
-		} else {
-			setPartners((prev) => [...prev, ...result]);
-		}
-		setLoading(false);
-	};
-
-	useEffect(() => {
-		fetchPartnersData();
-	}, [currentPage]);
-
-	// Trigger data fetch while skeletons are shown
-	useEffect(() => {
-		if (loading && !initialLoadTriggered && currentPage === 1) {
-			setInitialLoadTriggered(true); // Ensure this runs only once
-			loadMoreData();
-		}
-	}, [loading, initialLoadTriggered, currentPage]);
-
-	// Debounced function for handling input
-	const handleInputChange = useMemo(
-		() =>
-			debounce((value: string) => {
-				setSearchQuery(value.toLowerCase());
-			}, 300),
-		[]
-	);
-
 	// Filter partners based on searchQuery
 	const filteredPartners = useMemo(() => {
 		if (!searchQuery) return partners;
@@ -64,12 +31,46 @@ export default function SocietyPage() {
 		);
 	}, [searchQuery, partners]);
 
+	// Fetch partners for the current page
+	const fetchPartnersData =useCallback(async () => {
+		setLoading(true);
+		const result = await fetchPartners(currentPage, pageSize);
+		if (result.length === 0) {
+			setHasMore(false); // No more data to fetch
+		} else {
+			setPartners((prev) => [...prev, ...result]);
+		}
+		setLoading(false);
+	}, [currentPage, setHasMore, setPartners]);
+
 	// Load more partners when the user scrolls to the bottom
-	const loadMoreData = () => {
+	const loadMoreData = useCallback(() => {
 		if (hasMore && filteredPartners.length < maxCards) {
 			setCurrentPage((prev) => prev + 1);
 		}
-	};
+	}, [hasMore, filteredPartners, setCurrentPage]);
+
+
+	useEffect(() => {
+		fetchPartnersData();
+	}, [currentPage, fetchPartnersData]);
+
+	// Trigger data fetch while skeletons are shown
+	useEffect(() => {
+		if (loading && !initialLoadTriggered && currentPage === 1) {
+			setInitialLoadTriggered(true); // Ensure this runs only once
+			loadMoreData();
+		}
+	}, [loading, initialLoadTriggered, currentPage, loadMoreData]);
+
+	// Debounced function for handling input
+	const handleInputChange = useMemo(
+		() =>
+			debounce((value: string) => {
+				setSearchQuery(value.toLowerCase());
+			}, 300),
+		[]
+	);
 
 	// Handle pagination for next set of partners if there are more than 100
 	const handlePagination = (page: number) => {

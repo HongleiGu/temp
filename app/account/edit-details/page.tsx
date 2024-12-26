@@ -4,7 +4,7 @@
 
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useForm, Controller } from 'react-hook-form';
 import Select from 'react-select'; // For tag selection
@@ -81,7 +81,7 @@ export default function EditDetailsPage() {
 
 	}
 
-	const fetchAccountInfo = async (id: string) => {
+	const fetchAccountInfo = useCallback( async (id: string) => {
 		try {
 			const res = await fetch('/api/user/get-account-fields', {
 				method: 'POST',
@@ -95,7 +95,7 @@ export default function EditDetailsPage() {
 		} catch (error) {
 			console.error('Error loading account details:', error);
 		}
-	};
+	}, [setValue]);
 
 	useEffect(() => {
 		if (status === 'loading') return;
@@ -105,7 +105,7 @@ export default function EditDetailsPage() {
 		} else {
 			fetchAccountInfo(session.user.id);
 		}
-	}, [session, status, router]);
+	}, [session, status, router, fetchAccountInfo]);
 
 	if (status === 'loading') {
 		return <div>Loading...</div>;

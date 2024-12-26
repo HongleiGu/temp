@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { ResetPasswordFormData } from '../lib/types';
@@ -10,6 +10,14 @@ import { Button } from '../components/button';
 import { FlagIcon } from '@heroicons/react/24/outline';
 
 export default function ResetPasswordPage() {
+	return(
+		<Suspense fallback= { <div>Loading...</div> } >
+			<ResetPassword />
+		</Suspense>
+	);
+}
+
+function ResetPassword() {
 	const { register, handleSubmit, setError, clearErrors, formState: { errors }, getValues } = useForm<ResetPasswordFormData>({
 		mode: 'onSubmit'
 	});
@@ -40,9 +48,13 @@ export default function ResetPasswordPage() {
 
 				const data = await response.json()
 
-				if (data.status === 'valid') setStatus('valid')
-				else if (data.status === 'invalid') setStatus('invalid')
-				else if (data.status === 'expired') setStatus('expired')
+				if (data.status === 'valid') {
+					setStatus('valid')
+				} else if (data.status === 'invalid') {
+					setStatus('invalid')
+				} else if (data.status === 'expired') {
+					setStatus('expired')
+				}
 			} catch (error) {
 				console.error('Error validating token:', error);
 				setStatus('invalid');

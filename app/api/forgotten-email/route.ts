@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
 	}
 }
 
-export async function generateResetToken(email: string): Promise<string> {
+async function generateResetToken(email: string): Promise<string> {
 	const token = uuidv4()
 
 	await insertResetToken(email, token)

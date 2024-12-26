@@ -44,7 +44,7 @@ export default function AccountFields({id, role}: {id: string, role: string}) {
 		if (role === "organiser") {
 			fetchAccountInfo(id);
 		}
-	}, [role]);
+	}, [role, id]);
 
     const router = useRouter()
 

@@ -1,30 +1,31 @@
+import Image from "next/image";
 import { useEffect, useState } from "react";
+
+async function fetchAccountLogo(id: string): Promise<string> {
+	try {
+		const res = await fetch('/api/user/get-account-logo', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(id),
+		});
+
+		const { logo_url } = await res.json();
+		return logo_url || '';
+	} catch (error) {
+		console.error('Error loading logo:', error);
+		return '';
+	}
+}
 
 export default function AccountLogo({id, role}: {id: string, role: string}) {
 
 	const [ logo, setLogo ] = useState('')
 
-    const fetchAccountLogo = async (id: string) => {
-		try {
-			const res = await fetch('/api/user/get-account-logo', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(id),
-			});
-
-			const { logo_url } = await res.json()
-			setLogo(logo_url)
-			console.log(logo)
-		} catch (error) {
-			console.error('Error loading description:', error)
-		}
-	}
-
     useEffect(() => {
 		if (role === "organiser") {
-			fetchAccountLogo(id);
+			fetchAccountLogo(id).then(setLogo);
 		}
 	}, [role, id]);
 
@@ -33,9 +34,9 @@ export default function AccountLogo({id, role}: {id: string, role: string}) {
 			<p className="text-sm capitalize flex">
 				<span className="mr-12 font-semibold">Logo:</span>
 				{logo ? (
-					<img src={logo} alt="Account Logo" className="w-24 h-24 object-cover border-2 border-gray-300 rounded" />
+					<Image src={logo} alt="Account Logo" className="w-24 h-24 object-cover border-2 border-gray-300 rounded" />
 				) : (
-					<img src="/images/no-image-found.png" alt="No logo found" className="w-24 h-24 object-cover border-2 border-gray-300 rounded" />
+					<Image src="/images/no-image-found.png" alt="No logo found" className="w-24 h-24 object-cover border-2 border-gray-300 rounded" />
 				)}
 			</p>
 		</div>
