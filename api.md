@@ -6,7 +6,7 @@ For each API route it lists **inputs**, **outputs**, **errors thrown**, and **pl
 
 # [1.1.4]
 
-## `forgotten-email`:
+## `forgotten-password`:
 
 ### Inputs
 - email: _string_

@@ -17,7 +17,7 @@ export default function ForgottenPasswordModal({ onClose }: { onClose: () => voi
 		const toastId = toast.loading('Sending password reset email...')
 
 		try {
-			const response = await fetch('/api/forgotten-email', {
+			const response = await fetch('/api/forgotten-password', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
