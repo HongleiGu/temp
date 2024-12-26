@@ -4,6 +4,20 @@ All the notable additions and fixes.
 
 This changelog follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+# [1.1.4] - 2024-12-26
+
+### Added
+
+- /reset-password route along with `ResetPasswordFormData` type
+- Email notifications for resetting password alongside new email templates
+- `reset_password` database table. Schema added to notion
+- Token generation, storing, and clearing from database
+- All appropriate validation for token (expired, invalid, multi-requested etc.)
+- `api.md` for API reference. Filled with new updates **only** for push 1.1.4
+
+### Changed
+- useCallback for useEffect dependencies inside existing codebase (as per build warnings)
+
 # [1.1.3] - 2024-12-24
 
 ### Added
