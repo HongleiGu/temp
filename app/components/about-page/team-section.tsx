@@ -15,7 +15,7 @@ export default function TeamSection() {
         {
             name: "Patrick Schnecker",
             title: "Head of Outreach",
-            image: "/images/about/patrick-schnecker.png",
+            image: "/images/about/patrick-schnecker.jpeg",
         },
         {
             name: "Manon Martin",
