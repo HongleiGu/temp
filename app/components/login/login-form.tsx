@@ -10,6 +10,8 @@ import { Input } from '../input';
 import ForgottenPasswordModal from './reset-password-modal';
 import toast from 'react-hot-toast';
 
+// TODO: Update to use react-hook-form
+
 export default function LoginForm() {
 	const [isPending, setIsPending] = useState<boolean>(false)
 	const [showForgottenPasswordModal, setShowForgottenPasswordModal] = useState(false);
