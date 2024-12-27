@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState } from 'react';
 import { KeyIcon } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from '../button';
@@ -9,6 +9,8 @@ import { useRouter } from 'next/navigation';
 import { Input } from '../input';
 import ForgottenPasswordModal from './reset-password-modal';
 import toast from 'react-hot-toast';
+import { useForm } from 'react-hook-form';
+import { LoginPageFormData } from '@/app/lib/types';
 
 // TODO: Update to use react-hook-form
 
@@ -16,15 +18,21 @@ export default function LoginForm() {
 	const [isPending, setIsPending] = useState<boolean>(false)
 	const [showForgottenPasswordModal, setShowForgottenPasswordModal] = useState(false);
 
+	const { register, handleSubmit, formState: { errors } } = useForm<LoginPageFormData>({
+		mode: 'onSubmit',
+		defaultValues: {
+			email: '', 
+			password: '',
+		},
+	});
+
 	const router = useRouter()
 
-	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
+	const onSubmit = async (data: LoginPageFormData) => {
 		const toastId = toast.loading('Logging you in...')
 		setIsPending(true)
 
-		const formData = new FormData(e.currentTarget)
-		const result = await authenticate(undefined, formData)
+		const result = await authenticate(undefined, data)
 
 		if (!result.response) {
 			toast.error('Login failed.', { id: toastId });
@@ -33,7 +41,7 @@ export default function LoginForm() {
 			router.push('/account')
 		}
 		setIsPending(false)
-	};
+	}
 
 	const handleForgottenPasswordPress = () => {
 		setShowForgottenPasswordModal(true);
@@ -42,7 +50,7 @@ export default function LoginForm() {
 	return (
 		<>
 
-			<form onSubmit={handleSubmit} className="space-y-3">
+			<form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
 				<div className="flex-1 flex-col items-center rounded-lg bg-gray-50 px-6 pb-4 pt-8 text-black">
 					<h1 className='mb-3 text-xl '>
 						Please enter your details to log in
@@ -57,13 +65,21 @@ export default function LoginForm() {
 							</label>
 							<div className="relative">
 								<Input
-									className='bg-transparent text-black text-center '
+									className="bg-transparent text-black text-center"
 									id="email"
 									type="email"
-									name="email"
 									placeholder="Email Address"
-									required
+									{...register('email', {
+										required: 'Email address is required',
+										pattern: {
+										value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+										message: 'Please enter a valid email address',
+										},
+									})}
 								/>
+								{errors.email && (
+									<p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+								)}
 							</div>
 						</div>
 						<div className="mt-4">
@@ -75,15 +91,22 @@ export default function LoginForm() {
 							</label>
 							<div className="relative">
 								<Input
-									className='bg-transparent text-black text-center peer'
+									className="bg-transparent text-black text-center peer"
 									id="password"
 									type="password"
-									name="password"
 									placeholder="Enter your password"
-									required
-									minLength={6}
+									{...register('password', {
+										required: 'Password is required',
+										minLength: {
+										value: 6,
+										message: 'Password must be at least 6 characters long',
+										},
+									})}
 								/>
 								<KeyIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+								{errors.password && (
+									<p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
+								)}
 							</div>
 						</div>
 					</div>

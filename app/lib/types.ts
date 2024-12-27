@@ -173,6 +173,11 @@ export interface SocietyMessageFormData {
 	message: string;	
 }
 
+export interface LoginPageFormData {
+	email: string
+	password: string
+}
+
 export interface EmailPayloadType {
 	email: string;
 	subject: string;
