@@ -12,7 +12,7 @@ This changelog follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ### Fixed
 
-- compile error due to width and height not specified for Image component in account page
+- Compile error due to width and height not specified for Image component in account page
 
 # [1.1.4] - 2024-12-26
 

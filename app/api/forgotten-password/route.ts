@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: "Failed to extract user email" }, { status: 500 });
 		}
 
-		const token = await generateResetToken(email) // Generates token (UUID) and inserts into reset_pasword table
+		const token = await generateResetToken(email) // Generates token and inserts into redis 
 
 		await sendResetPasswordEmail(email, token);
 

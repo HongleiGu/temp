@@ -385,11 +385,6 @@ export async function updatePassword(email: string, password: string) {
 				password = ${hashedPassword}
 			WHERE email = ${email} --- Email is UNIQUE among users table
 		`
-		// Delete the reset_password entry
-		await sql`
-			DELETE FROM reset_password
-            WHERE email = ${email}
-		`;
 		return { success: true }
 	} catch (error) {
 		console.error('Error updating user password')
