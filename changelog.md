@@ -16,6 +16,7 @@ This changelog follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 - `api.md` for API reference. Filled with new updates **only** for push 1.1.4
 
 ### Changed
+
 - useCallback for useEffect dependencies inside existing codebase (as per build warnings)
 
 # [1.1.3] - 2024-12-24
