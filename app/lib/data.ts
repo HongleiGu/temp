@@ -507,21 +507,6 @@ export async function getRegistrationsForEvent(event_id: string) {
 	}
 }
 
-// export async function insertResetToken(email: string, token: string): Promise<void> {
-// 	try {
-// 		await sql`
-//             INSERT INTO reset_password (email, token, expires_at)
-//             VALUES (${email}, ${token}, CURRENT_TIMESTAMP + INTERVAL '1 day')
-//             ON CONFLICT (email) DO UPDATE 
-//             SET token = ${token}, expires_at = CURRENT_TIMESTAMP + INTERVAL '1 day';
-//         `;
-// 		console.log(`Reset token for email ${email} inserted/updated successfully.`);
-// 	} catch (error) {
-// 		console.error('Error inserting reset token:', error);
-// 		throw new Error('Failed to insert reset token');
-// 	}
-// }
-
 export async function insertResetToken(email: string, token: string): Promise<void> {
 	try {
 		console.log('function insertResetToken invoked');
@@ -539,22 +524,6 @@ export async function insertResetToken(email: string, token: string): Promise<vo
 		throw new Error('Failed to insert reset token');
 	}
 }
-
-// export async function getEmailFromResetPasswordToken(token: string) {
-// 	try {
-// 		const result = await sql`
-// 			SELECT email
-// 			FROM reset_password
-// 			WHERE token = ${token}
-// 			LIMIT 1
-// 		`
-// 		const email = result.rows.map(row => row.email)[0]
-// 		return { success: true, email }
-// 	} catch (error) {
-// 		console.log('Error fetching email for token:', error)
-// 		return { success: false, error }
-// 	}
-// }
 
 export async function getEmailFromResetPasswordToken(token: string) {
 	try {
@@ -577,27 +546,6 @@ export async function getEmailFromResetPasswordToken(token: string) {
 		return { success: false, error };
 	}
 }
-
-// export async function validateToken(token: string): Promise<string> {
-// 	try {
-// 		const result = await sql`
-// 			SELECT expires_at FROM reset_password
-// 			WHERE token = ${token}
-// 			LIMIT 1
-// 		`;
-// 		if (result.rows.length === 0) return 'invalid'
-// 		const tokenExpiry = new Date(result.rows[0].expires_at)
-// 		const currentTime = new Date()
-
-// 		if (tokenExpiry < currentTime) {
-// 			return 'expired' // Token has expired
-// 		}
-// 		return 'valid'
-// 	} catch (error) {
-// 		console.error('Error checking password reset token:', error)
-// 		return 'invalid' // Assume invalid token
-// 	}
-// }
 
 export async function validateToken(token: string): Promise<string> {
 	try {
