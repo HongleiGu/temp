@@ -107,6 +107,11 @@ export interface UserRegisterFormData {
     isNewsletterSubscribed: boolean;
 }
 
+export interface ResetPasswordFormData {
+	password: string;
+	confirmPassword: string;
+}
+
 export interface SocietyRegisterFormData {
 	name: string;
     email: string;
@@ -166,6 +171,11 @@ export interface ContactFormInput {
 export interface SocietyMessageFormData {
 	subject: string;
 	message: string;	
+}
+
+export interface LoginPageFormData {
+	email: string
+	password: string
 }
 
 export interface EmailPayloadType {

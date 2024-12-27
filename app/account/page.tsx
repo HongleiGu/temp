@@ -4,16 +4,19 @@
 // unknown(number) value, while the tags are loaded in in the initial render. It only shows for less than a second however. 
 // You can also just remove the fetch-predefined-tags component and couple the logic where it is needed.
 
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { useEffect } from 'react';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/app/components/button';
 import UserEventsList from '../components/account/user-events-list';
 import AccountFields from '../components/account/account-fields';
 import AccountLogo from '../components/account/account-logo';
+import ForgottenPasswordModal from '../components/login/reset-password-modal';
+
 
 export default function AccountPage() {
+	const [showForgottenPasswordModal, setShowForgottenPasswordModal] = useState(false);
 	const { data: session, status } = useSession()
 
 	const router = useRouter()
@@ -22,6 +25,10 @@ export default function AccountPage() {
 		if (status === 'loading') return;
 		if (!session) router.push('/login');
 	}, [session, status, router]);
+
+	const handleForgottenPasswordPress = () => {
+		setShowForgottenPasswordModal(true);
+	}
 	
 
 	if (status === 'loading') {
@@ -61,15 +68,27 @@ export default function AccountPage() {
 					<UserEventsList user_id={user.id} />
 				</div>
 
-				<div className="flex justify-end self-end">
+				<div className="flex justify-end self-end space-x-2">
 					<Button
 						variant='filled'
-						className="bg-red-600 text-white py-2 px-4 rounded-full"
+						className="bg-sky-600 hover:bg-sky-800 text-white py-2 px-4 rounded-full"
+						onClick={handleForgottenPasswordPress}
+					>
+						Reset Your Password
+					</Button>
+					<Button
+						variant='filled'
+						className="bg-red-600 hover:bg-red-900 text-white py-2 px-4 rounded-full"
 						onClick={() => router.push('/logout')}
 					>
-						Sign out
+						Sign Out
 					</Button>
 				</div>
+				{showForgottenPasswordModal && (
+					<ForgottenPasswordModal
+						onClose={() => setShowForgottenPasswordModal(false)}
+					/>
+				)}
 			</div>
 		);
 	}

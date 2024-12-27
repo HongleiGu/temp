@@ -3,6 +3,7 @@ import { SQLEvent, ContactFormInput, SocietyRegisterFormData, UserRegisterFormDa
 import { convertSQLEventToEvent, formatDOB, selectUniversity, capitalize, convertSQLRegistrationsToRegistrations, capitalizeFirst } from './utils';
 import bcrypt from 'bcrypt';
 import { Tag } from './types';
+import redis from './config';
 
 export async function fetchEvents() {
 	try {
@@ -374,6 +375,23 @@ export async function insertUser(formData: UserRegisterFormData) {
 	}
 }
 
+export async function updatePassword(email: string, password: string) {
+	console.log(`Resetting ${email} password to ${password}`)
+	try {
+		const hashedPassword = await bcrypt.hash(password, 10);
+		await sql`
+			UPDATE users
+			SET 
+				password = ${hashedPassword}
+			WHERE email = ${email} --- Email is UNIQUE among users table
+		`
+		return { success: true }
+	} catch (error) {
+		console.error('Error updating user password')
+		return { success: false, error }
+	}
+}
+
 export async function checkSocietyName(name: string) {
 	try {
 		const societyName = name.split(' ').map(capitalizeFirst).join(' ')
@@ -411,7 +429,7 @@ export async function checkEmail(email: string) {
 	}
 }
 
-export async function getEmail(id: string) {
+export async function getEmailFromId(id: string) {
 	try {
 		const data = await sql`
 			SELECT email 
@@ -481,5 +499,73 @@ export async function getRegistrationsForEvent(event_id: string) {
 		return { success: true, registrations: registrations }
 	} catch (error) {
 		return { success: false }
+	}
+}
+
+export async function insertResetToken(email: string, token: string): Promise<void> {
+	try {
+		console.log('function insertResetToken invoked');
+		const tokenKey = `reset_password_token:${token}`;
+		const emailKey = `reset_password_email:${email}`;
+	
+		// Set the token and email in Redis with a 60-minute expiry (3600 seconds)
+		const expiryInSeconds = 3600; // 60 minutes
+		await redis.set(tokenKey, email, 'EX', expiryInSeconds); // Maps token to email
+		await redis.set(emailKey, token, 'EX', expiryInSeconds); // Maps email to token
+		
+		console.log(`Reset token for email ${email} inserted/updated successfully.`);
+	} catch (error) {
+		console.error('Error inserting reset token:', error);
+		throw new Error('Failed to insert reset token');
+	}
+}
+
+export async function getEmailFromResetPasswordToken(token: string) {
+	try {
+		console.log('function getEmailFromToken invoked');
+		const tokenKey = `reset_password_token:${token}`;
+	
+		// Fetch the email associated with the token from Redis
+		const email = await redis.get(tokenKey);
+  
+		if (!email) {
+			// If no email is found, the token is invalid or expired
+			console.log('No email found for the provided token');
+			return { success: false, error: 'Invalid or expired token' };
+		}
+  
+		// console.log(`Email ${email} found for token ${token}`);
+		return { success: true, email };
+	} catch (error) {
+		console.error('Error fetching email for token:', error);
+		return { success: false, error };
+	}
+}
+
+export async function validateToken(token: string): Promise<string> {
+	try {
+		console.log('function validateToken invoked');
+		const tokenKey = `reset_password_token:${token}`;
+		
+		// Check if the token exists in Redis
+		const tokenExpiry = await redis.get(tokenKey);
+		
+		if (!tokenExpiry) {
+			return 'invalid'; 
+		}
+		
+		// Compare the token's expiry time with the current time
+		const currentTime = new Date();
+		const expiryTime = new Date(tokenExpiry);
+		
+		if (expiryTime < currentTime) {
+			await redis.del(tokenKey);
+			return 'expired';
+		}
+		
+		return 'valid'; 
+	} catch (error) {
+		console.error('Error checking password reset token:', error);
+		return 'invalid';
 	}
 }

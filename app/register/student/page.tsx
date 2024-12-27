@@ -126,8 +126,6 @@ export default function UserRegistrationForm() {
 						message: 'Password must be at least 8 characters long.',
 					},
 				})}
-			// {...register('password', { required: true, minLength: 8 })}
-
 			/>
 
 			<Input

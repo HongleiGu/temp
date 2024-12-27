@@ -10,7 +10,7 @@ import { SocietyRegisterFormData } from '@/app/lib/types';
 import { Button } from '../../components/button';
 import { Input } from '../../components/input';
 import Image from 'next/image';
-import { ArrowRightIcon, ArrowUpTrayIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { FlagIcon, ArrowUpTrayIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { upload } from '@vercel/blob/client';
 import Select from 'react-select'; // For tag selection
 import getPredefinedTags from '@/app/lib/utils';
@@ -338,10 +338,11 @@ export default function SocietyRegistrationForm() {
 					</label>
 				</div>
 				{errors.hasAgreedToTerms && <p className="text-red-500 mt-2">{errors.hasAgreedToTerms.message}</p>}
-				{/* Continue button */}
+
+				{/* Finish button */}
 				<div className="flex justify-end mt-6 items-center">
 					<Button variant='outline' onClick={handleSubmit(onSubmit)} className="p-3 text-white rounded-lg hover:bg-slate-500">
-						Continue <ArrowRightIcon className='ml-2' width={15} height={15} />
+						Submit <FlagIcon className='ml-2' width={15} height={15} />
 					</Button>
 				</div>
 			</div>

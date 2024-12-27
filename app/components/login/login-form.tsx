@@ -1,27 +1,38 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
-import { KeyIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useState } from 'react';
+import { KeyIcon } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from '../button';
 import { authenticate } from '@/app/lib/actions';
 import { useRouter } from 'next/navigation';
 import { Input } from '../input';
+import ForgottenPasswordModal from './reset-password-modal';
 import toast from 'react-hot-toast';
+import { useForm } from 'react-hook-form';
+import { LoginPageFormData } from '@/app/lib/types';
+
+// TODO: Update to use react-hook-form
 
 export default function LoginForm() {
 	const [isPending, setIsPending] = useState<boolean>(false)
 	const [showForgottenPasswordModal, setShowForgottenPasswordModal] = useState(false);
 
+	const { register, handleSubmit, formState: { errors } } = useForm<LoginPageFormData>({
+		mode: 'onSubmit',
+		defaultValues: {
+			email: '', 
+			password: '',
+		},
+	});
+
 	const router = useRouter()
 
-	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
+	const onSubmit = async (data: LoginPageFormData) => {
 		const toastId = toast.loading('Logging you in...')
 		setIsPending(true)
 
-		const formData = new FormData(e.currentTarget)
-		const result = await authenticate(undefined, formData)
+		const result = await authenticate(undefined, data)
 
 		if (!result.response) {
 			toast.error('Login failed.', { id: toastId });
@@ -30,7 +41,7 @@ export default function LoginForm() {
 			router.push('/account')
 		}
 		setIsPending(false)
-	};
+	}
 
 	const handleForgottenPasswordPress = () => {
 		setShowForgottenPasswordModal(true);
@@ -39,7 +50,7 @@ export default function LoginForm() {
 	return (
 		<>
 
-			<form onSubmit={handleSubmit} className="space-y-3">
+			<form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
 				<div className="flex-1 flex-col items-center rounded-lg bg-gray-50 px-6 pb-4 pt-8 text-black">
 					<h1 className='mb-3 text-xl '>
 						Please enter your details to log in
@@ -54,13 +65,21 @@ export default function LoginForm() {
 							</label>
 							<div className="relative">
 								<Input
-									className='bg-transparent text-black text-center '
+									className="bg-transparent text-black text-center"
 									id="email"
 									type="email"
-									name="email"
 									placeholder="Email Address"
-									required
+									{...register('email', {
+										required: 'Email address is required',
+										pattern: {
+										value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+										message: 'Please enter a valid email address',
+										},
+									})}
 								/>
+								{errors.email && (
+									<p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+								)}
 							</div>
 						</div>
 						<div className="mt-4">
@@ -72,15 +91,22 @@ export default function LoginForm() {
 							</label>
 							<div className="relative">
 								<Input
-									className='bg-transparent text-black text-center peer'
+									className="bg-transparent text-black text-center peer"
 									id="password"
 									type="password"
-									name="password"
 									placeholder="Enter your password"
-									required
-									minLength={6}
+									{...register('password', {
+										required: 'Password is required',
+										minLength: {
+										value: 6,
+										message: 'Password must be at least 6 characters long',
+										},
+									})}
 								/>
 								<KeyIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+								{errors.password && (
+									<p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
+								)}
 							</div>
 						</div>
 					</div>
@@ -106,72 +132,3 @@ export default function LoginForm() {
 	);
 }
 
-
-function ForgottenPasswordModal({ onClose }: { onClose: () => void }) {
-	const [inputEmail, setInputEmail] = useState('');
-	const [status, setStatus] = useState<string | null>(null);
-	const [inputDisabled, setInputDisabled] = useState(false)
-
-	const handleSubmit = async (e: FormEvent) => {
-		e.preventDefault();
-		setInputDisabled(true)
-		setStatus('Sending...');
-		try {
-			const data = {
-				name: 'Forgotten Password',
-				email: inputEmail,
-				message: `Forgotten Password request for email: ${inputEmail}`,
-			};
-
-			const response = await fetch('/api/send-email', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(data),
-			});
-
-			if (response.ok) {
-				setStatus('Password reset email sent!');
-			} else {
-				setStatus('Failed to send the email.');
-			}
-		} catch (error) {
-			console.error('Error sending the email:', error);
-			setStatus('An error occurred. Please try again.');
-		}
-	};
-
-	return (
-		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-			<div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-				<div className="flex justify-between items-center">
-					<h2 className="text-lg font-bold text-black">Forgotten Password</h2>
-					<Button variant='ghost' onClick={onClose}>
-						<XMarkIcon className="h-6 w-6 text-gray-500 hover:text-gray-700" />
-					</Button>
-				</div>
-				<p className="mt-4 text-sm text-gray-600">
-					Please enter your email address to reset your password. We will notify the team of your issue and have it resolved as soon as possible
-				</p>
-				<form onSubmit={handleSubmit} className="mt-10 space-y-4">
-					<Input
-						id="forgottenEmail"
-						type="email"
-						name="forgottenEmail"
-						placeholder="Enter your email"
-						value={inputEmail}
-						onChange={(e) => setInputEmail(e.target.value)}
-						required
-						className='bg-transparet text-black'
-						disabled={inputDisabled}
-					/>
-					<Button variant="filled" size="md" className="w-full justify-center self-center" disabled={inputDisabled}>
-						Submit
-					</Button>
-					{status && <p className="mt-2 text-sm text-center text-gray-600">{status}</p>}
-				</form>
-			</div>
-		</div>
-	);
-}

@@ -1,8 +1,11 @@
-//import bcrypt from 'bcrypt';
-//import { users } from '../lib/placeholder-data';
-
 // import { db } from '@vercel/postgres';
 // const client = await db.connect();
+
+
+/*  UNCOMMENT THE ABOVE LINES TO USE DATABASE  */
+
+//import bcrypt from 'bcrypt';
+//import { users } from '../lib/placeholder-data';
 
 
 // async function seedUsers() {
@@ -139,7 +142,6 @@
 // }
 
 // async function seedEventRegistrationsTable() {
-
 // 	await client.sql`
 // 	  CREATE TABLE IF NOT EXISTS event_registrations (
 // 		id SERIAL PRIMARY KEY,
@@ -150,22 +152,32 @@
 // 		created_at TIMESTAMP DEFAULT NOW()
 // 	  );
 // 	`;
+// }
 
+// async function seedResetPasswordTable() {
+// 	await client.sql`
+// 		  CREATE TABLE IF NOT EXISTS reset_password (
+// 			id SERIAL PRIMARY KEY,
+// 			email VARCHAR(255) NOT NULL UNIQUE,
+// 			token VARCHAR(255) NOT NULL,
+// 			expires_at TIMESTAMP DEFAULT NOW()
+// 		  );
+// 	`;
 // }
 
 export async function GET() {
-// 	try {
-// 		await client.sql`BEGIN`;
-// 		await addCapacityColumnToEventTable()
+	// try {
+	// 	await client.sql`BEGIN`;
+	// 	await seedResetPasswordTable()
 
-// 		await client.sql`COMMIT`;
-	// return Response.json({ message: 'Database updated successfully' });
+	// 	await client.sql`COMMIT`;
+	// 	return Response.json({ message: 'Database updated successfully' });
 
-// 	} catch (error) {
-// 		await client.sql`ROLLBACK`;
-// 		return Response.json({ error }, { status: 500 });
-// 	}
-// 	return Response.json({ message: 'Nothing to see here' });
+	// } catch (error) {
+	// 	await client.sql`ROLLBACK`;
+	// 	return Response.json({ error }, { status: 500 });
+	// }
+	return Response.json({ message: 'Nothing to see here' });
 }
 
 

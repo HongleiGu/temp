@@ -1,17 +1,18 @@
 'use client';
 
 import { signIn, signOut } from "next-auth/react";
+import { LoginPageFormData } from "./types";
 
-export async function authenticate(prevState: string | undefined, formData: FormData) {
+export async function authenticate(prevState: string | undefined, formData: LoginPageFormData) {
 	try {
 		console.log('Attempting sign in!')
 
 		const result = await signIn('credentials', {
 			redirect: false,
-			email: formData.get('email'),
-			password: formData.get('password')
+			email: formData.email,
+			password: formData.password
 		});
-		console.log (formData.get('email'), formData.get('password'), result)
+		console.log (formData.email, formData.password, result)
 
 		if (result?.error) {
 			return { response: false, error: "Invalid credentials" }
@@ -26,7 +27,6 @@ export async function authenticate(prevState: string | undefined, formData: Form
 	}
 }
 
-
 export async function logout() {
 	try {
 		await signOut({ redirect: false });
@@ -36,4 +36,3 @@ export async function logout() {
 		return { success: false };
 	}
 }
-

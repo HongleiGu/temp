@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { Button } from '../../components/button'; 
 import Image from 'next/image';
 import { ArrowUpTrayIcon, TrashIcon } from '@heroicons/react/24/outline';
@@ -12,7 +12,7 @@ const ImageUpload = ({ id, register, setValue }: { id: string, register: UseForm
     const [uploadedImage, setUploadedImage] = useState<File | null>(null);
     const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-    const fetchAccountLogo = async (id: string) => {
+    const fetchAccountLogo = useCallback(async (id: string) => {
         try {
             const res = await fetch('/api/user/get-account-logo', {
                 method: 'POST',
@@ -26,11 +26,11 @@ const ImageUpload = ({ id, register, setValue }: { id: string, register: UseForm
         } catch (error) {
             console.error('Error loading logo:', error);
         }
-    }; 
+    }, [setPreviewImage, setValue]); 
 
     useEffect(()=> {
         fetchAccountLogo(id);
-    }, [])
+    }, [id, fetchAccountLogo])
 
     register('uploadedImage');
     const inputRef = useRef<HTMLInputElement>(null);

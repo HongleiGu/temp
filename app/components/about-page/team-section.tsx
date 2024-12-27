@@ -15,7 +15,7 @@ export default function TeamSection() {
         {
             name: "Patrick Schnecker",
             title: "Head of Outreach",
-            image: "/images/about/patrick-schnecker.png",
+            image: "/images/about/patrick-schnecker.jpeg",
         },
         {
             name: "Manon Martin",
@@ -26,6 +26,11 @@ export default function TeamSection() {
 			name: "Anish Kochhar",
 			title: "Chief Technology Officer",
 			image: "/images/about/anish-kochhar.jpg",
+		},
+		{
+			name: "Ileana Oprescu",
+			title: "Social Media Manager",
+			image: "/images/about/ileana-oprescu.jpeg",
 		},
         {
             name: "Nela Duniova",
@@ -52,6 +57,11 @@ export default function TeamSection() {
             title: "Multimedia Officer",
             image: "/images/about/seddig-mohamed.png",
         },
+		{
+			name: "Mikael Bashir",
+			title: "Web Developer",
+			image: "/images/about/mikhael-bashir.jpeg",
+		},
         {
             name: "Alan Jiang",
             title: "Web Developer",
