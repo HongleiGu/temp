@@ -34,9 +34,9 @@ export default function AccountLogo({id, role}: {id: string, role: string}) {
 			<p className="text-sm capitalize flex">
 				<span className="mr-12 font-semibold">Logo:</span>
 				{logo ? (
-					<Image src={logo} alt="Account Logo" className="w-24 h-24 object-cover border-2 border-gray-300 rounded" />
+					<Image src={logo} alt="Account Logo" width={96} height={96} className="w-24 h-24 object-cover border-2 border-gray-300 rounded" />
 				) : (
-					<Image src="/images/no-image-found.png" alt="No logo found" className="w-24 h-24 object-cover border-2 border-gray-300 rounded" />
+					<Image src="/images/no-image-found.png" alt="No logo found" width={96} height={96} className="w-24 h-24 object-cover border-2 border-gray-300 rounded" />
 				)}
 			</p>
 		</div>
