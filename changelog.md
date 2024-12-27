@@ -106,4 +106,3 @@ This changelog follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 - Admin page (tables)
 - Home page (carousel, snap scroll)
 
-
