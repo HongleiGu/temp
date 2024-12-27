@@ -11,7 +11,7 @@ This changelog follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 - /reset-password route along with `ResetPasswordFormData` type
 - Email notifications for resetting password alongside new email templates
 - `reset_password` database table. Schema added to notion
-- Token generation, storing, and clearing from database
+- Token generation, storing, and clearing from redis instance
 - All appropriate validation for token (expired, invalid, multi-requested etc.)
 - `api.md` for API reference. Filled with new updates **only** for push 1.1.4
 
