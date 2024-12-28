@@ -15,7 +15,10 @@ For each API route it lists **inputs**, **outputs**, **errors thrown**, and **pl
 - `WebsiteStats`: { total_events: _string_, total_universities: _string_, total_societies: _string_ }
 
 ### Errors
+- _nil_ (returns defaultFallback in case of database error)
 
+### Where
+- `Statistics` (on Homepage)
 
 # [1.1.4]
 
