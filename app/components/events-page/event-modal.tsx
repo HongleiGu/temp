@@ -149,7 +149,7 @@ export default function EventModal({ event, onClose }: EventModalProps) {
 						<div className="mt-6">
 							<h3 className="text-lg font-semibold mb-2 text-gray-500">About the Event</h3>
 							<hr className="border-t-1 border-gray-300 m-2" />
-							<p className="text-gray-600">{event.description}</p>
+							<p className="text-gray-600 whitespace-pre-wrap">{event.description}</p>
 						</div>
 
 						{event.for_externals && (
