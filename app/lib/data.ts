@@ -5,6 +5,27 @@ import bcrypt from 'bcrypt';
 import { Tag } from './types';
 import redis from './config';
 
+export async function fetchWebsiteStats() {
+	try {
+		const stats = await sql`
+        SELECT
+            (SELECT COUNT(*) FROM events) AS total_events,
+            (SELECT COUNT(DISTINCT university_attended) FROM user_information) AS total_universities,
+            (SELECT COUNT(*) FROM users WHERE role = 'organiser') AS total_societies
+    	`;
+		return stats.rows
+
+	} catch (error) {
+		console.error('Database error:', error)
+		const defaultFallback = {
+			total_events: '70',
+			total_universities: '20',
+			total_societies: '34'
+		}
+		return defaultFallback
+	}
+}
+
 export async function fetchEvents() {
 	try {
 		const data = await sql<SQLEvent>`SELECT * FROM events`

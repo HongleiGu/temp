@@ -4,6 +4,19 @@ This API log follows the same [Semantic Versioning](https://semver.org/spec/v2.0
 
 For each API route it lists **inputs**, **outputs**, **errors thrown**, and **places invocated**
 
+# [1.1.6]
+
+## `statistics` - GET
+
+### Inputs
+- _nil_
+
+### Outputs
+- `WebsiteStats`: { total_events: _string_, total_universities: _string_, total_societies: _string_ }
+
+### Errors
+
+
 # [1.1.4]
 
 ## `forgotten-password`:

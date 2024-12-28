@@ -4,6 +4,21 @@ All the notable additions and fixes.
 
 This changelog follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+# [1.1.6] - 2024-12-28
+
+### Added
+
+- `/api/statistics` **GET** route for core website statistics
+- `fetchWebsiteStats` `data.ts` function for querying core statistics
+- <Statistics /> component to homepage for viewing website statistics. Implements Incremental Static Regeneration to only re-request statistics every 24 hours
+- `WebsiteStatistics` element
+- <NotificationView /> component for displaying key website updates to users when viewing for the first time
+
+### Changed
+
+- Moved toast notifications from `HomePageTopSection` to `NotificationView`
+- Moved upcoming events view from `page.tsx` to inside `HomePageTopSection`
+
 # [1.1.5] - 2024-12-27
 
 ### Changed
