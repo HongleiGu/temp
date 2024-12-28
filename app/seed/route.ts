@@ -1,7 +1,6 @@
 // import { db } from '@vercel/postgres';
 // const client = await db.connect();
 
-
 /*  UNCOMMENT THE ABOVE LINES TO USE DATABASE  */
 
 //import bcrypt from 'bcrypt';
@@ -141,6 +140,21 @@
 //     return insertedUserInformation;
 // }
 
+// async function seedCompanyInformation() {
+//     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+//     await client.sql`
+//         CREATE TABLE IF NOT EXISTS company_information (
+//             id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+//             user_id UUID NOT NULL REFERENCES users(id), -- foreign key
+//             description TEXT,
+//             website VARCHAR(255),
+//             logo_url VARCHAR(255),
+//             motivation TEXT
+//         );
+//     `;
+// }
+
 // async function seedEventRegistrationsTable() {
 // 	await client.sql`
 // 	  CREATE TABLE IF NOT EXISTS event_registrations (
@@ -168,7 +182,7 @@
 export async function GET() {
 	// try {
 	// 	await client.sql`BEGIN`;
-	// 	await seedResetPasswordTable()
+	// 	await seedCompanyInformation()
 
 	// 	await client.sql`COMMIT`;
 	// 	return Response.json({ message: 'Database updated successfully' });

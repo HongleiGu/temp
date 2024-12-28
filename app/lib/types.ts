@@ -125,6 +125,20 @@ export interface SocietyRegisterFormData {
 	imageUrl: string | null;
 }
 
+export interface CompanyRegisterFormData {
+	companyName: string;
+	password: string;
+	confirmPassword: string;
+	contactEmail: string;
+	contactName: string;
+	description: string | null;
+	website: string | null;
+	motivation: Array<string> | null;
+	hasAgreedToTerms: boolean;
+	uploadedImage: File | null;
+	imageUrl: string | null;
+}
+
 export interface OrganiserAccountEditFormData {
 	uploadedImage: File | null;
 	imageUrl: string | null;
