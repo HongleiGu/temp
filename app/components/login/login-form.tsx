@@ -15,13 +15,14 @@ import { LoginPageFormData } from '@/app/lib/types';
 // TODO: Update to use react-hook-form
 
 export default function LoginForm() {
-	const [isPending, setIsPending] = useState<boolean>(false)
+	const [isPending, setIsPending] = useState<boolean>(false);
+	const [showPassword, setShowPassword] = useState(false);
 	const [showForgottenPasswordModal, setShowForgottenPasswordModal] = useState(false);
 
 	const { register, handleSubmit, formState: { errors } } = useForm<LoginPageFormData>({
 		mode: 'onSubmit',
 		defaultValues: {
-			email: '', 
+			email: '',
 			password: '',
 		},
 	});
@@ -72,8 +73,8 @@ export default function LoginForm() {
 									{...register('email', {
 										required: 'Email address is required',
 										pattern: {
-										value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-										message: 'Please enter a valid email address',
+											value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+											message: 'Please enter a valid email address',
 										},
 									})}
 								/>
@@ -91,15 +92,15 @@ export default function LoginForm() {
 							</label>
 							<div className="relative">
 								<Input
+									type={showPassword ? 'text' : 'password'}
 									className="bg-transparent text-black text-center peer"
 									id="password"
-									type="password"
 									placeholder="Enter your password"
 									{...register('password', {
 										required: 'Password is required',
 										minLength: {
-										value: 6,
-										message: 'Password must be at least 6 characters long',
+											value: 6,
+											message: 'Password must be at least 6 characters long',
 										},
 									})}
 								/>
@@ -108,19 +109,34 @@ export default function LoginForm() {
 									<p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
 								)}
 							</div>
+
+							{/* Show password toggle */}
+							<div className="mt-2 self-end">
+								<label className="flex items-center text-sm">
+									<input
+										type="checkbox"
+										checked={showPassword}
+										onChange={() => setShowPassword(!showPassword)}
+										className="mr-2"
+									/>
+									Show password
+								</label>
+							</div>
 						</div>
 					</div>
 					<Button variant="filled" size="md" type='submit' className="mt-4 w-full" aria-disabled={isPending}>
 						Log in <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
 					</Button>
-					<Button
-						variant="ghost"
-						size="md"
-						className="self-end hover:text-gray-400"
-						onClick={handleForgottenPasswordPress}
-					>
-						Forgotten password?
-					</Button>
+					<div className='w-full flex flex-row items-center justify-center pt-2'>
+						<Button
+							variant="ghost"
+							size="md"
+							className="hover:text-gray-400"
+							onClick={handleForgottenPasswordPress}
+						>
+							Forgotten password?
+						</Button>
+					</div>
 				</div>
 			</form>
 			{showForgottenPasswordModal && (
