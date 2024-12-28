@@ -189,3 +189,18 @@
 //         newsletter_subscribe: true
 //     }
 // ];
+
+const requestedPasswordReset = [
+    "joshfrank.gb@gmail.com",
+    "lehrich.home@lehrich.de",
+    "zainahmad03@gmail.com",
+    "tallyellablute@gmail.com",
+    "irene@sertie.io",
+    "DTDmarchant@gmail.com",
+    "kclampolsociety@gmail.com",
+    "zainahmad93@gmail.com",
+    "kclinternationalrelations@gmail.com",
+    "a.michaal11@gmail.com",
+    "mikailahmed24@gmail.com", // Corrected capitalization
+    "hannahjusu-sheriff@theconduit.com"
+];

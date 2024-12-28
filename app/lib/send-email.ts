@@ -1,17 +1,14 @@
-import sgMail from '@sendgrid/mail';
+import { sgMail } from './config';
 import { EmailData } from './types';
 import { getEmailFromId } from './data';
 import EmailPayload from '../components/templates/user-to-society-email'; // this might have security issues because of user inputs.
 import EmailPayloadFallback from '../components/templates/user-to-society-email-fallback';
 import ResetEmailPayload from '../components/templates/reset-password';
 import ResetEmailPayloadFallback from '../components/templates/reset-password-fallback';
+import VerificationEmailPayload from '../components/templates/verification-email';
+import VerificationEmailPayloadFallback from '../components/templates/verification-email-fallback';
+import { text } from 'stream/consumers';
 
-if (!process.env.SENDGRID_API_KEY) {
-	console.error('SendGrid API key is missing!');
-	throw new Error('SENDGRID_API_KEY environment variable not set');
-}
-
-sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
 
 export const sendOrganiserEmail = async ({ id, email, subject, text }: EmailData) => {
 	try {
@@ -30,7 +27,7 @@ export const sendOrganiserEmail = async ({ id, email, subject, text }: EmailData
 			to,
 			from: 'hello@londonstudentnetwork.com',
 			subject: 'New communication from the London Student Network',
-			text: customPayloadFallback, // this is ok, as sendgrid uses text only as a fallback
+			text: customPayloadFallback, // Sendgrid uses text only as a fallback
 			html: customPayload,
 		};
 
@@ -43,6 +40,7 @@ export const sendOrganiserEmail = async ({ id, email, subject, text }: EmailData
 		throw new Error("Failed to send email or an error occurred during the attempt to retrieve organiser email by id");
 	}
 };
+
 
 export const sendResetPasswordEmail = async (email: string, token: string) => {
 	try {
@@ -60,9 +58,33 @@ export const sendResetPasswordEmail = async (email: string, token: string) => {
 		await sgMail.send(msg);
 
 	} catch (error) {
-		console.error("Error occurred during email sending or fetching logic. Error message:", error.message);
+		console.error("Error occurred during email sending of reset email. Error message:", error.message);
 		console.error("Stack trace:", error.stack);
 
-		throw new Error("Failed to send email or an error occurred during the attempt to retrieve organiser email by id");
+		throw new Error("Failed to send email to reset password");
 	}
+}
+
+
+export const sendEmailVerificationEmail = async (email: string, token: string) => {
+	try {
+		const customPayload = VerificationEmailPayload(email, token);
+		const customPayloadFallback = VerificationEmailPayloadFallback(email, token);
+
+		const msg = {
+			to: email,
+			from: 'hello@londonstudentnetwork.com',
+			subject: '🥁🥁🥁 Verify your email with the London Student Network 🥁🥁🥁',
+			text: customPayloadFallback, // Sendgrid uses text only as a fallback,
+			html: customPayload,
+		};
+
+		await sgMail.send(msg);
+
+	} catch (error) {
+		console.error("Error occurred during email sending of verification email. Error message:", error.message);
+		console.error("Stack trace:", error.stack);
+
+		throw new Error("Failed to send email to verify email");
+	};
 }
