@@ -18,7 +18,7 @@ For each API route it lists **inputs**, **outputs**, **errors thrown**, and **pl
 - data: _CompanyRegisterFormData_
 
 ### Where
-- `register/organisation/OrganisationRegistrationForm`
+- `register/company/OrganisationRegistrationForm`
 
 # [1.1.6]
 

@@ -341,7 +341,7 @@ export default function UserRegistrationForm() {
 	// Step 5: Referral
 	const ReferredDetails = () => (
 		<div>
-			<p className="font-semibold mb-8">If you were referred from one of our partner organisations, please select them here</p>
+			<p className="font-semibold mb-8">If you were referred from one of our partner societies, please select them here</p>
 
 			<select
 				id="referrer"
