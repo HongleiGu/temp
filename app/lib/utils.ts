@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { SQLEvent, Event, FormData, Registrations, SQLRegistrations, Partner, Tag } from "./types";
-
+import { v4 as uuidv4 } from 'uuid';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
@@ -390,3 +390,14 @@ export const placeholderImages = [
 	{ src: '/images/placeholders/pub.jpg', name: 'Pub'},
 	{ src: '/images/placeholders/football.jpg', name: 'Football'},
 ]
+
+export function generateToken(email: string): string {
+	const token = uuidv4();
+
+	if (!token) {
+		console.error('Failed to generate token');
+		throw new Error('Failed to generate token');
+	}
+
+	return token;
+}

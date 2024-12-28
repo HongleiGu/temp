@@ -1,6 +1,7 @@
 import { EmailPayloadType } from "@/app/lib/types";
 
 const EmailPayloadFallback = ({ email, subject, text }: EmailPayloadType) => {
+
     return `
 You have a new communication from the LSN:
 

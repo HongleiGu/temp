@@ -12,7 +12,6 @@ import toast from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import { LoginPageFormData } from '@/app/lib/types';
 
-// TODO: Update to use react-hook-form
 
 export default function LoginForm() {
 	const [isPending, setIsPending] = useState<boolean>(false)
