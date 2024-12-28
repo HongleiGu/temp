@@ -1,45 +1,23 @@
-"use client";
-
-import { useEffect } from "react";
-import toast from "react-hot-toast";
+"use server";
 
 import Link from "next/link";
 import clsx from "clsx";
 import Image from "next/image";
+import NotificationView from "./notification-view";
+import UpcomingEventsSection from "./events-section";
+import { Suspense } from "react";
+import Statistics from "./statistics";
 
-export default function HomePageTopSection() {
 
-	useEffect(() => {
+export default async function HomePageTopSection() {
 
-		const hasSeenToast = localStorage.getItem("registrationFeatures");
-
-		if (!hasSeenToast) {
-			toast.success(
-				"You can now register for events through LSN!",
-				{
-					duration: 5000,
-					position: "top-right",
-				}
-			);
-
-			toast.success(
-				"Event Organisers: You can track sign ups through your /account event management page!",
-				{
-					duration: 5000,
-					position: "top-right",
-				}
-			);
-
-			// Set a flag in localStorage
-			localStorage.setItem("registrationFeatures", "true");
-		}
-	}, []);
-	
 	return (
 
 		<div className="flex flex-col bg-black bg-opacity-50">
 
+			<NotificationView />
 			<Title />
+			<UpcomingEventsSection />
 			<ForStudents />
 			<ForSocieties />
 			<ForSponsors />
@@ -48,6 +26,8 @@ export default function HomePageTopSection() {
 
 	)
 }
+
+
 
 function JoinButton({ text, className, href }: { text: string, className?: string, href: string }) {
 	return (
@@ -78,10 +58,14 @@ function Title() {
 			<div className="w-auto flex flex-col p-10 space-y-8 items-center">
 				<p className="font-bold text-lg md:text-xl text-white">Connecting <i>500,000</i> students</p>
 				<JoinButton href="/sign" text="Join us" />
+				<Suspense fallback={<p className="text-white">Loading statistics...</p>}>
+					<Statistics />
+				</Suspense>
 			</div>
 		</section>
 	)
 }
+
 
 function ForStudents() {
 	return (

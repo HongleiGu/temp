@@ -390,3 +390,9 @@ export const placeholderImages = [
 	{ src: '/images/placeholders/pub.jpg', name: 'Pub'},
 	{ src: '/images/placeholders/football.jpg', name: 'Football'},
 ]
+
+export const FallbackStatistics = {
+	total_events: '70',
+	total_universities: '20',
+	total_societies: '34'
+}

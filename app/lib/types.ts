@@ -212,6 +212,12 @@ export interface SQLRegistrations {
 	created_at: string;
 }
 
+export interface WebsiteStats {
+	total_events: string;
+	total_universities: string;
+	total_societies: string;
+}
+
 export const DefaultEvent: Event = {
 	id: '',
 	title: 'Sample Event',

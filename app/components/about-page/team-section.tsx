@@ -32,6 +32,16 @@ export default function TeamSection() {
 			title: "Social Media Manager",
 			image: "/images/about/ileana-oprescu.jpeg",
 		},
+		{
+			name: "Julie Beaulieu",
+			title: "Head of Marketing",
+			image: "/images/about/julie-beaulieu.jpg",
+		},
+		{
+			name: "Amber Ella",
+			title: "Outreach Officer",
+			image: "/images/about/amber-ella.jpeg",
+		},
         {
             name: "Nela Duniova",
             title: "Events Officer",
@@ -42,11 +52,11 @@ export default function TeamSection() {
             title: "Events Officer",
             image: "/images/about/daryus-marchant.png",
         },
-        {
-            name: "Julie Beaulieu",
-            title: "Head of Marketing",
-            image: "/images/about/julie-beaulieu.jpg",
-        },
+		{
+			name: "Caspia Nadapdap",
+			title: "Events Officer",
+			image: "/images/about/caspia-nadapdap.jpeg",
+		},
         {
             name: "Ollie Callon Hine",
             title: "Multimedia Officer",
