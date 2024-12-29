@@ -8,7 +8,6 @@ import { Button } from '../../components/button';
 import { Input } from '../../components/input';
 import { ArrowLeftIcon, ArrowRightIcon, FlagIcon } from '@heroicons/react/24/outline';
 import { LondonUniversities } from '../../lib/utils';
-import { useRouter } from 'next/router';
 
 
 export default function UserRegistrationForm() {
@@ -18,9 +17,7 @@ export default function UserRegistrationForm() {
 	const [step, setStep] = useState<number>(1);
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 	const [organisers, setOrganisers] = useState([]);
-	const [emailChecked, setEmailChecked] = useState<boolean>(false);
 	const totalSteps = 6;
-	const router = useRouter();
 
 	const currentYear = new Date().getFullYear();
 	const graduationYears = Array.from({ length: 11 }, (_, i) => currentYear + i);
