@@ -4,6 +4,22 @@ This API log follows the same [Semantic Versioning](https://semver.org/spec/v2.0
 
 For each API route it lists **inputs**, **outputs**, **errors thrown**, and **places invocated**
 
+# [1.1.7]
+
+## `organisation/check-name`
+
+- Checks company's name inside users table
+
+## `organisation/create`
+
+- Inserts a company into the users table, then inserts into company_information table
+
+### Inputs
+- data: _CompanyRegisterFormData_
+
+### Where
+- `register/company/OrganisationRegistrationForm`
+
 # [1.1.6]
 
 ## `statistics` - GET

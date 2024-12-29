@@ -1,5 +1,5 @@
 import { sql } from '@vercel/postgres';
-import { SQLEvent, ContactFormInput, SocietyRegisterFormData, UserRegisterFormData, SQLRegistrations, OrganiserAccountEditFormData } from './types';
+import { SQLEvent, ContactFormInput, SocietyRegisterFormData, UserRegisterFormData, SQLRegistrations, OrganiserAccountEditFormData, CompanyRegisterFormData } from './types';
 import { convertSQLEventToEvent, formatDOB, selectUniversity, capitalize, convertSQLRegistrationsToRegistrations, capitalizeFirst } from './utils';
 import bcrypt from 'bcrypt';
 import { Tag } from './types';
@@ -341,6 +341,44 @@ export async function getAllOrganiserCards() {
 	}
 }
 
+// MARK: Insert 'users'
+export async function insertUser(formData: UserRegisterFormData) {
+	try {
+		const hashedPassword = await bcrypt.hash(formData.password, 10);
+		const username = `${capitalize(formData.firstname)} ${capitalize(formData.surname)}`
+
+		const result = await sql`
+			INSERT INTO users (name, email, password)
+			VALUES (${username}, ${formData.email}, ${hashedPassword})
+			ON CONFLICT (email) DO NOTHING
+			RETURNING id
+		`;
+
+		console.log(`Created a user with id: ${result.rows[0].id}`)
+
+		return { success: true, id: result.rows[0].id };
+	} catch (error) {
+		console.error('Error creating user:', error);
+		return { success: false, error };
+	}
+}
+
+export async function insertUserInformation(formData: UserRegisterFormData, userId: string) {
+	const formattedDOB = formatDOB(formData.dob) // Currently just leaves in yyyy-mm-dd form
+	const university = selectUniversity(formData.university, formData.otherUniversity) // if 'other' selected, uses text input entry
+	try {
+		await sql`
+			INSERT INTO user_information (user_id, gender, birthdate, referrer, university_attended, graduation_year, course, level_of_study, newsletter_subscribe)
+        	VALUES (${userId}, ${formData.gender}, ${formattedDOB}, ${formData.referrer}, ${university}, ${formData.graduationYear}, ${formData.degreeCourse}, ${formData.levelOfStudy}, ${formData.isNewsletterSubscribed})
+		`
+		return { success: true };
+	} catch (error) {
+		console.error('Error creating user_information:', error);
+		return { success: false, error };
+	}
+}
+
+
 export async function insertOrganiser(formData: SocietyRegisterFormData) { 
 	try {
 		const hashedPassword = await bcrypt.hash(formData.password, 10);
@@ -361,6 +399,39 @@ export async function insertOrganiser(formData: SocietyRegisterFormData) {
 	}
 }
 
+export async function insertCompany(formData: CompanyRegisterFormData) {
+	try {
+		const hashedPassword = await bcrypt.hash(formData.password, 10);
+		const name = formData.companyName.split(' ').map(capitalize).join(' ')
+
+		const result = await sql`
+			INSERT INTO users (name, email, password, role)
+			VALUES (${name}, ${formData.contactEmail}, ${hashedPassword}, ${'company'})
+			ON CONFLICT (email) DO NOTHING
+			RETURNING id
+		`
+		console.log(`Created a company with id: ${result.rows[0].id}`)
+		return { success: true, id: result.rows[0].id };
+	} catch (error) {
+		console.error('Error creating user:', error);
+		return { success: false, error };
+	}
+}
+
+export async function insertCompanyInformation(formData: CompanyRegisterFormData, companyId: string) {
+	try {
+		const formattedMotivations = `{${formData.motivation.join(',')}}`
+		await sql`
+			INSERT INTO company_information (user_id, contact_name, contact_email, description, website, logo_url, motivation)
+        	VALUES (${companyId}, ${formData.contactName}, ${formData.contactEmail}, ${formData.description}, ${formData.website}, ${formData.imageUrl}, ${formattedMotivations})
+		`
+		return { success: true };
+	} catch (error) {
+		console.error('Error creating company_information:', error);
+		return { success: false, error };
+	}
+}
+
 // /register/student: Fetches all organisers in order to identify referrers 
 export async function fetchOrganisers() {
 	try {
@@ -372,27 +443,6 @@ export async function fetchOrganisers() {
 	} catch (error) {
 		console.error('Database error:', error);
 		throw new Error('Failed to fetch organisers');
-	}
-}
-
-export async function insertUser(formData: UserRegisterFormData) {
-	try {
-		const hashedPassword = await bcrypt.hash(formData.password, 10);
-		const username = `${capitalize(formData.firstname)} ${capitalize(formData.surname)}`
-		
-		const result =  await sql`
-			INSERT INTO users (name, email, password)
-			VALUES (${username}, ${formData.email}, ${hashedPassword})
-			ON CONFLICT (email) DO NOTHING
-			RETURNING id
-		`;
-
-		console.log(`Created a user with id: ${result.rows[0].id}`)
-
-		return { success: true, id: result.rows[0].id };
-	} catch (error) {
-		console.error('Error creating user:', error);
-		return { success: false, error };
 	}
 }
 
@@ -419,6 +469,25 @@ export async function checkSocietyName(name: string) {
 		const result = await sql`
 			SELECT name FROM users
 			WHERE name = ${societyName}
+			LIMIT 1
+		`
+		if (result.rows.length > 0) {
+			return { success: true, nameTaken: true }
+		} else {
+			return { success: true, nameTaken: false }
+		}
+	} catch (error) {
+		console.error('Error checking name:', error)
+		return { success: false, error }
+	}
+}
+
+export async function checkOrganisationName(name: string) {
+	try {
+		const organisationName = name.split(' ').map(capitalizeFirst).join(' ')
+		const result = await sql`
+			SELECT name FROM users
+			WHERE name = ${organisationName} AND role = 'company'
 			LIMIT 1
 		`
 		if (result.rows.length > 0) {
@@ -463,21 +532,6 @@ export async function getEmailFromId(id: string) {
 	} catch (error) {
 		console.error('Error checking email:', error)
 		throw new Error('Failed to retrieve email for a specific organiser');
-	}
-}
-
-export async function insertUserInformation(formData: UserRegisterFormData, userId: string) {
-	const formattedDOB = formatDOB(formData.dob) // Currently just leaves in yyyy-mm-dd form
-	const university = selectUniversity(formData.university, formData.otherUniversity) // if 'other' selected, uses text input entry
-	try {
-		await sql`
-			INSERT INTO user_information (user_id, gender, birthdate, referrer, university_attended, graduation_year, course, level_of_study, newsletter_subscribe)
-        	VALUES (${userId}, ${formData.gender}, ${formattedDOB}, ${formData.referrer}, ${university}, ${formData.graduationYear}, ${formData.degreeCourse}, ${formData.levelOfStudy}, ${formData.isNewsletterSubscribed})
-		`
-		return { success: true };
-	} catch (error) {
-		console.error('Error creating user_information:', error);
-		return { success: false, error };
 	}
 }
 

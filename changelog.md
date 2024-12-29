@@ -4,6 +4,20 @@ All the notable additions and fixes.
 
 This changelog follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+# [1.1.7] - 2024-12-28
+
+### Added 
+
+- Company registration route + form
+- `CompanyRegisterFormData` type for company registration
+- `company_information` table into database + schema added to Notion
+- Motivations checkbox list with 'Add' button for creating a list of motivations for an organisation. Inserts into table as arrays of string (TEXT)
+
+
+### Removed
+
+- `reset_password` table from database
+
 # [1.1.6] - 2024-12-28
 
 ### Added
