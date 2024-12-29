@@ -187,6 +187,10 @@ export interface SocietyMessageFormData {
 	message: string;	
 }
 
+export interface InsertTokenResult {
+    success: boolean;
+}
+
 export interface LoginPageFormData {
 	email: string
 	password: string

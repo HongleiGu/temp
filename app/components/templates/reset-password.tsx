@@ -16,7 +16,7 @@ const ResetEmailPayload = (email: string, token: string) => {
 			<p>If the above link does not work, just copy/paste this link into your browser: <a href="${resetLink}">${resetLink}</a></p>
             <p>If you did not request this, please ignore this email.</p>
             <p>Many thanks,</p>
-            <p>The LSN team</p>
+            <p style="margin-left: 20px;">The LSN team</p>
         </div>
     `;
 };

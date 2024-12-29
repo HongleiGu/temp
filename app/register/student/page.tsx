@@ -9,12 +9,13 @@ import { Input } from '../../components/input';
 import { ArrowLeftIcon, ArrowRightIcon, FlagIcon } from '@heroicons/react/24/outline';
 import { LondonUniversities } from '../../lib/utils';
 
+
 export default function UserRegistrationForm() {
 	const { register, handleSubmit, formState: { errors }, getValues, watch } = useForm<UserRegisterFormData>({
 		mode: 'onSubmit'
 	});
-	const [step, setStep] = useState(1);
-	const [showPassword, setShowPassword] = useState(false);
+	const [step, setStep] = useState<number>(1);
+	const [showPassword, setShowPassword] = useState<boolean>(false);
 	const [organisers, setOrganisers] = useState([]);
 	const totalSteps = 6;
 
@@ -48,8 +49,8 @@ export default function UserRegistrationForm() {
 	}
 
 	const onSubmit = async (data: UserRegisterFormData) => {
-		const toastId = toast.loading('Creating user...')
-		const email = data.email
+		const toastId = toast.loading('Creating user...');
+		const email = data.email;
 
 		try {
 			const res = await fetch('/api/user/check-email', {
@@ -63,11 +64,12 @@ export default function UserRegistrationForm() {
 			const result = await res.json();
 			if (result.emailTaken) {
 				toast.error('Email already exists.', { id: toastId });
-				return
+				return;
 			}
+
 		} catch (error) {
 			toast.error('Error checking email.', { id: toastId });
-			return
+			return;
 		}
 
 		try {
@@ -79,22 +81,43 @@ export default function UserRegistrationForm() {
 				body: JSON.stringify(data),
 			});
 
-			const result = await res.json()
+			const result = await res.json();
+
 			if (result.success) {
-				toast.success('User successfully created!', { id: toastId })
-				nextStep()
+				toast.success('User successfully created!', { id: toastId });
+				nextStep();
 			} else {
-				toast.error(`Error creating user: ${result.error}`, { id: toastId })
-				console.error('Error creating user:', result.error)
+				toast.error(`Error creating user: ${result.error}`, { id: toastId });
+				console.error('Error creating user:', result.error);
 			}
 		} catch (error) {
-			toast.error(`Error during user creation: ${error.message}`, { id: toastId })
-			console.error('Error during user creation:', error)
+			toast.error(`Error during user creation: ${error.message}`, { id: toastId });
+			console.error('Error during user creation:', error);
+		}
+
+		try{
+			const response = await fetch('/api/email/send-verification-email', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ email }),
+			});
+	
+			const sent = await response.json();
+	
+			if (!sent.success) {
+				toast.error('Failed to send verification link.');
+				return;
+			}
+		} catch (error) {
+			console.error('Error sending verification email:', error);
+			toast.error('Failed to send verification email. Please try again later.');
 		}
 	};
 
 	useEffect(() => {
-		fetchOrganisersData()
+		fetchOrganisersData();
 	}, []);
 
 
@@ -383,7 +406,7 @@ export default function UserRegistrationForm() {
 				{step === totalSteps && (
 					<div className="text-center items-center flex flex-col">
 						<h2 className="text-4xl font-semibold">Thank you for registering!</h2>
-						<p className="mt-4 text-gray-300">Your account has been created, and you can now sign in</p>
+						<p className="mt-4 text-gray-300">Please verify your email with the link we sent for full access to the LSN.</p>
 					</div>
 				)}
 

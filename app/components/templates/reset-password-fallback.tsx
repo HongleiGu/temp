@@ -18,7 +18,7 @@ If you did not request this, please ignore this email.
 
 -------------------------
 Many thanks,
-The LSN team
+    The LSN team
     `.trim();
 };
 
