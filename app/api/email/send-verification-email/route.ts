@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ success: false, error: "Email is required" }, { status: 400 }); // 400 Bad Request
         }
 
-		const token = generateToken(email); // Generates token 
+		const token = generateToken(); // Generates token 
 
         const response = await insertToken(email, token, 'verify'); // Inserts token into redis
 

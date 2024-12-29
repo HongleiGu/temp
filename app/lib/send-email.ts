@@ -7,7 +7,6 @@ import ResetEmailPayload from '../components/templates/reset-password';
 import ResetEmailPayloadFallback from '../components/templates/reset-password-fallback';
 import VerificationEmailPayload from '../components/templates/verification-email';
 import VerificationEmailPayloadFallback from '../components/templates/verification-email-fallback';
-import { text } from 'stream/consumers';
 
 
 export const sendOrganiserEmail = async ({ id, email, subject, text }: EmailData) => {

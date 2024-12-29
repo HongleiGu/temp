@@ -1,10 +1,17 @@
 "use client";
+
 import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation'; // Correct import for Next.js 13 app directory
 import toast from 'react-hot-toast';
+import dynamic from 'next/dynamic';
 
-export default function VerifyEmailTemporaryPage() {
+// Dynamically import the component with SSR disabled
+const VerifyEmailTemporaryPage = dynamic(() => Promise.resolve(VerifyEmailPage), { ssr: false });
+
+export default VerifyEmailTemporaryPage;
+
+function VerifyEmailPage() {
     const searchParams = useSearchParams();
     const router = useRouter();
 
@@ -35,7 +42,7 @@ export default function VerifyEmailTemporaryPage() {
             } catch (error) {
                 console.error('Error validating token:', error);
                 toast.error(error.message || "An error occurred during verification."); // Display error message from server or a generic message
-				return;
+                return;
             }
         };
 

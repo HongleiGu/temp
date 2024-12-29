@@ -397,7 +397,7 @@ export const FallbackStatistics = {
 	total_societies: '34'
 }
 
-export function generateToken(email: string): string {
+export function generateToken(): string {
 	const token = uuidv4();
 
 	if (!token) {

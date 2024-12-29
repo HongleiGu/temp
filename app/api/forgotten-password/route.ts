@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: "Failed to extract user email" }, { status: 500 });
 		}
 
-		const token = generateToken(email); // Generates token
+		const token = generateToken(); // Generates token
 
 		const response = await insertToken(email, token, 'reset'); // Inserts token into redis. Third parameter, 'purpose', is 'reset' or 'verify'
 
