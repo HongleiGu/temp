@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
         }
 
         const email = response.email;
-        const result = await setEmailVerifiedField(email);
+        const result = await setEmailVerifiedField(email, token);
 
         if (!result.success) {
             return NextResponse.json({ success: false, error: `Error updating emailverified field for user: ${result.error}` }, { status: 500 });

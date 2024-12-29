@@ -49,5 +49,5 @@ function VerifyEmailPage() {
         verifyEmail();
     }, []);
 
-    return <div>Verifying your email...</div>; // Or a loading indicator
+    return <div className="min-h-screen">Verifying your email...</div>; // Or a loading indicator
 }

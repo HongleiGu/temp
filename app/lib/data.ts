@@ -463,7 +463,7 @@ export async function updatePassword(email: string, password: string) {
 	}
 }
 
-export async function setEmailVerifiedField(email: string) {
+export async function setEmailVerifiedField(email: string, token: string) {
 	console.log(`setting email verified for ${email}`);
 	try {
 		await sql`
@@ -472,6 +472,11 @@ export async function setEmailVerifiedField(email: string) {
 				emailverified = true
 			WHERE email = ${email} --- Email is UNIQUE among users table
 		`
+
+		// Remove the Redis token entry
+		const tokenKey = `verification_token:${token}`;
+		await redis.del(tokenKey); // Delete the token from Redis after successful update
+
 		return { success: true };
 	} catch (error) {
 		console.error('Error updating user password');
