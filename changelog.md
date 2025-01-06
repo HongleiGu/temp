@@ -4,6 +4,12 @@ All the notable additions and fixes.
 
 This changelog follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+# [2.0.1] - 2025-01-06 # account edit bug fix
+
+### Fixed
+
+- Added type checking in a component, to prevent compile error when an account doesn't have tags.
+
 # [2.0.0] - 2024-12-29 # backward incompatible API changes
 
 ### Added 

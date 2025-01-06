@@ -58,7 +58,7 @@ export default function AccountFields({id, role}: {id: string, role: string}) {
             </p>
 			<p className="text-sm capitalize">
 				<span className="mr-12 font-semibold">Tags:</span>
-				{tags.length > 0 
+				{Array.isArray(tags) && tags.length > 0 // handles array that isn't defined or is empty
 					? tags
 						.map((tag) => {
 							const foundTag = predefinedTags.find((t) => t.value === tag);
