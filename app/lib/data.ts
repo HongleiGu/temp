@@ -1,11 +1,12 @@
 import { sql } from '@vercel/postgres';
 import { SQLEvent, ContactFormInput, SocietyRegisterFormData, UserRegisterFormData, SQLRegistrations, OrganiserAccountEditFormData, CompanyRegisterFormData } from './types';
-import { convertSQLEventToEvent, formatDOB, selectUniversity, capitalize, convertSQLRegistrationsToRegistrations, capitalizeFirst } from './utils';
+import { convertSQLEventToEvent, formatDOB, selectUniversity, capitalize, convertSQLRegistrationsToRegistrations, capitalizeFirst, FallbackStatistics } from './utils';
 import bcrypt from 'bcrypt';
 import { Tag } from './types';
 import redis from './config';
 
 export async function fetchWebsiteStats() {
+	return FallbackStatistics
 	try {
 		const stats = await sql`
         SELECT
@@ -17,12 +18,7 @@ export async function fetchWebsiteStats() {
 
 	} catch (error) {
 		console.error('Database error:', error)
-		const defaultFallback = {
-			total_events: '70',
-			total_universities: '20',
-			total_societies: '34'
-		}
-		return defaultFallback
+		return FallbackStatistics
 	}
 }
 

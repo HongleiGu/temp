@@ -392,7 +392,7 @@ export const placeholderImages = [
 ]
 
 export const FallbackStatistics = {
-	total_events: '70',
+	total_events: '90',
 	total_universities: '20',
-	total_societies: '34'
+	total_societies: '50'
 }

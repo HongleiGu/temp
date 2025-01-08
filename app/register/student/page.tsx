@@ -256,7 +256,7 @@ export default function UserRegistrationForm() {
 					className="w-full mt-4 p-2 rounded-lg bg-transparent border border-gray-300 text-sm"
 					{...register('university', { required: 'University is required.' })}
 				>
-					<option value="" className="text-gray-300">Select University</option>
+					<option value="" className="text-gray-300">Select Institution</option>
 					{LondonUniversities.map((university) => (
 						<option key={university} value={university}>
 							{university}
@@ -323,6 +323,7 @@ export default function UserRegistrationForm() {
 				<option value="Postgraduate">Postgraduate</option>
 				<option value="Doctoral">PhD</option>
 				<option value="Alumni">Alumni</option>
+				<option value="Other">Other</option>
 			</select>
 			{errors.degreeCourse && <p className="text-red-500 mt-2">{errors.degreeCourse.message}</p>}
 			{errors.levelOfStudy && <p className="text-red-500 mt-2">{errors.levelOfStudy.message}</p>}
