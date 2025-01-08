@@ -4,6 +4,14 @@ All the notable additions and fixes.
 
 This changelog follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+# [1.1.8] - 2025-01-08
+
+### Changed
+
+- Small updates to homepage styling and colouring
+- `FallbackStatistics` fallback changed
+- Small updates to register page (University -> Institution, and Other field for Level of Study) 
+
 # [1.1.7] - 2024-12-28
 
 ### Added 
