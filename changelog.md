@@ -6,6 +6,10 @@ This changelog follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 # [2.0.1] - 2025-01-08
 
+### Added 
+
+- New profile pictures in /images/about for Harry Dove and Anish Kochhar
+
 ### Changed
 
 - Small updates to homepage styling and colouring
