@@ -4,13 +4,29 @@ All the notable additions and fixes.
 
 This changelog follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-# [1.1.8] - 2025-01-08
+# [2.0.1] - 2025-01-08
 
 ### Changed
 
 - Small updates to homepage styling and colouring
 - `FallbackStatistics` fallback changed
 - Small updates to register page (University -> Institution, and Other field for Level of Study) 
+
+# [2.0.0] - 2024-12-29 # backward incompatible API changes
+
+### Added 
+
+- Email verification link sent on any account registration (company, society, student), to ensure our email fields are of good quality and accurate
+- Added a temporary email verification page, for easy email verification
+- Exposed email verification routes for email verifying
+- Added a temporary page for invoking the protected API route (for reset-password email sending)
+
+### Changed
+
+- Changed some API outputs for better error handling
+- Changed some API calls to integrate smoothly with the API output changes
+- Added some protected API routes for email sending
+- Modified contact_forms with API route, deleted the entries which have been dealt with
 
 # [1.1.7] - 2024-12-28
 

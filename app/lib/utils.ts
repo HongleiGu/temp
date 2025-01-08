@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { SQLEvent, Event, FormData, Registrations, SQLRegistrations, Partner, Tag } from "./types";
-
+import { v4 as uuidv4 } from 'uuid';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
@@ -395,4 +395,15 @@ export const FallbackStatistics = {
 	total_events: '90',
 	total_universities: '20',
 	total_societies: '50'
+}
+
+export function generateToken(): string {
+	const token = uuidv4();
+
+	if (!token) {
+		console.error('Failed to generate token');
+		throw new Error('Failed to generate token');
+	}
+
+	return token;
 }

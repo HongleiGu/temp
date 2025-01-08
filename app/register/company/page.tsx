@@ -112,6 +112,26 @@ export default function OrganisationRegistrationForm() {
 			toast.error(`Error during account creation: ${error.message}`, { id: toastId })
 			console.error('Error during account creation:', error)
 		}
+
+		try{
+			const response = await fetch('/api/email/send-verification-email', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ email: data.contactEmail }),
+			});
+	
+			const sent = await response.json();
+	
+			if (!sent.success) {
+				toast.error('Failed to send verification link.');
+				return;
+			}
+		} catch (error) {
+			console.error('Error sending verification email:', error);
+			toast.error('Failed to send verification email. Please try again later.');
+		}
 	};
 
 
@@ -391,7 +411,7 @@ export default function OrganisationRegistrationForm() {
 				{step === totalSteps && (
 					<div className="text-center items-center flex flex-col">
 						<h2 className="text-4xl font-semibold">Thank you for registering!</h2>
-						<p className="mt-4 text-gray-300">Your organisation&#39;s account has been created, and you can now sign in</p>
+						<p className="mt-4 text-gray-300">Please verify your email with the link we sent for full access to the LSN.</p>
 					</div>
 				)}
 

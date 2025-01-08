@@ -2,7 +2,60 @@
 
 This API log follows the same [Semantic Versioning](https://semver.org/spec/v2.0.0.html) as the `changelog.md`.
 
-For each API route it lists **inputs**, **outputs**, **errors thrown**, and **places invocated**
+For each public API route, it lists **inputs**, **outputs**, **errors thrown**, and **places invocated**
+
+
+# [2.0.0] # An API route is no longer backword compatible (/api/validate-token)
+
+## `validate-token`
+
+### Inputs
+- token: _string_
+
+### Outputs
+- message: _string_, error: _string_
+
+### Errors
+- No token given
+- Token is expired
+
+### Where
+- `reset-password/page.tsx/ResetPasswordPage`
+
+## `email/send-verification-email`
+
+### Inputs
+- email: _string_
+
+### Outputs:
+- success: _boolean_, error: _string_, message: _string_
+
+### Errors
+- No email given
+- Failure to insert into redis
+- Failure to send email
+
+### Where
+- `register/company/page.tsx`, in useEffect
+- `register/society/page.tsx`, in useEffect
+- `register/student/page.tsx`, in useEffect
+
+## `email/verify-email`
+
+### Inputs
+- token: _string_
+
+### Outputs:
+- success: _boolean_, error: _string_
+
+### Errors
+- No token given
+- Invalid/Expired token
+- Failure to get matching email from redis
+- Failure to update emailverified field in table
+
+### Where
+- `verify-email/page.tsx`, in useEffect
 
 # [1.1.7]
 

@@ -48,12 +48,17 @@ function ResetPassword() {
 
 				const data = await response.json()
 
-				if (data.status === 'valid') {
-					setStatus('valid')
-				} else if (data.status === 'invalid') {
-					setStatus('invalid')
-				} else if (data.status === 'expired') {
-					setStatus('expired')
+				if (data.success) {
+					if (data.message === 'valid') {
+						setStatus('valid')
+					} else if (data.message === 'invalid') {
+						setStatus('invalid')
+					} else if (data.message === 'expired') {
+						setStatus('expired')
+					}
+				} else {
+					console.error('Error validating token:', data.error);
+					setStatus('invalid');
 				}
 			} catch (error) {
 				console.error('Error validating token:', error);
@@ -62,7 +67,7 @@ function ResetPassword() {
 		};
 
 		validateToken();
-	}, [searchParams]);
+	}, [searchParams]); // this may need to be empty, as may lead to infinite loop
 
 	const onSubmit = async (formData: ResetPasswordFormData) => {
 		const token = searchParams.get('token');
