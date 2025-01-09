@@ -13,29 +13,29 @@ import Image from 'next/image';
 import { FlagIcon, ArrowUpTrayIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { upload } from '@vercel/blob/client';
 import Select from 'react-select'; // For tag selection
-import getPredefinedTags from '@/app/lib/utils';
+import getPredefinedTags, { LondonUniversities } from '@/app/lib/utils';
 
 
 export default function SocietyRegistrationForm() {
-	const { register, handleSubmit, formState: { errors }, getValues, setValue, control } = useForm<SocietyRegisterFormData>({
+	const { register, handleSubmit, formState: { errors }, getValues, setValue, control, watch } = useForm<SocietyRegisterFormData>({
 		mode: 'onSubmit',
 		defaultValues: {
-            tags: [], // Make sure tags is initialized as an empty array
-        },
+			tags: [], // Make sure tags is initialized as an empty array
+		},
 	});
 	const [step, setStep] = useState(1);
 	const [showPassword, setShowPassword] = useState(false);
 	const totalSteps = 2;
-	const [predefinedTags, setPredefinedTags] = useState([]); 
+	const [predefinedTags, setPredefinedTags] = useState([]);
 
 	useEffect(() => {
 		const fetchTags = async () => {
 			const tags = await getPredefinedTags();
-			setPredefinedTags(tags); 
+			setPredefinedTags(tags);
 		};
 
-		fetchTags(); 
-	}, []); 
+		fetchTags();
+	}, []);
 
 	const nextStep = () => {
 		if (step < totalSteps) setStep(step + 1);
@@ -122,7 +122,7 @@ export default function SocietyRegistrationForm() {
 			console.error('Error during account creation:', error)
 		}
 
-		try{
+		try {
 			const response = await fetch('/api/email/send-verification-email', {
 				method: 'POST',
 				headers: {
@@ -130,9 +130,9 @@ export default function SocietyRegistrationForm() {
 				},
 				body: JSON.stringify({ email: data.email }),
 			});
-	
+
 			const sent = await response.json();
-	
+
 			if (!sent.success) {
 				toast.error('Failed to send verification link.');
 				return;
@@ -212,26 +212,69 @@ export default function SocietyRegistrationForm() {
 		</div>
 	)
 
+	const UniversityEntry = () => {
+		const [isOtherSelected, setIsOtherSelected] = useState(false);
+		const selectedUniversity = watch('university')
+
+		useEffect(() => {
+			if (selectedUniversity === 'Other (please specify)') {
+				setIsOtherSelected(true)
+			} else {
+				setIsOtherSelected(false)
+			}
+		}, [selectedUniversity])
+
+		return (
+			<div className='mb-8'>
+				<label className="mt-10 text-gray-300">What institution is your society from?</label>
+				<select
+					className="w-full mt-4 p-2 rounded-lg bg-transparent border border-gray-300 text-sm"
+					{...register('university', { required: 'University is required.' })}
+				>
+					<option value="" className="text-gray-300">Select Institution</option>
+					{LondonUniversities.map((university) => (
+						<option key={university} value={university}>
+							{university}
+						</option>
+					))}
+				</select>
+
+				{isOtherSelected && (
+					<Input
+						type="text"
+						placeholder="University"
+						className="w-full mt-4 bg-transparent p-4"
+						{...register('otherUniversity', { required: 'University is required.' })}
+					/>
+
+				)}
+
+				{errors.university && <p className="text-red-500 mt-2">{errors.university.message}</p>}
+				{errors.otherUniversity && <p className="text-red-500 mt-2">{errors.otherUniversity.message}</p>}
+			</div>
+		)
+	}
+
 	// Description, Website and Tags entry
 	const DescriptionWebsiteTagsEntry = () => (
 		<div>
 			<div>
 				<label className="mt-10 text-gray-300">Description</label>
-					<Input 
-						type="text"
-						placeholder="Society Description"
-						className="w-full mt-4 bg-transparent mb-[30px]"
-						{...register('description')}
-					/>
+				<Input
+					type="text"
+					placeholder="Society Description"
+					className="w-full mt-4 bg-transparent mb-[30px]"
+					{...register('description')}
+				/>
 			</div>
 			<div>
 				<label className="mt-10 text-gray-300">Website</label>
-					<Input 
-						type="text"
-						placeholder="Official Website Link"
-						className="w-full mt-4 bg-transparent mb-[30px]"
-						{...register('website')}
-					/>
+				<Input
+					type="text"
+					placeholder="Official Website Link"
+					className="w-full mt-4 bg-transparent mb-[30px]"
+					{...register('website')}
+				/>
 			</div>
 			<div className='pb-[10px]'>
 				<label className="mt-10 text-gray-300">Tags</label>
@@ -239,39 +282,39 @@ export default function SocietyRegistrationForm() {
 					name="tags"
 					control={control}
 					render={({ field }) => (
-					<Select
-						{...field}
-						options={predefinedTags}
-						isMulti
-						className="w-full mt-4 bg-transparent"
-						classNamePrefix="custom-select" // Add a custom prefix for classNames
-						value={field.value.map((tag) => predefinedTags.find((t) => t.value === tag))}
-						onChange={(selectedTags) => {
-						if (selectedTags.length > 3) {
-							toast.error('You can only select up to 3 tags');
-							return; // Prevent further selection
-						}
-						const selectedValues = selectedTags.map((tag) => tag.value);
-						field.onChange(selectedValues);
-						}}
-						getOptionLabel={(e) => e.label}
-						getOptionValue={(e) => e.value}
-						styles={{
-							control: (provided) => ({
-								...provided,
-								backgroundColor: 'transparent', // Make the control (select box) transparent
-								border: '1px solid #ddd', 
-							}),
-							option: (provided) => ({
-								...provided,
-								color: 'black', // Option text color
-							}),
-							input: (provided) => ({
-								...provided,
-								color: 'white', // Make the search input text white
-							}),
-						}}
-					/>
+						<Select
+							{...field}
+							options={predefinedTags}
+							isMulti
+							className="w-full mt-4 bg-transparent"
+							classNamePrefix="custom-select" // Add a custom prefix for classNames
+							value={field.value.map((tag) => predefinedTags.find((t) => t.value === tag))}
+							onChange={(selectedTags) => {
+								if (selectedTags.length > 3) {
+									toast.error('You can only select up to 3 tags');
+									return; // Prevent further selection
+								}
+								const selectedValues = selectedTags.map((tag) => tag.value);
+								field.onChange(selectedValues);
+							}}
+							getOptionLabel={(e) => e.label}
+							getOptionValue={(e) => e.value}
+							styles={{
+								control: (provided) => ({
+									...provided,
+									backgroundColor: 'transparent', // Make the control (select box) transparent
+									border: '1px solid #ddd',
+								}),
+								option: (provided) => ({
+									...provided,
+									color: 'black', // Option text color
+								}),
+								input: (provided) => ({
+									...provided,
+									color: 'white', // Make the search input text white
+								}),
+							}}
+						/>
 					)}
 				/>
 			</div>
@@ -375,6 +418,7 @@ export default function SocietyRegistrationForm() {
 			<div className="w-screen p-12 md:px-28">
 
 				{step === 1 && <EmailPasswordNameEntry />}
+				{step === 1 && <UniversityEntry />}
 				{step === 1 && <DescriptionWebsiteTagsEntry />}
 				{step === 1 && <LogoEntry />}
 

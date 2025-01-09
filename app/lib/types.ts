@@ -116,6 +116,8 @@ export interface SocietyRegisterFormData {
 	name: string;
     email: string;
     password: string;
+	university: string;
+	otherUniversity: string;
 	description: string | null;
 	website: string | null;
 	tags: Array<string> | null;

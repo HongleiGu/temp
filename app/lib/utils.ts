@@ -310,11 +310,12 @@ export async function createSQLEventObject(data: FormData): Promise<SQLEvent> {
 }
 
 export const LondonUniversities = [
-	"Imperial College London", "King's College London", "University College London", "Birkbeck, University of London", 
-	"Brunel University", "Goldsmiths, University of London", "London Business School", "Kingston University", 
-	"London School Of Economics (LSE)", "London South Bank University", "University Of Westminster", "SOAS, University Of London",
-	"Royal Veterinary College", "Royal Holloway, University of London", "Royal College of Art", "Queen Mary University Of London",
-	"Middlesex University", "University Of Greenwich", "University Of Roehampton", 
+	"Imperial College London", "King's College London", "University College London", "City, University of London", 
+	"Birkbeck, University of London", "Brunel University", "Goldsmiths, University of London", "London Business School", 
+	"Kingston University", "London School Of Economics (LSE)", "London South Bank University", "University Of Westminster", 
+	"SOAS, University Of London", "Royal Veterinary College", "Royal Holloway, University of London", "Royal College of Art", 
+	"Queen Mary University Of London", "Middlesex University", "University Of Greenwich", "University Of Roehampton", 
+	"University of the Arts London", "Courtauld Institute of Art",
 	"Other (please specify)"
 ]
 

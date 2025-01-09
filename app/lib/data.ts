@@ -380,23 +380,40 @@ export async function insertUserInformation(formData: UserRegisterFormData, user
 }
 
 
-export async function insertOrganiser(formData: SocietyRegisterFormData) { 
+export async function insertOrganiserIntoUsers(formData: SocietyRegisterFormData) { 
 	try {
 		const hashedPassword = await bcrypt.hash(formData.password, 10);
 		const name = formData.name.split(' ').map(capitalize).join(' ')
-
-		const formattedTags = `{${formData.tags.join(',')}}`; // Format as an array string. Below, cast from string[] to text[]
 		
-		await sql`
-			INSERT INTO users (name, email, password, role, logo_url, description, website, tags)
-			VALUES (${name}, ${formData.email}, ${hashedPassword}, ${'organiser'}, ${formData.imageUrl}, ${formData.description}, ${formData.website}, ${formattedTags}::text[])
-			ON CONFLICT (email) DO NOTHING
+		const result = await sql`
+			INSERT INTO users (name, email, password, role)
+			VALUES (${name}, ${formData.email}, ${hashedPassword}, ${'organiser'})
+			ON CONFLICT (email) DO NOTHINGr
+			RETURNING id
 		`;
 
-		return { success: true };
+		console.log(`Created a organiser with id: ${result.rows[0].id}`)
+
+		return { success: true, id: result.rows[0].id };
 	} catch (error) {
-		console.error('Error creating user:', error);
+		console.error('Error creating organiser:', error);
 		return { success: false, error };
+	}
+}
+
+export async function insertOrganiserInformation(formData: SocietyRegisterFormData, userId: string) {
+	try {
+		const formattedTags = `{${formData.tags.join(',')}}`; // Format as an array string. Below, cast from string[] to text[]
+		const university = selectUniversity(formData.university, formData.otherUniversity) // if 'other' selected, uses text input entry
+
+		await sql`
+			INSERT INTO society_information (user_id, logo_url, description, website, tags, university_affiliation)
+			VALUES (${userId}, ${formData.imageUrl}, ${formData.description}, ${formData.website}, ${formattedTags}::text[], ${university})
+		`;
+		return { success: true }
+	} catch (error) {
+		console.log('Error creating society_information', error)
+		return { success: false, error }
 	}
 }
 
