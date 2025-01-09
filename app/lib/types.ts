@@ -149,7 +149,7 @@ export interface OrganiserAccountEditFormData {
 
 export type Tag = {
 	label: string;
-	value: string | number;
+	value: number;
 };
 
 export type Partner = {

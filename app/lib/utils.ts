@@ -91,7 +91,7 @@ export async function fetchPartners(page: number, limit: number) {
 		const predefinedTags = await getPredefinedTags();
 
 		// Map predefined tags into a lookup object for efficient access
-		const tagLookup: Record<string, string> = predefinedTags.reduce((acc: Record<string, string>, tag: Tag) => {
+		const tagLookup: Record<number, string> = predefinedTags.reduce((acc: Record<number, string>, tag: Tag) => {
 			acc[tag.value] = tag.label;
 			return acc;
 		}, {});
@@ -101,9 +101,7 @@ export async function fetchPartners(page: number, limit: number) {
 			id: partner.id,
 			name: partner.name || 'Unknown Name',
 			keywords: (partner.tags || []).map((tag: number) => {
-				// Convert tag to a string
-				const tagKey = tag.toString();
-				return tagLookup[tagKey] || 'Unknown Tag';
+				return tagLookup[tag] || 'Unknown Tag';
 			}),
 			description: partner.description || 'No description provided',
 			website: partner.website || 'No website available',
@@ -131,7 +129,7 @@ export async function fetchAllPartners() {
 		const predefinedTags = await getPredefinedTags();
 
 		// Map predefined tags into a lookup object for efficient access
-		const tagLookup: Record<string, string> = predefinedTags.reduce((acc: Record<string, string>, tag: Tag) => {
+		const tagLookup: Record<number, string> = predefinedTags.reduce((acc: Record<number, string>, tag: Tag) => {
 			acc[tag.value] = tag.label;
 			return acc;
 		}, {});
@@ -141,9 +139,7 @@ export async function fetchAllPartners() {
 			id: partner.id,
 			name: partner.name || 'Unknown Name',
 			keywords: (partner.tags || []).map((tag: number) => {
-				// Convert tag to a string
-				const tagKey = tag.toString();
-				return tagLookup[tagKey] || 'Unknown Tag';
+				return tagLookup[tag] || 'Unknown Tag';
 			}),
 			description: partner.description || 'No description provided',
 			website: partner.website || 'No website available',
@@ -185,7 +181,7 @@ export async function getPredefinedTags() {
 
 export default getPredefinedTags;
 
-//
+// MARK: Formatting and Sorting helper functions
 
 export function sortEventsByDate(events: Event[]): Event[] {
 	return events.sort((a, b) => {
