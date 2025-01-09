@@ -4,6 +4,18 @@ All the notable additions and fixes.
 
 This changelog follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+# [2.0.2] - 2025-01-08
+
+### Added
+
+- New profile pictures in /images/about for Harry Dove and Anish Kochhar
+
+### Changed
+
+- Small updates to homepage styling and colouring
+- `FallbackStatistics` fallback changed
+- Small updates to register page (University -> Institution, and Other field for Level of Study) 
+
 # [2.0.1] - 2025-01-06 # account edit bug fix
 
 ### Fixed
