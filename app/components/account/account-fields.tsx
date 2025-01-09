@@ -8,7 +8,7 @@ export default function AccountFields({ id, role }: { id: string, role: string }
 
 	const [description, setDescription] = useState('')
 	const [website, setWebsite] = useState('')
-	const [tags, setTags] = useState<Number[]>([])
+	const [tags, setTags] = useState<number[]>([])
 	const [predefinedTags, setPredefinedTags] = useState([]);
 
 	useEffect(() => {

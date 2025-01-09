@@ -149,7 +149,7 @@ export async function fetchAllPartners() {
 		
 		return formattedPartners;
 	} catch (err) {
-		console.error('failed to retrieve partners', err);
+		console.error('Failed to retrieve partners', err);
 	}
 }
 
