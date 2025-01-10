@@ -104,6 +104,7 @@ export default function OrganisationRegistrationForm() {
 			if (result.success) {
 				toast.success('Organisation successfully created!', { id: toastId })
 				nextStep()
+				sendVerificationEmail(data)
 			} else {
 				toast.error(`Error creating account: ${result.error}`, { id: toastId })
 				console.error('Error creating account:', result.error)
@@ -113,7 +114,11 @@ export default function OrganisationRegistrationForm() {
 			console.error('Error during account creation:', error)
 		}
 
-		try{
+		
+	};
+
+	const sendVerificationEmail = async (data: CompanyRegisterFormData) => {
+		try {
 			const response = await fetch('/api/email/send-verification-email', {
 				method: 'POST',
 				headers: {
@@ -121,9 +126,9 @@ export default function OrganisationRegistrationForm() {
 				},
 				body: JSON.stringify({ email: data.contactEmail }),
 			});
-	
+
 			const sent = await response.json();
-	
+
 			if (!sent.success) {
 				toast.error('Failed to send verification link.');
 				return;
@@ -132,7 +137,7 @@ export default function OrganisationRegistrationForm() {
 			console.error('Error sending verification email:', error);
 			toast.error('Failed to send verification email. Please try again later.');
 		}
-	};
+	}
 
 
 	// Email, Name, and Password entry

@@ -86,6 +86,7 @@ export default function UserRegistrationForm() {
 			if (result.success) {
 				toast.success('User successfully created!', { id: toastId });
 				nextStep();
+				sendVerificationEmail(data)
 			} else {
 				toast.error(`Error creating user: ${result.error}`, { id: toastId });
 				console.error('Error creating user:', result.error);
@@ -94,8 +95,11 @@ export default function UserRegistrationForm() {
 			toast.error(`Error during user creation: ${error.message}`, { id: toastId });
 			console.error('Error during user creation:', error);
 		}
+	};
 
-		try{
+	const sendVerificationEmail = async (data: UserRegisterFormData) => {
+		try {
+			const email = data.email;
 			const response = await fetch('/api/email/send-verification-email', {
 				method: 'POST',
 				headers: {
@@ -103,9 +107,9 @@ export default function UserRegistrationForm() {
 				},
 				body: JSON.stringify({ email }),
 			});
-	
+
 			const sent = await response.json();
-	
+
 			if (!sent.success) {
 				toast.error('Failed to send verification link.');
 				return;
@@ -114,7 +118,7 @@ export default function UserRegistrationForm() {
 			console.error('Error sending verification email:', error);
 			toast.error('Failed to send verification email. Please try again later.');
 		}
-	};
+	}
 
 	useEffect(() => {
 		fetchOrganisersData();
