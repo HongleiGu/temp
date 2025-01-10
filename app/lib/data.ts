@@ -388,7 +388,7 @@ export async function insertOrganiserIntoUsers(formData: SocietyRegisterFormData
 		const result = await sql`
 			INSERT INTO users (name, email, password, role)
 			VALUES (${name}, ${formData.email}, ${hashedPassword}, ${'organiser'})
-			ON CONFLICT (email) DO NOTHINGr
+			ON CONFLICT (email) DO NOTHING
 			RETURNING id
 		`;
 
@@ -408,7 +408,7 @@ export async function insertOrganiserInformation(formData: SocietyRegisterFormDa
 
 		await sql`
 			INSERT INTO society_information (user_id, logo_url, description, website, tags, university_affiliation)
-			VALUES (${userId}, ${formData.imageUrl}, ${formData.description}, ${formData.website}, ${formattedTags}::text[], ${university})
+			VALUES (${userId}, ${formData.imageUrl}, ${formData.description}, ${formData.website}, ${formattedTags}::integer[], ${university})
 		`;
 		return { success: true }
 	} catch (error) {
