@@ -7,11 +7,11 @@ export default function TeamSection() {
             title: "Founder and CEO",
             image: "/images/about/josh-robinson.png",
         },
-        {
-            name: "Zain Ahmad",
-            title: "Chief Strategy Officer",
-            image: "/images/about/zain-ahmad.png",
-        },
+        // {
+        //     name: "Zain Ahmad",
+        //     title: "Chief Strategy Officer",
+        //     image: "/images/about/zain-ahmad.png",
+        // },
         {
             name: "Patrick Schnecker",
             title: "Head of Outreach",
@@ -56,6 +56,11 @@ export default function TeamSection() {
 			name: "Caspia Nadapdap",
 			title: "Events Officer",
 			image: "/images/about/caspia-nadapdap.jpeg",
+		},
+		{
+			name: "Harry S. Dove",
+			title: "Events Officer",
+			image: "/images/about/harry-dove.jpeg",
 		},
         {
             name: "Ollie Callon Hine",

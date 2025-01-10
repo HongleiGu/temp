@@ -4,23 +4,23 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
 import fetchPredefinedTags from "@/app/lib/utils";
 
-export default function AccountFields({id, role}: {id: string, role: string}) {
+export default function AccountFields({ id, role }: { id: string, role: string }) {
 
-	const [ description, setDescription ] = useState('')
-	const [ website, setWebsite ] = useState('')
-	const [ tags, setTags ] = useState([])
-	const [predefinedTags, setPredefinedTags] = useState([]); 
+	const [description, setDescription] = useState('')
+	const [website, setWebsite] = useState('')
+	const [tags, setTags] = useState([])
+	const [predefinedTags, setPredefinedTags] = useState([]);
 
-    useEffect(() => {
-        const fetchTags = async () => {
-            const tags = await fetchPredefinedTags();
-            setPredefinedTags(tags); 
-        };
+	useEffect(() => {
+		const fetchTags = async () => {
+			const tags = await fetchPredefinedTags();
+			setPredefinedTags(tags);
+		};
 
-        fetchTags(); 
-    }, []); 
+		fetchTags();
+	}, []);
 
-    const fetchAccountInfo = async (id: string) => {
+	const fetchAccountInfo = async (id: string) => {
 		try {
 			const res = await fetch('/api/user/get-account-fields', {
 				method: 'POST',
@@ -40,22 +40,22 @@ export default function AccountFields({id, role}: {id: string, role: string}) {
 		}
 	}
 
-    useEffect(() => {
+	useEffect(() => {
 		if (role === "organiser") {
 			fetchAccountInfo(id);
 		}
 	}, [role, id]);
 
-    const router = useRouter()
+	const router = useRouter()
 
-    return (
-        <div className="pb-4 mb-10 space-y-6">
+	return (
+		<div className="pb-4 mb-10 space-y-6">
 			<p className="text-sm capitalize">
-            	<span className="mr-12 font-semibold">Description:</span> {description || 'no description found'}
-            </p>
+				<span className="mr-12 font-semibold">Description:</span> {description || 'no description found'}
+			</p>
 			<p className="text-sm">
-            	<span className="mr-12 font-semibold">Website:</span> {website || 'no website found'}
-            </p>
+				<span className="mr-12 font-semibold">Website:</span> {website || 'no website found'}
+			</p>
 			<p className="text-sm capitalize">
 				<span className="mr-12 font-semibold">Tags:</span>
 				{Array.isArray(tags) && tags.length > 0 // handles array that isn't defined or is empty
@@ -67,13 +67,13 @@ export default function AccountFields({id, role}: {id: string, role: string}) {
 						.join(', ')
 					: 'No tags found'}
 			</p>
-            <Button
-                variant="filled"
-                className="bg-blue-600 text-white my-4 py-2 px-4 rounded-full"
-                onClick={() => router.push('account/edit-details')}
-                >
-                    Edit Details
-            </Button>
-        </div>
-    )
+			<Button
+				variant="filled"
+				className="bg-blue-600 text-white my-4 py-2 px-4 rounded-full"
+				onClick={() => router.push('account/edit-details')}
+			>
+				Edit Details
+			</Button>
+		</div>
+	)
 }
