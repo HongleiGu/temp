@@ -113,6 +113,7 @@ export default function SocietyRegistrationForm() {
 			if (result.success) {
 				toast.success('Society successfully created!', { id: toastId })
 				nextStep()
+				sendVerificationEmail(data)
 			} else {
 				toast.error(`Error creating account: ${result.error}`, { id: toastId })
 				console.error('Error creating account:', result.error)
@@ -120,8 +121,10 @@ export default function SocietyRegistrationForm() {
 		} catch (error) {
 			toast.error(`Error during account creation: ${error.message}`, { id: toastId })
 			console.error('Error during account creation:', error)
-		}
+		}		
+	};
 
+	const sendVerificationEmail = async (data: SocietyRegisterFormData) => {
 		try {
 			const response = await fetch('/api/email/send-verification-email', {
 				method: 'POST',
@@ -141,7 +144,7 @@ export default function SocietyRegistrationForm() {
 			console.error('Error sending verification email:', error);
 			toast.error('Failed to send verification email. Please try again later.');
 		}
-	};
+	}
 
 
 	// Email, Name, and Password entry
