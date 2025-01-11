@@ -93,7 +93,7 @@ export default function Modal() {
 
   // Render the event details
   return (
-    <div className="relative w-full h-full mt-[10px] mb-[10px]">
+    <div className="relative w-full h-full m-[10px]">
       <div className="flex flex-col md:flex-row h-full overflow-y-auto">
 					{/* Event Image  */}
 					<div className="h-full md:w-1/2 mb-6 md:mb-0 md:mr-6 flex flex-col justify-between">
@@ -103,7 +103,7 @@ export default function Modal() {
                 alt={event.title}
                 width={200}
                 height={200}
-                className="absolute inset-0 w-[80%] h-[80%] object-cover border-2 border-black/70"
+                className="absolute inset-0 w-[80%] h-[80%] left-[10%] object-cover border-2 border-black/70"
               />
             </div>
             <div className="flex flex-row items-center">
