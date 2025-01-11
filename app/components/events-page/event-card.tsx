@@ -7,6 +7,7 @@ import { formatDateString } from "@/app/lib/utils";
 import EventCardTags from "./event-tags";
 // import EventModal from "./event-modal";
 import { useRouter } from 'next/navigation';
+import { base16ToBase62 } from "@/app/lib/uuid-utils";
 
 interface EventCardProps {
 	event: Event
@@ -18,7 +19,7 @@ export default function EventCard({ event, editEvent }: EventCardProps) {
 
 	const router = useRouter()
 
-	const jumpToEvent = () => router.push(`/events/${event.id}`)
+	const jumpToEvent = () => router.push(`/events/${base16ToBase62(event.id)}`)
 	// const openModal = () => setIsModalOpen(true);
 	// const closeModal = () => setIsModalOpen(false);
 

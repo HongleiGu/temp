@@ -5,18 +5,22 @@ import { fetchEventsById } from "@/app/lib/data-client"; // Replace with your ac
 import { Event } from "@/app/lib/types";
 import { useEffect, useState } from "react";
 import EventModal from "@/app/components/events-page/event-modal";
+import { v4 as uuidv4 } from 'uuid';
+import { base62ToBase16 } from "@/app/lib/uuid-utils";
 
 export default function Modal() {
   const { id } = useParams() as { id: string };
+  const event_id = base62ToBase16(id);
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log(event_id)
       try {
         setLoading(true);
-        const fetchedEvent = await fetchEventsById(id);
+        const fetchedEvent = await fetchEventsById(event_id);
         setEvent(fetchedEvent);
       } catch (err) {
         console.log("Error:", err)
