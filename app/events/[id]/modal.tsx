@@ -1,9 +1,9 @@
 "use client"; // This line indicates client-side rendering
 
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { fetchEventsById } from "@/app/lib/data-client"; // Replace with your actual import path
 import { Event } from "@/app/lib/types";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { base62ToBase16 } from "@/app/lib/uuid-utils";
 import { Button } from "@/app/components/button";
@@ -17,7 +17,6 @@ export default function Modal() {
   const event_id = base62ToBase16(id);
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
   const session = useSession();
 	const loggedIn = session.status === 'authenticated';
 
