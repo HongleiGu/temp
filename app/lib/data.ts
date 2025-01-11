@@ -171,8 +171,8 @@ export async function fetchAccountInfo(id: string) {
 	try {
 		const data = await sql`
 		SELECT logo_url, description, website, tags
-		FROM users
-		WHERE id = ${id} 
+		FROM society_information
+		WHERE user_id = ${id} 
 		LIMIT 1
 		`
 		return data.rows[0];
@@ -186,8 +186,8 @@ export async function fetchAccountLogo(id: string) {
 	try {
 		const data = await sql`
 		SELECT logo_url
-		FROM users
-		WHERE id = ${id} 
+		FROM society_information
+		WHERE user_id = ${id} 
 		LIMIT 1
 		`
 		return data.rows[0];
@@ -225,7 +225,7 @@ export async function fetchPredefinedTags() {
         return tags.rows.map(tag => ({
             value: tag.value,
             label: tag.label
-        }));
+        })) as Tag[];
     } catch (error) {
         console.error('Error fetching predefined tags:', error);
         throw new Error('Failed to fetch predefined tags');
@@ -235,9 +235,9 @@ export async function fetchPredefinedTags() {
 export async function updateDescription(id: string, newDescription: string) {
 	try {
 		await sql`
-		UPDATE users
+		UPDATE society_information
 		SET description = ${newDescription}
-		WHERE id = ${id} 
+		WHERE user_id = ${id} 
 		`
 		return { success: true };
 	} catch (error) {
@@ -251,13 +251,13 @@ export async function updateAccountInfo(id: string, data: OrganiserAccountEditFo
 		// console.log(data.tags); // debugging
 		const formattedTags = `{${data.tags.join(',')}}`; // Format as an array string. Below, cast from string[] to text[]
 	  	await sql`
-		UPDATE users
+		UPDATE society_information
 		SET 
 			logo_url = ${data.imageUrl},
 			description = ${data.description},
 			website = ${data.website},
-			tags = ${formattedTags}::text[] 
-		WHERE id = ${id}
+			tags = ${formattedTags}::integer[]  -- Cast to integer[]
+		WHERE user_id = ${id}
 	    `;
 	  	return { success: true };
 	} catch (error) {
@@ -270,11 +270,12 @@ export async function getOrganiser(id: string) {
 	try {
 	
 		const data = await sql`
-			SELECT id, name, description, website, tags, logo_url
-			FROM users
-			WHERE role = 'organiser' 
-			AND id=${id}
-			AND name != 'Just A Little Test Society'  -- Exclude the test society
+			SELECT u.id, u.name, society.description, society.website, society.tags, society.logo_url
+			FROM users AS u
+			JOIN society_information AS society ON society.user_id = u.id
+			WHERE u.role = 'organiser' 
+			AND u.id=${id}
+			AND u.name != 'Just A Little Test Society'  -- Exclude the test society
 		`;
   
 		return data.rows || null;
@@ -307,12 +308,15 @@ export async function getOrganiserCards(page: number, limit: number) {
 		const offset: number = (page - 1) * limit;
 	
 		const data = await sql`
-			SELECT id, name, description, website, tags, logo_url
-			FROM users
-			WHERE role = 'organiser'
-			AND name != 'Just A Little Test Society'  -- Exclude the test society
+			SELECT u.id, u.name, society.description, society.website, society.tags, society.logo_url
+			FROM users as u
+            JOIN society_information AS society ON society.user_id = u.id
+			WHERE u.role = 'organiser'
+			AND u.name != 'Just A Little Test Society'  -- Exclude the test society
 			LIMIT ${limit} OFFSET ${offset}
 		`;
+
+		console.log(data.rows)
   
 		return data.rows;
 	} catch (error) {
@@ -324,10 +328,11 @@ export async function getOrganiserCards(page: number, limit: number) {
 export async function getAllOrganiserCards() {
 	try {
 		const data = await sql`
-			SELECT id, name, description, website, tags, logo_url
-			FROM users
-			WHERE role = 'organiser'
-			AND name != 'Just A Little Test Society'  -- Exclude the test society
+			SELECT u.id, u.name, society.description, society.website, society.tags, society.logo_url
+			FROM users as u
+            JOIN society_information AS society ON society.user_id = u.id
+			WHERE u.role = 'organiser'
+			AND u.name != 'Just A Little Test Society'  -- Exclude the test society
 		`;
   
 		return data.rows;
@@ -375,23 +380,40 @@ export async function insertUserInformation(formData: UserRegisterFormData, user
 }
 
 
-export async function insertOrganiser(formData: SocietyRegisterFormData) { 
+export async function insertOrganiserIntoUsers(formData: SocietyRegisterFormData) { 
 	try {
 		const hashedPassword = await bcrypt.hash(formData.password, 10);
 		const name = formData.name.split(' ').map(capitalize).join(' ')
-
-		const formattedTags = `{${formData.tags.join(',')}}`; // Format as an array string. Below, cast from string[] to text[]
 		
-		await sql`
-			INSERT INTO users (name, email, password, role, logo_url, description, website, tags)
-			VALUES (${name}, ${formData.email}, ${hashedPassword}, ${'organiser'}, ${formData.imageUrl}, ${formData.description}, ${formData.website}, ${formattedTags}::text[])
+		const result = await sql`
+			INSERT INTO users (name, email, password, role)
+			VALUES (${name}, ${formData.email}, ${hashedPassword}, ${'organiser'})
 			ON CONFLICT (email) DO NOTHING
+			RETURNING id
 		`;
 
-		return { success: true };
+		console.log(`Created a organiser with id: ${result.rows[0].id}`)
+
+		return { success: true, id: result.rows[0].id };
 	} catch (error) {
-		console.error('Error creating user:', error);
+		console.error('Error creating organiser:', error);
 		return { success: false, error };
+	}
+}
+
+export async function insertOrganiserInformation(formData: SocietyRegisterFormData, userId: string) {
+	try {
+		const formattedTags = `{${formData.tags.join(',')}}`; // Format as an array string. Below, cast from string[] to text[]
+		const university = selectUniversity(formData.university, formData.otherUniversity) // if 'other' selected, uses text input entry
+
+		await sql`
+			INSERT INTO society_information (user_id, logo_url, description, website, tags, university_affiliation)
+			VALUES (${userId}, ${formData.imageUrl}, ${formData.description}, ${formData.website}, ${formattedTags}::integer[], ${university})
+		`;
+		return { success: true }
+	} catch (error) {
+		console.log('Error creating society_information', error)
+		return { success: false, error }
 	}
 }
 

@@ -91,7 +91,7 @@ export async function fetchPartners(page: number, limit: number) {
 		const predefinedTags = await getPredefinedTags();
 
 		// Map predefined tags into a lookup object for efficient access
-		const tagLookup: Record<string, string> = predefinedTags.reduce((acc: Record<string, string>, tag: Tag) => {
+		const tagLookup: Record<number, string> = predefinedTags.reduce((acc: Record<number, string>, tag: Tag) => {
 			acc[tag.value] = tag.label;
 			return acc;
 		}, {});
@@ -101,9 +101,7 @@ export async function fetchPartners(page: number, limit: number) {
 			id: partner.id,
 			name: partner.name || 'Unknown Name',
 			keywords: (partner.tags || []).map((tag: number) => {
-				// Convert tag to a string
-				const tagKey = tag.toString();
-				return tagLookup[tagKey] || 'Unknown Tag';
+				return tagLookup[tag] || 'Unknown Tag';
 			}),
 			description: partner.description || 'No description provided',
 			website: partner.website || 'No website available',
@@ -131,7 +129,7 @@ export async function fetchAllPartners() {
 		const predefinedTags = await getPredefinedTags();
 
 		// Map predefined tags into a lookup object for efficient access
-		const tagLookup: Record<string, string> = predefinedTags.reduce((acc: Record<string, string>, tag: Tag) => {
+		const tagLookup: Record<number, string> = predefinedTags.reduce((acc: Record<number, string>, tag: Tag) => {
 			acc[tag.value] = tag.label;
 			return acc;
 		}, {});
@@ -141,9 +139,7 @@ export async function fetchAllPartners() {
 			id: partner.id,
 			name: partner.name || 'Unknown Name',
 			keywords: (partner.tags || []).map((tag: number) => {
-				// Convert tag to a string
-				const tagKey = tag.toString();
-				return tagLookup[tagKey] || 'Unknown Tag';
+				return tagLookup[tag] || 'Unknown Tag';
 			}),
 			description: partner.description || 'No description provided',
 			website: partner.website || 'No website available',
@@ -153,7 +149,7 @@ export async function fetchAllPartners() {
 		
 		return formattedPartners;
 	} catch (err) {
-		console.error('failed to retrieve partners', err);
+		console.error('Failed to retrieve partners', err);
 	}
 }
 
@@ -185,7 +181,7 @@ export async function getPredefinedTags() {
 
 export default getPredefinedTags;
 
-//
+// MARK: Formatting and Sorting helper functions
 
 export function sortEventsByDate(events: Event[]): Event[] {
 	return events.sort((a, b) => {
@@ -314,11 +310,12 @@ export async function createSQLEventObject(data: FormData): Promise<SQLEvent> {
 }
 
 export const LondonUniversities = [
-	"Imperial College London", "King's College London", "University College London", "Birkbeck, University of London", 
-	"Brunel University", "Goldsmiths, University of London", "London Business School", "Kingston University", 
-	"London School Of Economics (LSE)", "London South Bank University", "University Of Westminster", "SOAS, University Of London",
-	"Royal Veterinary College", "Royal Holloway, University of London", "Royal College of Art", "Queen Mary University Of London",
-	"Middlesex University", "University Of Greenwich", "University Of Roehampton", 
+	"Imperial College London", "King's College London", "University College London", "City, University of London", 
+	"Birkbeck, University of London", "Brunel University", "Goldsmiths, University of London", "London Business School", 
+	"Kingston University", "London School Of Economics (LSE)", "London South Bank University", "University Of Westminster", 
+	"SOAS, University Of London", "Royal Veterinary College", "Royal Holloway, University of London", "Royal College of Art", 
+	"Queen Mary University Of London", "Middlesex University", "University Of Greenwich", "University Of Roehampton", 
+	"University of the Arts London", "Courtauld Institute of Art",
 	"Other (please specify)"
 ]
 
