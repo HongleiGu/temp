@@ -4,7 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import { fetchEventsById } from "@/app/lib/data-client"; // Replace with your actual import path
 import { Event } from "@/app/lib/types";
 import { useEffect, useState } from "react";
-import EventModal from "@/app/components/events-page/event-modal";
+import EventModalPage from "@/app/components/events-page/event-modal-page";
 import { base62ToBase16 } from "@/app/lib/uuid-utils";
 
 export default function Modal() {
@@ -38,6 +38,6 @@ export default function Modal() {
 
   // Render the event details
   return (
-    <EventModal event={event} onClose={() => router.push("/events")}></EventModal>
+    <EventModalPage event={event} onClose={() => router.push("/events")}/>
   );
 }
