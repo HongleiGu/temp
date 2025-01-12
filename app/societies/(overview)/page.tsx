@@ -1,5 +1,13 @@
 'use client';
 
+// This page occassionally has a bug due to the pagination, where the same societies are fetched in the next page, causing 
+// some societies to be missed out. Spotted during development on 31/12/2024. Likely because the db doesn't return societies in
+// a particular order. Likely solution is ordering the societies by id or name in the db query.
+
+// Second bug, when the user scrolls very quickly on initial render, only some 23 of the 33 societies are rendered/fetched.
+// This was spotted during development on 6/1/2025. For now, pagination is removed until it is
+// more thoroughly tested and fixed.
+
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import debounce from 'lodash.debounce';
 import { fetchPartners } from '@/app/lib/utils';
