@@ -23,6 +23,13 @@ export interface EmailData {
 	text: string;
 }
 
+export interface FetchAccountDetailsPromiseInterface {
+	logo_url: string;
+	description: string;
+	website: string;
+	tags: number[];
+}
+
 export interface SQLEvent {
 	id: string;
 	title: string;
