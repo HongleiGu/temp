@@ -26,7 +26,8 @@ export default function SocietyPage() {
     const [description, setDescription] = useState<string>('');
     const [website, setWebsite] = useState<string>('');
     const [tags, setTags] = useState<string[]>([]);
-    const [mainColor, setMainColor] = useState<string>('');
+    // const [mainColor, setMainColor] = useState<string>('');
+    const mainColor = '';
     const [bannerBackground, setBannerBackground] = useState<string>('transparent');
     const { id } = useParams();
     const stringid = id instanceof Array ? id[0] : id;
@@ -145,66 +146,44 @@ export default function SocietyPage() {
     };
 
 
-    const extractAndSetMainColor = () => { // move to utils in the future
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-        if (!context || !logo) return;
+    // const extractAndSetMainColor = () => { // move to utils in the future
+    //     const canvas = document.createElement('canvas');
+    //     const context = canvas.getContext('2d');
+    //     if (!context || !logo) return;
 
-        const img = new window.Image();
-        img.crossOrigin = 'Anonymous';
-        img.src = logo;
+    //     const img = new window.Image();
+    //     img.crossOrigin = 'Anonymous';
+    //     img.src = logo;
 
-        img.onload = () => {
-            canvas.width = img.width;
-            canvas.height = img.height;
-            context.drawImage(img, 0, 0);
+    //     img.onload = () => {
+    //         canvas.width = img.width;
+    //         canvas.height = img.height;
+    //         context.drawImage(img, 0, 0);
 
-            const pixelData = context.getImageData(0, 0, img.width, img.height).data;
-            let r = 0, g = 0, b = 0, count = 0;
+    //         const pixelData = context.getImageData(0, 0, img.width, img.height).data;
+    //         let r = 0, g = 0, b = 0, count = 0;
 
-            // Averaging pixel colors to find the most prominent color
-            for (let i = 0; i < pixelData.length; i += 4) {
-                r += pixelData[i];     // Red
-                g += pixelData[i + 1]; // Green
-                b += pixelData[i + 2]; // Blue
-                count++;
-            }
+    //         // Averaging pixel colors to find the most prominent color
+    //         for (let i = 0; i < pixelData.length; i += 4) {
+    //             r += pixelData[i];     // Red
+    //             g += pixelData[i + 1]; // Green
+    //             b += pixelData[i + 2]; // Blue
+    //             count++;
+    //         }
 
-            // Calculate average color
-            r = Math.floor(r / count);
-            g = Math.floor(g / count);
-            b = Math.floor(b / count);
+    //         // Calculate average color
+    //         r = Math.floor(r / count);
+    //         g = Math.floor(g / count);
+    //         b = Math.floor(b / count);
 
-            const mainColor = `rgb(${Math.floor(r*0.7)}, ${Math.floor(g*0.7)}, ${Math.floor(b*0.7)})`;
-            setMainColor(mainColor);
-        };
-    };
-
-
-    const handleMessageClick = (id: string) => { // turns message button into link
-        const url = `/societies/message/${id}`;
-
-        const newTab = window.open(url, '_blank'); // open in new tab
-        
-        if (newTab) {
-          newTab.focus(); // focus on new tab
-        }
-    };
+    //         const mainColor = `rgb(${Math.floor(r*0.7)}, ${Math.floor(g*0.7)}, ${Math.floor(b*0.7)})`;
+    //         setMainColor(mainColor);
+    //     };
+    // };
 
 
     const handleWebsiteClick = (website: string) => { // turns website button into link
         window.open(formattedWebsite(website), '_blank'); // open in new tab
-    };
-
-
-    const handleJoinLSNClick = () => {
-        const url = '/register';
-
-        const newTab = window.open(url, '_blank'); // open in new tab
-        
-        if (newTab) {
-          newTab.focus(); // focus on new tab
-        }
     };
 
 

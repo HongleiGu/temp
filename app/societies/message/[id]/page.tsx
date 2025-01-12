@@ -9,7 +9,7 @@ import { Button } from '@/app/components/button'; // Assume you have a custom bu
 import { SocietyMessageFormData } from '@/app/lib/types';
 import { useParams } from 'next/navigation';
 
-export default function SendEmailPage({ className = "min-h-screen flex flex-col justify-start p-10 bg-gradient-to-b from-[#041A2E] via-[#064580] to-[#083157]" }: { className: string }) {
+export default function SendEmailPage({ className = "min-h-screen flex flex-col justify-start p-10 bg-gradient-to-b from-[#041A2E] via-[#064580] to-[#083157]" }: { className?: string }) {
 	const [partner, setPartner] = useState({ name: '' });
 	const { id } = useParams(); // Use useParams for dynamic routing to get the dynamic id from the URL
 	const { data: session, status } = useSession()
