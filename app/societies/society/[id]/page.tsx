@@ -1,9 +1,10 @@
-
 'use client';
 
 // Plan for this page, add notificatoin button between the two cards below the banner, which will send emails to you when the
 // society creates an event on LSN.
 // Also add custom styles to tailwind config, so that style prop no longer needed
+
+// also complete all the skeletons
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
@@ -14,6 +15,7 @@ import { FetchAccountDetailsPromiseInterface, Tag } from '@/app/lib/types';
 import getPredefinedTags from '@/app/lib/utils';
 import { formattedWebsite } from '@/app/lib/utils';
 import * as skeletons from '@/app/components/skeletons/unique-society';
+import SendEmailPage from '../../message/[id]/page';
 
 
 export default function SocietyPage() {
@@ -208,10 +210,10 @@ export default function SocietyPage() {
 
     return (
         <div className="flex flex-col min-h-screen p-8 bg-gradient-to-b from-[#041A2E] via-[#064580] to-[#083157]">
-
+    
             {/* Header Section */}
-            <header className="relative flex flex-col items-center mb-6" style={{ paddingBottom: '100px' }}>
-
+            <header className="relative flex flex-col items-center pb-[100px]">
+    
                 {/* Banner Background */}
                 <div
                     className="absolute inset-0 -m-8 mb-16 h-full z-0"
@@ -220,7 +222,7 @@ export default function SocietyPage() {
                         opacity: 1, // Adjust this value to control the transparency (lower = more transparent)
                     }}
                 ></div>
-
+    
                 {/* Logo */}
                 <div className="relative z-10 flex flex-col items-center">
                     <div className="w-[265px] h-[265px] bg-transparent rounded-full flex items-center justify-center mt-[50px]">
@@ -253,7 +255,7 @@ export default function SocietyPage() {
                             )}
                         </div>
                     </div>
-
+    
                     {/* Society Name */}
                     <div className="relative mt-6 flex flex-col items-center">
                         {loadingName ? (
@@ -288,91 +290,66 @@ export default function SocietyPage() {
                     </div>
                 </div>
             </header>
-
-            {/* Description Section */}
-            {description && (
-                <section className="mb-8">
-                    <h2 className="text-2xl italic text-white font-semibold mb-2">About Us</h2>
-                    <p className="text-white">{description}</p>
-                </section>
-            )}
-
+    
+            {/* Divider */}
+            <div className='flex justify-center -mx-8'>
+                <div className="w-full h-[2px] bg-blue-50 rounded-full mb-6"></div>
+            </div>
+    
             {/* Middle Content Section */}
-            <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <section className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+    
+                {/* Left Section (SendEmailPage Component) */}
+                <div className="bg-transparent shadow-lg p-4 rounded-lg order-2 md:order-1">
+                    <SendEmailPage className="min-w-[400px] flex flex-col justify-start p-10 bg-transparent" />
+                </div>
+    
+                {/* Right Section ("Who are we?" with Description and Website Button) */}
+                <div className="bg-transparent shadow-lg p-6 rounded-xl mx-auto w-full order-1 md:order-2">
+                    {/* Section Title */}
+                    <h3 className="text-2xl font-bold text-white mb-4 text-center">
+                        Who Are We?
+                    </h3>
 
-                {/* Middle Left */}
-                <div className="bg-transparent shadow-md p-4 rounded-lg">
-                    <h3 className="text-lg font-semibold mb-2">Get In Touch</h3>
-                    <p className="text-sm text-white">
-                        Do you have an idea for a new event or initiative?
-                        <br />
-                        Do you have any feedback on how we can improve our services?
-                        <br />
-                        Do you want to collaborate with us?
-                        <br />
-                        If so, we would love to hear from you!
-                    </p>
-                    {/* Links */}
-                    <div className="flex items-center gap-4 relative bottom-[-10px] justify-center w-full">
-                        <Button variant='ghost' onClick={() => handleMessageClick(stringid)} className="bg-transparent text-white py-2 px-4 rounded-lg hover:text-gray-400 transition text-sm mr-0">
-                            <div className='flex'>
-                                <p className="mt-[6px]">Message</p>
-                                <NextImage
-                                    src='/icons/send-message-icon.png'
-                                    alt='send icon'
-                                    width={32}
-                                    height={32}
-                                    className="object-cover"
-                                />
-                            </div>
-                        </Button>
-
-                        {website && website !== 'No website available' && (
-                            <Button variant='ghost' onClick={() => handleWebsiteClick(website)} className="bg-transparent text-white py-2 rounded-lg hover:text-gray-400 transition text-sm mr-0">
-                                <span className="text-white hover:text-gray-400 px-4 py-2 rounded-lg transition text-sm flex flex-row">
-                                    Website
-                                    <NextImage
-                                    src='/icons/web.png'
-                                    alt='website icon'
-                                    width={20}
-                                    height={20}
-                                    className=" ml-2 object-cover"
-                                    />
-                                </span>
-                            </Button>
-                        )}
+                    {/* Description */}
+                    <div className='flex justify-center'>
+                        <p className="text-lg text-white mb-6 leading-relaxed">
+                            {description || 'no description found'}
+                        </p>
                     </div>
-                </div>
 
-                {/* Middle */}
-                <div className="bg-transparent p-4 rounded-lg">
-                    {/* Placeholder for future content (notification button + image) */}
-                </div>
-
-                {/* Middle Right */}
-                <div className="bg-transparent shadow-md p-4 rounded-lg">
-                    <p className="text-sm text-white">
-                        Join a vibrant community and participate in exciting events and
-                        initiatives tailored just for you. Become a member and enjoy
-                        exclusive benefits and opportunities.
-                    </p>
-                    <div className="flex items-center gap-4 relative bottom-[-10px] justify-center w-full">
-                        <Button variant='ghost' onClick={() => handleJoinLSNClick()} className="bg-green-600 mt-4 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition text-sm mr-0">
-                            <div className='flex'>
-                                <p className="mt-[6px] mr-2">Join LSN</p>
-                                <NextImage
-                                    src='/icons/sparkle.png'
-                                    alt='sparkle icon'
-                                    width={32}
-                                    height={32}
-                                    className="object-cover"
-                                />
+                    {/* Website Button */}
+                    {website && website !== 'No website available' && (
+                        <>
+                            {/* Subheading */}
+                            <h4 className="text-xl font-semibold text-white mb-4 text-center">
+                            Check out our website
+                            </h4>
+                            
+                            <div className="flex justify-center">
+                                <Button 
+                                    variant='outline' 
+                                    onClick={() => handleWebsiteClick(website)} 
+                                    className="bg-transparent text-white py-3 px-8 rounded-lg hover:bg-blue-700 transition text-lg"
+                                >
+                                    <span className="flex items-center">
+                                        <span className="mr-3">Website</span>
+                                        <NextImage
+                                            src='/icons/web.png'
+                                            alt='website icon'
+                                            width={24}
+                                            height={24}
+                                            className="object-cover"
+                                        />
+                                    </span>
+                                </Button>
                             </div>
-                        </Button>
-                    </div>
+                        </>
+                    )}
                 </div>
+
             </section>
-
+    
             {/* Events Section */}
             <section className="border-b border-gray-300 pb-4 mb-10 space-y-6">
                 <h2 className="text-2xl italic mb-2 ml-2">
@@ -383,4 +360,3 @@ export default function SocietyPage() {
         </div>
     );
 }
-

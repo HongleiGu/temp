@@ -51,6 +51,14 @@ export default function UserEventsList({ user_id }: UserEventsListProps) {
 		return <p>{error}</p>;
 	}
 
+	if (userEvents.length === 0) {
+		return(
+			<div className="flex justify-start">
+				<p>No Events Found! Try again later.</p>
+			</div>
+		);
+	}
+
 	return (
 		<div>
 			<FilteredEventsList 
