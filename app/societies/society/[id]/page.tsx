@@ -297,11 +297,11 @@ export default function SocietyPage() {
             </div>
     
             {/* Middle Content Section */}
-            <section className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <section className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
     
                 {/* Left Section (SendEmailPage Component) */}
-                <div className="bg-transparent shadow-lg p-4 rounded-lg order-2 md:order-1">
-                    <SendEmailPage className="min-w-[400px] flex flex-col justify-start p-10 bg-transparent" />
+                <div className="bg-transparent shadow-lg p-4 rounded-lg order-2 md:order-1 w-full min-w-[350px]">
+                    <SendEmailPage className="min-w-[350px] flex flex-col justify-start p-10 bg-transparent" />
                 </div>
     
                 {/* Right Section ("Who are we?" with Description and Website Button) */}
