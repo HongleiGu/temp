@@ -76,6 +76,21 @@ export async function fetchUserEvents(organiser_uid: string) {
     }
 }
 
+
+export async function fetchEventById(id: string) {
+	try {
+		const data = await sql<SQLEvent>`
+			SELECT *
+			FROM events
+			WHERE id::text LIKE '%' || ${id};
+		`;
+		return convertSQLEventToEvent(data.rows[0]);
+	} catch (error) {
+		console.error('Database error:', error);
+		throw new Error('Failed to fetch event');
+	}
+}
+
 export async function insertEvent(event: SQLEvent) {
 	try {
 		await sql`
@@ -315,8 +330,6 @@ export async function getOrganiserCards(page: number, limit: number) {
 			AND u.name != 'Just A Little Test Society'  -- Exclude the test society
 			LIMIT ${limit} OFFSET ${offset}
 		`;
-
-		console.log(data.rows)
   
 		return data.rows;
 	} catch (error) {

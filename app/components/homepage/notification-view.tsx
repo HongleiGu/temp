@@ -8,18 +8,18 @@ import toast from "react-hot-toast";
 export default function NotificationView() {
 	useEffect(() => {
 		// Remove Previous Notifications
-		localStorage.removeItem("registrationFeatures")
+		localStorage.removeItem("passwordReset")
 
 		setTimeout(() => {
-			const hasSeenToast = localStorage.getItem("passwordReset");
+			const hasSeenToast = localStorage.getItem("eventURL");
 			if (!hasSeenToast) {
 				toast(
 					<span className="text-center">
-						You can now <b>reset your password</b> if you have forgotten it!
+						Every single event now has its <b>own unique page</b> for you to share with your friends!
 					</span>,
 					{
 						icon: '🚨',
-						duration: 8000,
+						duration: 7000,
 						position: "top-center",
 						ariaProps: {
 							role: 'status',
@@ -28,7 +28,7 @@ export default function NotificationView() {
 					}
 				);
 				// Set a flag in localStorage
-				localStorage.setItem("passwordReset", "true");
+				localStorage.setItem("eventURL", "true");
 			}
 		}, 500);
 	}, []);
