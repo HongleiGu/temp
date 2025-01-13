@@ -1,13 +1,11 @@
 "use client";
 
 import Image from 'next/image';
-import toast from 'react-hot-toast';
 import { useEffect, useRef } from 'react';
-import { LockClosedIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import { Event } from "@/app/lib/types";
 import { createPortal } from 'react-dom';
 import { formatDateString, EVENT_TAG_TYPES, returnLogo } from '@/app/lib/utils';
-import { useSession } from 'next-auth/react';
 import { Button } from '../button';
 import { useRouter } from 'next/navigation';
 import { base16ToBase62 } from "@/app/lib/uuid-utils";
@@ -20,44 +18,8 @@ interface EventModalProps {
 export default function EventModal({ event, onClose }: EventModalProps) {
 	const modalRef = useRef<HTMLDivElement>(null);
 	const router = useRouter();
-	const session = useSession();
-	const loggedIn = session.status === 'authenticated';
 
 	const jumpToEvent = () => router.push(`/events/${base16ToBase62(event.id)}`)
-
-	const registerForEvent = async () => {
-		if (!loggedIn) {
-			toast.error('Please log in to register for events')
-			return
-		}
-		const toastId = toast.loading('Registering for event...')
-		// Check if they are already registered
-		try {
-			const res = await fetch('/api/events/register', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					event_id: event.id,
-					user_information: session.data.user
-				}),
-			})
-
-			const result = await res.json();
-			if (result.success) {
-				toast.success('Successfully registered for event!', { id: toastId })
-			} else {
-				if (result.registered) {
-					toast.error('Already registered for the event!', { id: toastId })
-				} else {
-					toast.error('Error registering for event!', { id: toastId })
-				}
-			}
-		} catch (error) {
-			toast.error(`Error during event registration: ${error}.`, { id: toastId })
-		}
-	}
 
 	// Disable background scroll and handle outside click detection
 	useEffect(() => {

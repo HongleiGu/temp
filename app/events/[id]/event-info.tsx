@@ -1,7 +1,6 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { fetchEventsById } from "@/app/lib/data-client";
 import { Event } from "@/app/lib/types";
 import { useEffect, useState } from "react";
 import Image from "next/image";
