@@ -1,14 +1,14 @@
 "use client";
 
 import Image from 'next/image';
-import toast from 'react-hot-toast';
 import { useEffect, useRef } from 'react';
-import { LockClosedIcon } from '@heroicons/react/24/outline';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import { Event } from "@/app/lib/types";
 import { createPortal } from 'react-dom';
 import { formatDateString, EVENT_TAG_TYPES, returnLogo } from '@/app/lib/utils';
-import { useSession } from 'next-auth/react';
 import { Button } from '../button';
+import { useRouter } from 'next/navigation';
+import { base16ToBase62 } from "@/app/lib/uuid-utils";
 
 interface EventModalProps {
 	event: Event;
@@ -17,42 +17,9 @@ interface EventModalProps {
 
 export default function EventModal({ event, onClose }: EventModalProps) {
 	const modalRef = useRef<HTMLDivElement>(null);
-	const session = useSession();
-	const loggedIn = session.status === 'authenticated';
+	const router = useRouter();
 
-	const registerForEvent = async () => {
-		if (!loggedIn) {
-			toast.error('Please log in to register for events')
-			return
-		}
-		const toastId = toast.loading('Registering for event...')
-		// Check if they are already registered
-		try {
-			const res = await fetch('/api/events/register', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					event_id: event.id,
-					user_information: session.data.user
-				}),
-			})
-
-			const result = await res.json();
-			if (result.success) {
-				toast.success('Successfully registered for event!', { id: toastId })
-			} else {
-				if (result.registered) {
-					toast.error('Already registered for the event!', { id: toastId })
-				} else {
-					toast.error('Error registering for event!', { id: toastId })
-				}
-			}
-		} catch (error) {
-			toast.error(`Error during event registration: ${error}.`, { id: toastId })
-		}
-	}
+	const jumpToEvent = () => router.push(`/events/${base16ToBase62(event.id)}`)
 
 	// Disable background scroll and handle outside click detection
 	useEffect(() => {
@@ -110,7 +77,7 @@ export default function EventModal({ event, onClose }: EventModalProps) {
 							alt={event.title}
 							width={200}
 							height={200}
-							className="w-[90%] h-64 object-cover border-2  border-black/70"
+							className="w-[90%] h-64 object-contain"
 						/>
 						<div className='flex flex-col'>
 							{societyLogo.found && (
@@ -128,12 +95,23 @@ export default function EventModal({ event, onClose }: EventModalProps) {
 
 					{/* Event Details */}
 					<div className="md:w-1/2">
-						<div className="mb-4">
-							{getTags(event.event_type).map((tag, index) => (
-								<span key={index} className={`inline-block px-3 py-1 text-xs text-white ${tag.color} rounded-full mr-2 lowercase`}>
-									{tag.label}
-								</span>
-							))}
+						<div className="flex flex-col md:flex-row mb-2 md:mb-0 justify-between items-center">
+							<div className="mb-0">
+								{getTags(event.event_type).map((tag, index) => (
+									<span key={index} className={`inline-block px-3 py-1 text-xs text-white ${tag.color} rounded-full mr-2 lowercase`}>
+										{tag.label}
+									</span>
+								))}
+
+							</div>
+							<button 
+								className="flex items-center rounded-lg px-4 text-sm font-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 aria-disabled:cursor-not-allowed aria-disabled:opacity-50 hover:cursor-pointer h-12 text-gray-700 uppercase tracking-wider  hover:text-black transition-transform duration-300 ease-in-out"
+								onClick={jumpToEvent}
+							>							
+								Go To Event
+								<ArrowRightIcon className="ml-2 h-5 w-5 text-black" />
+							
+							</button>
 						</div>
 
 						<h2 className="text-2xl font-bold text-gray-900 mb-2">{event.title}</h2>
@@ -160,21 +138,24 @@ export default function EventModal({ event, onClose }: EventModalProps) {
 							</div>
 						)}
 
-						
-						<div className="mt-10 self-end w-full flex flex-row justify-end pr-2">
-							<Button
-								variant='filled'
-								size='lg'
-								className="text-gray-600 text-lg rounded-none  border-[#e2531f] uppercase font-semibold tracking-widest px-20"
-								onClick={registerForEvent}
-							>
-								{!loggedIn && <LockClosedIcon width={20} height={20}  className='pr-2'/> }
-								Register through LSN
-							</Button>
+						<div className='mt-6'>
+							<h3 className="text-lg font-semibold mb-2 text-gray-500">Registration</h3>
+							<hr className="border-t-1 border-gray-300 m-2" />
+							<div className="w-full flex flex-row justify-center">
+								<Button
+									variant='ghost'
+									size='lg'
+									className="text-gray-600 text-lg uppercase tracking-wider px-20 hover:text-gray-600 transition-transform duration-300 ease-in-out hover:scale-105"
+									onClick={jumpToEvent}
+								>
+									Press here to register to this event 
+									<ArrowRightIcon className="ml-2 h-5 w-5 text-black" />
+								</Button>
+							</div>
 						</div>
-						
 
-						
+
+
 					</div>
 				</div>
 			</div>

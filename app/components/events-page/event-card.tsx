@@ -8,6 +8,7 @@ import EventCardTags from "./event-tags";
 import EventModal from "./event-modal";
 import { useRouter } from 'next/navigation';
 
+
 interface EventCardProps {
 	event: Event
 	editEvent?: boolean
@@ -41,7 +42,7 @@ export default function EventCard({ event, editEvent }: EventCardProps) {
 					alt={event.title}
 					width={200}
 					height={40}
-					className="w-full h-40 object-cover mb-1 border border-black"
+					className="w-full h-40 object-contain mb-1 border border-black"
 				/>
 				<div className="flex flex-col justify-between flex-grow">
 					<div>
