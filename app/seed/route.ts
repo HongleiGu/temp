@@ -155,6 +155,20 @@
 //     `;
 // }
 
+// async function seedSocietyInformation() {
+
+// 	await client.sql`
+//         CREATE TABLE IF NOT EXISTS society_information (
+//             id SERIAL PRIMARY KEY,
+//             user_id UUID NOT NULL REFERENCES users(id), -- foreign key
+//             description TEXT,
+//             website VARCHAR(255),
+//             logo_url VARCHAR(255),
+//             tags INTEGER[]
+//         );
+//     `;
+// }
+
 // async function seedEventRegistrationsTable() {
 // 	await client.sql`
 // 	  CREATE TABLE IF NOT EXISTS event_registrations (
@@ -168,21 +182,11 @@
 // 	`;
 // }
 
-// async function seedResetPasswordTable() {
-// 	await client.sql`
-// 		  CREATE TABLE IF NOT EXISTS reset_password (
-// 			id SERIAL PRIMARY KEY,
-// 			email VARCHAR(255) NOT NULL UNIQUE,
-// 			token VARCHAR(255) NOT NULL,
-// 			expires_at TIMESTAMP DEFAULT NOW()
-// 		  );
-// 	`;
-// }
 
 export async function GET() {
 	// try {
 	// 	await client.sql`BEGIN`;
-	// 	await seedCompanyInformation()
+	// 	await seedSocietyInformation()
 
 	// 	await client.sql`COMMIT`;
 	// 	return Response.json({ message: 'Database updated successfully' });

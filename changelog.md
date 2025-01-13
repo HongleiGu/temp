@@ -4,6 +4,22 @@ All the notable additions and fixes.
 
 This changelog follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+# [3.0.0] - 2025-01-09
+
+### Added
+
+- New table `society_information` seeded
+- University Affiliation field to `register/society` page
+- Added 3 universities into `LondonUniversities` list inside `utils.ts`
+
+### Changed
+
+- Moved description, logo_url, website, and tags fields from `users` to `society_information`
+- All `data.ts` functions that references above fields from `users` now `JOIN ON` `society_information` with to get data
+- Updated workflow for inserting a society registration into Vercel database, moving to two-step process as with other account registrations (insert into `users`, and use returned UUID as foreign key into `society_information`)
+- Changed `Tag` type to have label of type `number`
+- Minor formatting on some pages
+
 # [2.0.2] - 2025-01-08
 
 ### Added
