@@ -4,6 +4,20 @@ All the notable additions and fixes.
 
 This changelog follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+# [3.1.0] - 2025-01-13
+
+### Added
+
+- New `events/[id]` page, displaying event information in whole screen format
+- New id encoding / decoding via base62 inside `lib/uuid-utils` (POTENTIAL BUG WITH FUTURE CLASHES)
+- New API route for fetching event information from last 22 digits on UUID
+
+### Changed
+
+- Added 'Go To Event' on card modal to go to individual page
+- Changed UI for registration button to look cleaner
+- Changed all image displays on event cards/modals/pages to `object-contain` instead of `object-cover`
+
 # [3.0.0] - 2025-01-09
 
 ### Added

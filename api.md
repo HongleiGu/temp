@@ -4,6 +4,22 @@ This API log follows the same [Semantic Versioning](https://semver.org/spec/v2.0
 
 For each public API route, it lists **inputs**, **outputs**, **errors thrown**, and **places invocated**
 
+# [3.0.2] 
+
+## `events/get-information`
+
+### Inputs
+- id: Last 20 digits of UUID of event
+
+### Ouputs
+- event: _SQLEvent_
+
+### Errors:
+- event not found in `events` table
+
+### Where
+- `events/[id]/event-info.tsx`
+
 
 # [2.0.0] # An API route is no longer backword compatible (/api/validate-token)
 

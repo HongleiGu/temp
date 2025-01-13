@@ -77,7 +77,7 @@ export default function EventModal({ event, onClose }: EventModalProps) {
 							alt={event.title}
 							width={200}
 							height={200}
-							className="w-[90%] h-64 object-cover border-2  border-black/70"
+							className="w-[90%] h-64 object-contain"
 						/>
 						<div className='flex flex-col'>
 							{societyLogo.found && (

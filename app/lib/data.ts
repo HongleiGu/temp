@@ -84,9 +84,7 @@ export async function fetchEventById(id: string) {
 			FROM events
 			WHERE id::text LIKE '%' || ${id};
 		`;
-		console.log(data.rows)
-		return data
-		// return convertSQLEventToEvent(data.rows[0]);
+		return convertSQLEventToEvent(data.rows[0]);
 	} catch (error) {
 		console.error('Database error:', error);
 		throw new Error('Failed to fetch event');
@@ -332,8 +330,6 @@ export async function getOrganiserCards(page: number, limit: number) {
 			AND u.name != 'Just A Little Test Society'  -- Exclude the test society
 			LIMIT ${limit} OFFSET ${offset}
 		`;
-
-		console.log(data.rows)
   
 		return data.rows;
 	} catch (error) {

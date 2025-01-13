@@ -7,9 +7,10 @@ import Image from "next/image";
 import { base62ToBase16 } from "@/app/lib/uuid-utils";
 import { Button } from "@/app/components/button";
 import { EVENT_TAG_TYPES, returnLogo, formatDateString } from "@/app/lib/utils";
-import { LockClosedIcon } from "@heroicons/react/24/outline";
+import { LockClosedIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
+import EventInfoPageSkeleton from "@/app/components/skeletons/event-info-page";
 
 export default function EventInfo() {
 	const { id } = useParams() as { id: string };
@@ -58,9 +59,7 @@ export default function EventInfo() {
 	// Handle loading and error states
 	if (loading) {
 		return (
-			<div className="flex flex-col items-center justify-center">
-				<h1 className="text-3xl">Loading...</h1>
-			</div>
+			<EventInfoPageSkeleton />
 		)
 	}
 
@@ -123,20 +122,20 @@ export default function EventInfo() {
 							alt={event.title}
 							width={200}
 							height={200}
-							className="absolute inset-0 w-[80%] h-[80%] left-[10%] object-cover border-2 border-black/70"
+							className="absolute inset-0 w-[80%] h-[80%] left-[10%] object-contain border "
 						/>
 					</div>
-					<div className="flex flex-row items-center">
+					<div className="flex flex-col md:flex-row items-center">
 						{societyLogo.found && (
 							<Image
 								src={societyLogo.src || '/images/societies/roar.png'}
 								alt="Society Logo"
 								width={50}
 								height={50}
-								className="object-contain mt-4"
+								className="object-contain mr-2"
 							/>
 						)}
-						<p className="text-sm text-gray-500 mt-2">
+						<p className="text-sm text-gray-500">
 							<strong>Hosted by</strong> {event.organiser}
 						</p>
 					</div>
@@ -176,17 +175,21 @@ export default function EventInfo() {
 						</div>
 					)}
 
-
-					<div className="mt-10 self-end w-full flex flex-row justify-end pr-2">
-						<Button
-							variant='filled'
-							size='lg'
-							className="text-gray-600 text-lg rounded-none  border-[#e2531f] uppercase font-semibold tracking-widest px-20"
-							onClick={registerForEvent}
-						>
-							{!loggedIn && <LockClosedIcon width={20} height={20} className='pr-2' />}
-							Register through LSN
-						</Button>
+					<div className='mt-6'>
+						<h3 className="text-lg font-semibold mb-2 text-gray-500">Registration</h3>
+						<hr className="border-t-1 border-gray-300 m-2" />
+						<div className="w-full flex flex-row justify-center">
+							<Button
+								variant='ghost'
+								size='lg'
+								className="text-gray-600 text-lg rounded-none  border-[#e2531f] uppercase tracking-wider px-20"
+								onClick={registerForEvent}
+							>
+								{!loggedIn && <LockClosedIcon width={20} height={20} className='pr-2' />}
+								Press here to register to this event
+								{loggedIn && <ArrowRightIcon className="ml-2 h-5 w-5 text-black" />}
+							</Button>
+						</div>
 					</div>
 				</div>
 			</div>
