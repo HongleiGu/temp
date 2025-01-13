@@ -104,7 +104,7 @@ export default function EventModal({ event, onClose }: EventModalProps) {
 								))}
 
 							</div>
-							<Button className='text-black' variant='ghost' size='lg' onClick={jumpToEvent} >
+							<Button className='text-black hover:text-black' variant='ghost' size='lg' onClick={jumpToEvent} >
 								Go To Event
 								<ArrowRightIcon className="ml-2 h-5 w-5 text-black" />
 							</Button>
@@ -141,7 +141,7 @@ export default function EventModal({ event, onClose }: EventModalProps) {
 								<Button
 									variant='ghost'
 									size='lg'
-									className="text-gray-600 text-lg rounded-none  border-[#e2531f] uppercase tracking-wider px-20"
+									className="text-gray-600 text-lg uppercase tracking-wider px-20 hover:text-gray-600 transition-transform duration-300 ease-in-out hover:scale-105"
 									onClick={jumpToEvent}
 								>
 									Press here to register to this event 

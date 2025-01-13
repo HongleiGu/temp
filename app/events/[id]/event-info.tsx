@@ -182,12 +182,12 @@ export default function EventInfo() {
 							<Button
 								variant='ghost'
 								size='lg'
-								className="text-gray-600 text-lg rounded-none  border-[#e2531f] uppercase tracking-wider px-20"
+								className="text-gray-800 text-lg uppercase tracking-wider px-20 hover:text-black"
 								onClick={registerForEvent}
 							>
 								{!loggedIn && <LockClosedIcon width={20} height={20} className='pr-2' />}
 								Press here to register to this event
-								{loggedIn && <ArrowRightIcon className="ml-2 h-5 w-5 text-black" />}
+								{loggedIn && <ArrowRightIcon className="ml-2 h-5 w-5 text-black transition-transform duration-300 ease-in-out group-hover:translate-x-2" />}
 							</Button>
 						</div>
 					</div>
