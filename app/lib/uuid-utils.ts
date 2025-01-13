@@ -5,34 +5,35 @@ const BASE62_CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuv
 
 
 export function base16ToBase62(hex: string): string {
-  const last20Hex = hex.replace(/-/g, '').slice(-20); // Get the last 20 hex digits
-  let bigInt = BigInt(`0x${last20Hex}`);
-  
-  let base62 = '';
-  while (bigInt > 0) {
-      const remainder = Number(bigInt % BigInt(62));
-      base62 = BASE62_CHARS[remainder] + base62;
-      bigInt = bigInt / BigInt(62);
-  }
-  
-  return base62;
+	const last20Hex = hex.replace(/-/g, '').slice(-20); // Get the last 20 hex digits
+	let bigInt = BigInt(`0x${last20Hex}`);
+
+	let base62 = '';
+	while (bigInt > 0) {
+		const remainder = Number(bigInt % BigInt(62));
+		base62 = BASE62_CHARS[remainder] + base62;
+		bigInt = bigInt / BigInt(62);
+	}
+
+	return base62;
 }
 
 
 export function base62ToBase16(base62: string): string {
 
-  let bigInt = BigInt(0);
-  for (const char of base62) {
-      bigInt = bigInt * BigInt(62) + BigInt(BASE62_CHARS.indexOf(char));
-  }
+	let bigInt = BigInt(0);
+	for (const char of base62) {
+		bigInt = bigInt * BigInt(62) + BigInt(BASE62_CHARS.indexOf(char));
+	}
 
-  const hex = bigInt.toString(16).padStart(20, '0');
-  const formattedHex = hex.toLowerCase();
+	const hex = bigInt.toString(16).padStart(20, '0');
+	const formattedHex = hex.toLowerCase();
 
-  return `${formattedHex.slice(0, 4)}-${formattedHex.slice(4, 8)}-${formattedHex.slice(8)}`;
+	return `${formattedHex.slice(0, 4)}-${formattedHex.slice(4, 8)}-${formattedHex.slice(8)}`;
 }
 
-// // Example usage
+// EXAMPLE USAGE
+// ------------------------------------------------------------------------
 // const uuid = '123e4567-e89b-12d3-a456-426614174000'; // Example UUID
 // const base62 = base16ToBase62(last20Hex);
 // console.log(`Last 20 Hex of UUID: ${last20Hex} -> Base62: ${base62}`);

@@ -3,12 +3,14 @@
 import Image from 'next/image';
 import toast from 'react-hot-toast';
 import { useEffect, useRef } from 'react';
-import { LockClosedIcon } from '@heroicons/react/24/outline';
+import { LockClosedIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import { Event } from "@/app/lib/types";
 import { createPortal } from 'react-dom';
 import { formatDateString, EVENT_TAG_TYPES, returnLogo } from '@/app/lib/utils';
 import { useSession } from 'next-auth/react';
 import { Button } from '../button';
+import { useRouter } from 'next/navigation';
+import { base16ToBase62 } from "@/app/lib/uuid-utils";
 
 interface EventModalProps {
 	event: Event;
@@ -17,8 +19,11 @@ interface EventModalProps {
 
 export default function EventModal({ event, onClose }: EventModalProps) {
 	const modalRef = useRef<HTMLDivElement>(null);
+	const router = useRouter();
 	const session = useSession();
 	const loggedIn = session.status === 'authenticated';
+
+	const jumpToEvent = () => router.push(`/events/${base16ToBase62(event.id)}`)
 
 	const registerForEvent = async () => {
 		if (!loggedIn) {
@@ -128,12 +133,19 @@ export default function EventModal({ event, onClose }: EventModalProps) {
 
 					{/* Event Details */}
 					<div className="md:w-1/2">
-						<div className="mb-4">
-							{getTags(event.event_type).map((tag, index) => (
-								<span key={index} className={`inline-block px-3 py-1 text-xs text-white ${tag.color} rounded-full mr-2 lowercase`}>
-									{tag.label}
-								</span>
-							))}
+						<div className="flex flex-col md:flex-row mb-2 md:mb-0 justify-between items-center">
+							<div className="mb-0">
+								{getTags(event.event_type).map((tag, index) => (
+									<span key={index} className={`inline-block px-3 py-1 text-xs text-white ${tag.color} rounded-full mr-2 lowercase`}>
+										{tag.label}
+									</span>
+								))}
+
+							</div>
+							<Button className='text-black' variant='ghost' size='lg' onClick={jumpToEvent} >
+								Go To Event
+								<ArrowRightIcon className="ml-2 h-5 w-5 text-black" />
+							</Button>
 						</div>
 
 						<h2 className="text-2xl font-bold text-gray-900 mb-2">{event.title}</h2>
@@ -160,21 +172,24 @@ export default function EventModal({ event, onClose }: EventModalProps) {
 							</div>
 						)}
 
-						
-						<div className="mt-10 self-end w-full flex flex-row justify-end pr-2">
-							<Button
-								variant='filled'
-								size='lg'
-								className="text-gray-600 text-lg rounded-none  border-[#e2531f] uppercase font-semibold tracking-widest px-20"
-								onClick={registerForEvent}
-							>
-								{!loggedIn && <LockClosedIcon width={20} height={20}  className='pr-2'/> }
-								Register through LSN
-							</Button>
+						<div className='mt-6'>
+							<h3 className="text-lg font-semibold mb-2 text-gray-500">Registration</h3>
+							<hr className="border-t-1 border-gray-300 m-2" />
+							<div className="w-full flex flex-row justify-center">
+								<Button
+									variant='ghost'
+									size='lg'
+									className="text-gray-600 text-lg rounded-none  border-[#e2531f] uppercase tracking-wider px-20"
+									onClick={jumpToEvent}
+								>
+									Press here to register to this event 
+									<ArrowRightIcon className="ml-2 h-5 w-5 text-black" />
+								</Button>
+							</div>
 						</div>
-						
 
-						
+
+
 					</div>
 				</div>
 			</div>

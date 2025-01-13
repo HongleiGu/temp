@@ -1,13 +1,13 @@
 "use client";
 
 import Image from "next/image";
-// import { useState } from "react";
+import { useState } from "react";
 import { Event } from "@/app/lib/types";
 import { formatDateString } from "@/app/lib/utils";
 import EventCardTags from "./event-tags";
-// import EventModal from "./event-modal";
+import EventModal from "./event-modal";
 import { useRouter } from 'next/navigation';
-import { base16ToBase62 } from "@/app/lib/uuid-utils";
+
 
 interface EventCardProps {
 	event: Event
@@ -15,13 +15,12 @@ interface EventCardProps {
 }
 
 export default function EventCard({ event, editEvent }: EventCardProps) {
-	// const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const router = useRouter()
 
-	const jumpToEvent = () => router.push(`/events/${base16ToBase62(event.id)}`)
-	// const openModal = () => setIsModalOpen(true);
-	// const closeModal = () => setIsModalOpen(false);
+	const openModal = () => setIsModalOpen(true);
+	const closeModal = () => setIsModalOpen(false);
 
 	const navigateToEdit = () => {
 		try {
@@ -36,7 +35,7 @@ export default function EventCard({ event, editEvent }: EventCardProps) {
 	return (
 		<>
 
-			<div className="flex flex-col p-4 rounded-sm shadow-lg relative transition-transform duration-300 ease-in-out hover:scale-105 hover:bg-opacity-90 bg-white" onClick={editEvent ? navigateToEdit : jumpToEvent}>
+			<div className="flex flex-col p-4 rounded-sm shadow-lg relative transition-transform duration-300 ease-in-out hover:scale-105 hover:bg-opacity-90 bg-white" onClick={editEvent ? navigateToEdit : openModal}>
 				<EventCardTags eventType={event.event_type} />
 				<Image
 					src={event.image_url}
@@ -56,7 +55,7 @@ export default function EventCard({ event, editEvent }: EventCardProps) {
 					</div>
 				</div>
 			</div>
-			{/* {isModalOpen && <EventModal event={event} onClose={closeModal} />} */}
+			{isModalOpen && <EventModal event={event} onClose={closeModal} />}
 		</>
 	)
 }
