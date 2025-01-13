@@ -4,7 +4,7 @@ This API log follows the same [Semantic Versioning](https://semver.org/spec/v2.0
 
 For each public API route, it lists **inputs**, **outputs**, **errors thrown**, and **places invocated**
 
-# [3.0.2] 
+# [3.1.0] 
 
 ## `events/get-information`
 
