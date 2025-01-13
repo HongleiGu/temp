@@ -5,7 +5,6 @@ import { Event } from "@/app/lib/types";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { base62ToBase16 } from "@/app/lib/uuid-utils";
-import { Button } from "@/app/components/button";
 import { EVENT_TAG_TYPES, returnLogo, formatDateString } from "@/app/lib/utils";
 import { LockClosedIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 import { useSession } from "next-auth/react";
