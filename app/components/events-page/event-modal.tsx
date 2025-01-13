@@ -104,10 +104,14 @@ export default function EventModal({ event, onClose }: EventModalProps) {
 								))}
 
 							</div>
-							<Button className='text-black hover:text-black' variant='ghost' size='lg' onClick={jumpToEvent} >
+							<button 
+								className="flex items-center rounded-lg px-4 text-sm font-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 aria-disabled:cursor-not-allowed aria-disabled:opacity-50 hover:cursor-pointer h-12 text-gray-700 uppercase tracking-wider  hover:text-black transition-transform duration-300 ease-in-out"
+								onClick={jumpToEvent}
+							>							
 								Go To Event
 								<ArrowRightIcon className="ml-2 h-5 w-5 text-black" />
-							</Button>
+							
+							</button>
 						</div>
 
 						<h2 className="text-2xl font-bold text-gray-900 mb-2">{event.title}</h2>
