@@ -29,7 +29,7 @@ export default function AccountPage() {
 	const handleForgottenPasswordPress = () => {
 		setShowForgottenPasswordModal(true);
 	}
-	
+
 
 	if (status === 'loading') {
 		return (
@@ -49,22 +49,36 @@ export default function AccountPage() {
 
 				<div className="border-b border-gray-300 pb-4 ml-4 mb-10 space-y-6">
 					<h2 className="text-2xl italic mb-2 ml-2">Your details</h2>
-					{ user.role==='organiser' && < AccountLogo id={user.id} role={user.role}/> }
-					<p className="text-sm">
-						<span className="mr-10 font-semibold">Name:</span> {user?.name || 'Test User'}
-					</p>
-					<p className="text-sm">
-						<span className="mr-10 font-semibold">Email:</span> {user?.email || 'test@lsn.co.uk'}
-					</p>
-					<p className="text-sm capitalize">
-						<span className="mr-12 font-semibold">Role:</span> {user?.role || 'user'}
-					</p>
-					{ user.role==='organiser' && < AccountFields id={user.id} role={user.role}/> }
+					<div className='flex flex-col md:flex-row'>
+						<div className='w-full'>
+							<p className="text-sm">
+								<h3 className="text-lg font-semibold mb-2 text-white">Name</h3>
+								<hr className="border-t-1 border-gray-300 w-[80%] mt-2 mb-4" />
+								<p className="text-gray-100 whitespace-pre-wrap font-bold">{user?.name || 'Test User'}</p>
+							</p>
+							<p className="text-sm mt-6">
+								<h3 className="text-lg font-semibold mb-2 text-white">Email</h3>
+								<hr className="border-t-1 border-gray-300 w-[80%] mt-2 mb-4" />
+								<p className="text-gray-100 whitespace-pre-wrap font-bold">{user?.email || 'test@lsn.co.uk'}</p>
+							</p>
+							<p className="text-sm capitalize mt-6">
+								<h3 className="text-lg font-semibold mb-2 text-white">Role</h3>
+								<hr className="border-t-1 border-gray-300 w-[80%] mt-2 mb-4" />
+								<p className="text-gray-100 whitespace-pre-wrap font-bold">{user?.role || 'user'}</p>
+							</p>
+
+						</div>
+						{user.role === 'organiser' &&
+							<div className="w-full order-first md:order-none md:ml-auto flex justify-center items-center">
+								<AccountLogo id={user.id} role={user.role} />
+							</div>
+						}
+					</div>
+					{user.role === 'organiser' && < AccountFields id={user.id} role={user.role} />}
 				</div>
 
 				<div className="border-b border-gray-300 pb-4 ml-4 mb-10 space-y-6">
 					<h2 className="text-2xl italic mb-2 ml-2">Your events</h2>
-					{/* <p className="text-sm italic text-gray-300 ml-20 w-full">Coming Soon</p> */}
 					<UserEventsList user_id={user.id} />
 				</div>
 
