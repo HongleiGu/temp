@@ -3,14 +3,12 @@
 import { useState, useEffect } from "react";
 import FilteredEventsList from "../events-page/filtered-events-list";
 import { Event } from "@/app/lib/types";
+import { UserEventsListProps } from "@/app/lib/types";
 
-interface UserEventsListProps {
-	user_id: string
-}
 
 /* TODO: Make api call to get events for user_id */
 
-export default function UserEventsList({ user_id }: UserEventsListProps) {
+export default function UserEventsList({ user_id, edit = true }: UserEventsListProps) {
 	const [userEvents, setUserEvents] = useState<Event[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
@@ -64,7 +62,7 @@ export default function UserEventsList({ user_id }: UserEventsListProps) {
 			<FilteredEventsList 
 				allEvents={userEvents} 
 				activeTags={[1, 2, 4]} // MARK: UPDATE if TAGS change
-				editEvent={true}
+				editEvent={edit}
 			/>
 		</div>
 	);

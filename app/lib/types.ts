@@ -23,6 +23,11 @@ export interface EmailData {
 	text: string;
 }
 
+export interface UserEventsListProps {
+	user_id: string
+	edit: boolean
+}
+
 export interface FetchAccountDetailsPromiseInterface {
 	logo_url: string;
 	description: string;
