@@ -54,7 +54,7 @@ export default function UserEventsList({ user_id }: UserEventsListProps) {
 	if (userEvents.length === 0) {
 		return(
 			<div className="flex justify-start">
-				<p>No Events Found! Try again later.</p>
+				<p>No Events Found! (yet...)</p>
 			</div>
 		);
 	}
