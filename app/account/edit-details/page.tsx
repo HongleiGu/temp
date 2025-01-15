@@ -154,11 +154,12 @@ export default function EditDetailsPage() {
 			</div>
 			<div>
 				<label className="block text-white font-bold mt-4 mb-1">Description</label>
-				<Input
-					type="text"
-					placeholder="Society Description"
-					className="w-full text-white p-2 border border-gray-300 rounded bg-transparent"
+				<textarea
+					id="description"
+					rows={4}
 					{...register('description')}
+					className="w-full text-white block text-sm p-2 border border-gray-300 rounded bg-transparent focus:ring-blue-500 focus:border-blue-500"
+					placeholder="Society Description..."
 				/>
 			</div>
 			<div>
