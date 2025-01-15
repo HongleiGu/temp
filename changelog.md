@@ -12,6 +12,7 @@ This changelog follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 - Changed Account edit page UI look
 - Changed event Images from cover to contain
 - Fixed grammar in a page
+- Fixed tag UI bug
 
 # [3.2.0] - 2025-01-13
 

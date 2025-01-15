@@ -246,7 +246,9 @@ export default function SocietyPage() {
 							<skeletons.UniqueSocietyTagsSkeleton />
 						) : (
 							<div className='mt-2'>
-								<span>|</span>
+								{tags.length>0 && 
+									<span>|</span>
+								}
 								{tags.map((tag, index) => (
 									<>
 										<span
