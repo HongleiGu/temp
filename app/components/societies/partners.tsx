@@ -28,7 +28,7 @@ function Partners({ filteredPartners }: { filteredPartners: FormattedPartner[] }
 	return (
 		<>
 			{filteredPartners.map((partner: FormattedPartner) => (
-				<Link href={`/societies/society/${partner.id}`} key={partner.id} passHref>
+				<Link href={`/societies/society/${partner.id}`} key={partner.id} passHref className="transition-transform duration-300 ease-in-out hover:scale-95">
 				<div key={partner.id} className="bg-transparent p-6 rounded-lg flex flex-col md:flex-row items-center justify-center md:justify-between border-2 border-blue-100">
 					{/* Left Side: Partner Info */}
 					<div className="flex flex-col space-y-4 w-2/3 md:pr-4 justify-between">
@@ -38,7 +38,7 @@ function Partners({ filteredPartners }: { filteredPartners: FormattedPartner[] }
 							<h2 className="text-2xl font-medium text-center md:text-left  text-white">{partner.name}</h2>
 
 							{/* Description */}
-							<p className="text-gray-200">{partner.description}</p>
+							<p className="text-gray-200 line-clamp-3 text-ellipsis">{partner.description}</p>
 						</div>
 
 						{/* Tags */}
@@ -75,7 +75,7 @@ function Partners({ filteredPartners }: { filteredPartners: FormattedPartner[] }
 						</div>
 
 						{/* Links */}
-						<div className="flex items-center gap-4 relative bottom-[-10px] justify-center w-full">
+						<div className="flex flex-col items-center gap-4 relative bottom-[-10px] justify-center w-full">
 							<button onClick={(e) => handleMessageClick(e, partner.id)} className="bg-transparent text-white py-2 px-4 rounded-lg hover:text-gray-400 transition text-sm mr-0">
 								<div className='flex'>
 									<p className="mt-[6px]">Message</p>

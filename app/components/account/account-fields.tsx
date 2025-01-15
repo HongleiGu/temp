@@ -51,13 +51,18 @@ export default function AccountFields({ id, role }: { id: string, role: string }
 	return (
 		<div className="pb-4 mb-10 space-y-6">
 			<p className="text-sm capitalize">
-				<span className="mr-12 font-semibold">Description:</span> {description || 'no description found'}
+				<h3 className="text-lg font-semibold mb-2 text-white">Description</h3>
+				<hr className="border-t-1 border-gray-300 w-2/3 mt-2 mb-4" />
+				<p className="text-gray-100 whitespace-pre-wrap">{description || "No Description Found"}</p>
 			</p>
 			<p className="text-sm">
-				<span className="mr-12 font-semibold">Website:</span> {website || 'no website found'}
+				<h3 className="text-lg font-semibold mb-2 text-white">Website</h3>
+				<hr className="border-t-1 border-gray-300 w-2/3 my-2" />
+				<p className="text-gray-100 whitespace-pre-wrap">{website || 'No Website Found'}</p>
 			</p>
 			<p className="text-sm capitalize">
-				<span className="mr-12 font-semibold">Tags:</span>
+				<h3 className="text-lg font-semibold mb-2 text-white">Tags</h3>
+				<hr className="border-t-1 border-gray-300 w-2/3 my-2" />
 				{Array.isArray(tags) && tags.length > 0 // handles array that isn't defined or is empty
 					? tags
 						.map((tag) => {
