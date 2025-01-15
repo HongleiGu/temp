@@ -25,7 +25,7 @@ export interface EmailData {
 
 export interface UserEventsListProps {
 	user_id: string
-	edit: boolean
+	edit?: boolean
 }
 
 export interface FetchAccountDetailsPromiseInterface {
