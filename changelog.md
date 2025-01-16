@@ -4,6 +4,27 @@ All the notable additions and fixes.
 
 This changelog follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+
+# [3.2.1] - 2025-01-15
+
+### Changed
+
+- Changed Account edit page UI look
+- Changed event Images from cover to contain
+- Fixed grammar in a page
+- Fixed tag UI bug
+
+# [3.2.0] - 2025-01-13
+
+### Added
+
+- New unique society page, for unique urls
+- Added some new skeletons
+
+### Changed
+
+- Propperly alligned links in society cards page
+
 # [3.1.0] - 2025-01-13
 
 ### Added

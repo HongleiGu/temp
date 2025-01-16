@@ -108,7 +108,7 @@ function ForSponsors() {
 				We help organise events that reach the entire
 				university student community across London. <br /> <br />
 				Interested in sponsoring our exciting activities? Reach out today
-				and be a part of something extraordinary
+				and be a part of something extraordinary.
 			</p>
 			<JoinButton href="/contact" className="self-end mr-12 mt-12" text="Contact our team" />
 		</section>

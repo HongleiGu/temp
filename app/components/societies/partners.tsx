@@ -1,11 +1,34 @@
+'use client'
+
 import { FormattedPartner } from "@/app/lib/types";
 import Image from "next/image";
 import Link from "next/link";
+import { formattedWebsite } from "@/app/lib/utils";
+
 
 function Partners({ filteredPartners }: { filteredPartners: FormattedPartner[] }) {
+	const handleMessageClick = (e: React.MouseEvent<HTMLButtonElement>, id: number) => { // turns message button into link
+		e.preventDefault();
+		e.stopPropagation();
+		const url = `/societies/message/${id.toString()}`;
+
+		const newTab = window.open(url, '_blank'); // open in new tab
+		
+		if (newTab) {
+		  newTab.focus(); // focus on new tab
+		}
+	};
+
+	const handleWebsiteClick = (e: React.MouseEvent<HTMLButtonElement>, website: string) => { // turns website button into link
+		e.preventDefault();
+		e.stopPropagation();
+		window.open(formattedWebsite(website), '_blank'); // open in new tab
+	};
+
 	return (
 		<>
 			{filteredPartners.map((partner: FormattedPartner) => (
+				<Link href={`/societies/society/${partner.id}`} key={partner.id} passHref className="transition-transform duration-300 ease-in-out hover:scale-95">
 				<div key={partner.id} className="bg-transparent p-6 rounded-lg flex flex-col md:flex-row items-center justify-center md:justify-between border-2 border-blue-100">
 					{/* Left Side: Partner Info */}
 					<div className="flex flex-col space-y-4 w-2/3 md:pr-4 justify-between">
@@ -15,7 +38,7 @@ function Partners({ filteredPartners }: { filteredPartners: FormattedPartner[] }
 							<h2 className="text-2xl font-medium text-center md:text-left  text-white">{partner.name}</h2>
 
 							{/* Description */}
-							<p className="text-gray-200">{partner.description}</p>
+							<p className="text-gray-200 line-clamp-3 text-ellipsis">{partner.description}</p>
 						</div>
 
 						{/* Tags */}
@@ -52,44 +75,38 @@ function Partners({ filteredPartners }: { filteredPartners: FormattedPartner[] }
 						</div>
 
 						{/* Links */}
-						<div className="flex flex-row items-center gap-4 relative bottom-[-10px] justify-center w-full mr-10">
-
-							<Link href={`/societies/message/${partner.id}`} passHref>
-								<button className="bg-transparent text-white py-2 px-4 rounded-lg hover:text-gray-400 transition text-sm mr-0">
-									<div className='flex'>
-										<p className="mt-[6px]">Message</p>
-										<Image
-											src='/icons/send-message-icon.png'
-											alt='send icon'
-											width={32}
-											height={32}
-											className="object-cover"
-										/>
-									</div>
-								</button>
-							</Link>
+						<div className="flex flex-col items-center gap-4 relative bottom-[-10px] justify-center w-full">
+							<button onClick={(e) => handleMessageClick(e, partner.id)} className="bg-transparent text-white py-2 px-4 rounded-lg hover:text-gray-400 transition text-sm mr-0">
+								<div className='flex'>
+									<p className="mt-[6px]">Message</p>
+									<Image
+										src='/icons/send-message-icon.png'
+										alt='send icon'
+										width={32}
+										height={32}
+										className="object-cover"
+									/>
+								</div>
+							</button>
 
 							{partner.website && partner.website !== 'No website available' && (
-								<a
-									href={partner.website.startsWith('http') ? partner.website : `https://${partner.website}`}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="text-white hover:text-gray-400 px-4 py-2 rounded-lg transition text-sm flex flex-row"
-								>
-									Website
-									<Image
+								<button onClick={(e) => handleWebsiteClick(e, partner.website)} className="bg-transparent text-white py-2 rounded-lg hover:text-gray-400 transition text-sm mr-0">
+									<span className="text-white hover:text-gray-400 px-4 py-2 rounded-lg transition text-sm flex flex-row">
+										Website
+										<Image
 										src='/icons/web.png'
 										alt='website icon'
 										width={20}
 										height={20}
 										className=" ml-2 object-cover"
-									/>
-								</a>
+										/>
+									</span>
+								</button>
 							)}
-
 						</div>
 					</div>
 				</div>
+				</Link>
 			))}
 		</>
 	);

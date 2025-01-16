@@ -15,6 +15,12 @@ export const capitalizeFirst = (str: string) => {
 	return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
+
+export function formattedWebsite (website: string) { // formats website to include https:// if it doesn't already
+    return website.startsWith('http') ? website : `https://${website}`;
+};
+
+
 export function convertSQLEventToEvent(sqlEvent: SQLEvent): Event {
 	const date = `${String(sqlEvent.day).padStart(2, '0')}/${String(sqlEvent.month).padStart(2, '0')}/${sqlEvent.year}`;
 	const time = `${sqlEvent.start_time} - ${sqlEvent.end_time}`;
