@@ -10,6 +10,7 @@ export interface Event {
 	location_area: string;
 	location_address: string;
 	image_url: string;
+	image_contain: boolean;
 	event_type: number;
 	capacity?: number;
 	sign_up_link?: string;
@@ -50,6 +51,7 @@ export interface SQLEvent {
 	location_area: string;
 	location_address: string;
 	image_url: string;
+	image_contain: boolean;
 	event_type: number;
 	capacity?: number;
 	sign_up_link?: string;
@@ -95,6 +97,7 @@ export interface FormData {
 	};
 	selectedImage: string;
 	uploadedImage: File | null;
+	image_contain: boolean;
 	event_tag: number;
 	capacity?: number;
 	signupLink?: string;
@@ -261,6 +264,7 @@ export const DefaultEvent: Event = {
 	location_area: 'Imperial College Campus, South Kensington',
 	location_address: 'Prince Consort Road, SW7 2BP',
 	image_url: '/images/placeholders/football.jpg',
+	image_contain: true,
 	event_type: 7, 
 	capacity: 150,
 	sign_up_link: 'https://google.co.uk',

@@ -5,6 +5,20 @@ All the notable additions and fixes.
 This changelog follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 
+# [3.3.0] - 2025-01-16
+
+### Added
+
+- New `ToggleButton` component for use in the events editing/creating pages
+- Added toggle section to events editing/creating pages
+
+### Changed
+
+- Added image_contain field to `Event`, `SQLEvent`, and `FormData`
+- `image_contain` added to `events` table on db, with DEFAULT value of false
+- `image_contain` used inside `event-card` for displayed on main events page
+- `FallbackStatistics` no longer used for generating homepage statistics
+
 # [3.2.1] - 2025-01-15
 
 ### Changed

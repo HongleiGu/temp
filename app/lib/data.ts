@@ -6,7 +6,7 @@ import { Tag } from './types';
 import { redis } from './config';
 
 export async function fetchWebsiteStats() {
-	return FallbackStatistics
+	// return FallbackStatistics
 	try {
 		const stats = await sql`
         SELECT
@@ -94,8 +94,8 @@ export async function fetchEventById(id: string) {
 export async function insertEvent(event: SQLEvent) {
 	try {
 		await sql`
-		INSERT INTO events (title, description, organiser, organiser_uid, start_time, end_time, day, month, year, location_building, location_area, location_address, image_url, event_type, sign_up_link, for_externals, capacity)
-		VALUES (${event.title}, ${event.description}, ${event.organiser}, ${event.organiser_uid}, ${event.start_time}, ${event.end_time}, ${event.day}, ${event.month}, ${event.year}, ${event.location_building}, ${event.location_area}, ${event.location_address}, ${event.image_url}, ${event.event_type}, ${event.sign_up_link ?? null}, ${event.for_externals ?? null}, ${event.capacity ?? null})
+		INSERT INTO events (title, description, organiser, organiser_uid, start_time, end_time, day, month, year, location_building, location_area, location_address, image_url, event_type, sign_up_link, for_externals, capacity, image_contain)
+		VALUES (${event.title}, ${event.description}, ${event.organiser}, ${event.organiser_uid}, ${event.start_time}, ${event.end_time}, ${event.day}, ${event.month}, ${event.year}, ${event.location_building}, ${event.location_area}, ${event.location_address}, ${event.image_url}, ${event.event_type}, ${event.sign_up_link ?? null}, ${event.for_externals ?? null}, ${event.capacity ?? null}, ${event.image_contain})
 		`
 		return { success: true };
 	} catch (error) {
@@ -125,7 +125,8 @@ export async function updateEvent(event: SQLEvent) {
 				event_type = ${event.event_type},
 				sign_up_link = ${event.sign_up_link ?? null},
 				for_externals = ${event.for_externals ?? null},
-				capacity = ${event.capacity ?? null}
+				capacity = ${event.capacity ?? null},
+				image_contain = ${event.image_contain}
 			WHERE id = ${event.id}
 		`;
 		return { success: true };

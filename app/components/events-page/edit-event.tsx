@@ -14,6 +14,7 @@ import TagsField from './create-event-tags';
 import { useRouter } from 'next/navigation';
 import { upload } from '@vercel/blob/client';
 import RegistrationsModal from './registrations-modal';
+import ToggleSwitch from '../toggle-button';
 
 
 interface EditEventComponentProps {
@@ -109,6 +110,7 @@ export default function EditEventComponent({ event }: EditEventComponentProps) {
 			},
 			selectedImage: event.image_url,
 			uploadedImage: null, // Assuming it's handled later in the UI
+			image_contain: event.image_contain,
 			event_tag: event.event_type,
 			capacity: event.capacity,
 			signupLink: event.sign_up_link || '',
@@ -362,6 +364,7 @@ export default function EditEventComponent({ event }: EditEventComponentProps) {
 		const inputRef = useRef<HTMLInputElement>(null)
 
 		register('uploadedImage')
+		const imageContain = watch('image_contain', false)
 
 		const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
 			e.preventDefault();
@@ -429,7 +432,7 @@ export default function EditEventComponent({ event }: EditEventComponentProps) {
 								src={previewImage || selectedImage}
 								alt={selectedImage}
 								fill
-								className="w-[90%] h-64 object-cover border-2  border-black/70"
+								className={`w-[90%] h-64 border-2 border-black/70 ${imageContain ? 'object-contain' : 'object-cover'}`}
 							/>
 						</div>
 						{uploadedImage && (
@@ -442,6 +445,13 @@ export default function EditEventComponent({ event }: EditEventComponentProps) {
 								Clear uploaded image
 							</Button>
 						)}
+
+						<hr className="border-t-1 border-gray-300 mt-6" />
+
+						<ToggleSwitch
+							label="Switch between 'Cover' and 'Contain' where your event's image is displayed"
+							registerField={register('image_contain')}
+						/>
 					</div>
 				</div>
 			</div>
