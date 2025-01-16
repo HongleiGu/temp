@@ -14,6 +14,7 @@ import { validateEvent, createEventObject } from '@/app/lib/utils';
 import { DefaultEvent, FormData } from '@/app/lib/types';
 import TagsField from './create-event-tags';
 import { upload } from '@vercel/blob/client';
+import ToggleSwitch from '../toggle-button';
 
 
 const MAX_POSTGRES_STRING_LENGTH = 255;
@@ -279,7 +280,9 @@ export default function CreateEventPage({ organiser_id, organiserList }: CreateE
 
 		const inputRef = useRef<HTMLInputElement>(null)
 
-		register('uploadedImage')
+		register('uploadedImage');
+		const imageContain = watch('image_contain', false)
+
 
 		const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
 			e.preventDefault();
@@ -347,7 +350,8 @@ export default function CreateEventPage({ organiser_id, organiserList }: CreateE
 								src={previewImage || selectedImage}
 								alt={selectedImage}
 								fill
-								className="w-[90%] h-64 object-cover border-2  border-black/70"
+								// className="w-[90%] h-64 object-cover border-2 border-black/70"
+								className={`w-[90%] h-64 border-2 border-black/70 ${imageContain ? 'object-contain' : 'object-cover'}`}
 							/>
 						</div>
 						{uploadedImage && (
@@ -360,6 +364,13 @@ export default function CreateEventPage({ organiser_id, organiserList }: CreateE
 								Clear uploaded image
 							</Button>
 						)}
+
+						<hr className="border-t-1 border-gray-300 mt-6" />
+
+						<ToggleSwitch
+							label="Switch between 'Cover' and 'Contain' where your event's image is displayed"
+							registerField={register('image_contain')}
+						/>
 					</div>
 				</div>
 			</div>
