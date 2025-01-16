@@ -16,6 +16,10 @@ export interface Event {
 	for_externals?: string;
 }
 
+export interface EditEventComponentProps {
+	event: Event;
+}
+
 export interface EmailData {
 	id: string;
 	email: string;

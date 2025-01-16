@@ -1,79 +1,63 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
-import { Event, DefaultEvent } from "@/app/lib/types";
+import { Event } from "@/app/lib/types";
 import EditEventComponent from "@/app/components/events-page/edit-event";
 
-export default function EditPageComponent() {
+export default function EditPageComponent({ eventProp }: { eventProp: Event }) {
 
-	const searchParams = useSearchParams();
-	const [status, setStatus] = useState<'loading' | 'valid' | 'invalid' | 'unauthenticated'>('loading');
-	const [event, setEvent] = useState<Event>(DefaultEvent)
+	const [status, setStatus] = useState<'loading' | 'valid' | 'unauthorized' | 'forbidden'> ('loading');
+	const [event] = useState<Event> (eventProp)
 
 	const session = useSession();
-	const loggedIn = session.status === 'authenticated';
 
-	async function validateEditPrivileges() {
-		const id = searchParams.get('id')
-
-		if (!id) {
-			setStatus('invalid');
-			return;
-		}
-
-		if (!loggedIn) {
-			setStatus('unauthenticated');
-			return;
-		}
-
+	async function validateEditPrivileges(targetEvent: Event) { // Soft verification for UX. There is a second, hard check in backend for security
 		try {
-			console.log(`USER: `, session.data.user)
-			const response = await fetch('/api/events/edit-fetch', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ 
-					event_id: id,
-					user_id: session.data.user.id
-				}),
-			})
+			setStatus('loading'); // in case session changes
 
-			const data = await response.json()
-
-			if (data.success) {
-				if (data.status === 'valid') {
+			const response = await fetch('/api/protected/verify-owner-of-event', {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ eventId: targetEvent.id }),
+			});
+		
+			// const data = await response.json();
+		
+			switch (response.status) {
+				case 200:
 					setStatus('valid');
-					const parsedEvent: Event = data.event;
-					console.log(`Got back: `, parsedEvent)
-					setEvent(parsedEvent)
-				} else if (data.status === 'unauthenticated') { // TODO: return case on unauthenticated
-					setStatus('unauthenticated');
-				} else if (data.status === 'invalid') {
-					setStatus('invalid');
-				}
-			} else {
-				console.error('Error finding event:', data.error);
-				setStatus('invalid');
+					break;
+				case 401:
+					setStatus('unauthorized');
+					break;
+				case 403:
+					setStatus('forbidden');
+					break;
+				default:
+					setStatus('unauthorized');
+					break;
 			}
+
 		} catch (error) {
-			console.error('Error finding event:', error);
-			setStatus('invalid');
+			setStatus('unauthorized');
+			console.error("Error verifying ownership:", error);
 		}
 	}
 
 	useEffect(() => {
 		const validatePrivileges = async () => {
-			await validateEditPrivileges();
+			await validateEditPrivileges(event);
 		}
+
 		validatePrivileges();
-	}, [searchParams, session]);
+	}, [session]);
 
-	if (status === 'unauthenticated') return <UnauthenticatedScreen />
+	if (status === 'forbidden') return <ForbiddenScreen />
 
-	if (status === 'invalid') return <InvalidScreen />
+	if (status === 'unauthorized') return <UnauthorizedScreen />
 
 	if (status === 'loading') return <LoadingScreen />
 
@@ -83,7 +67,7 @@ export default function EditPageComponent() {
 }
 
 
-function LoadingScreen() {
+function LoadingScreen() { // loading
 	return (
 		<main className="min-h-screen w-screen bg-gradient-to-b from-[#083157]  to-[#064580]">
 			<div className="flex flex-col items-center justify-center h-screen">
@@ -93,21 +77,23 @@ function LoadingScreen() {
 	)
 }
 
-function InvalidScreen() {
+
+function UnauthorizedScreen() { // not logged in
 	return (
 		<main className="min-h-screen w-screen bg-gradient-to-b from-[#083157]  to-[#064580]">
 			<div className="flex flex-col items-center justify-center h-screen">
-				<h1 className="text-3xl">Invalid details provided!</h1>
+				<h1 className="text-3xl">You must be authorized to access this resource.</h1>
 			</div>
 		</main>
 	)
 }
 
-function UnauthenticatedScreen() {
+
+function ForbiddenScreen() { // don't have permission to edit
 	return (
 		<main className="min-h-screen w-screen bg-gradient-to-b from-[#083157]  to-[#064580]">
 			<div className="flex flex-col items-center justify-center h-screen">
-				<h1 className="text-3xl">Please log in to access event editing</h1>
+				<h1 className="text-3xl">Access denied. You do not have permission to access this resource.</h1>
 			</div>
 		</main>
 	)

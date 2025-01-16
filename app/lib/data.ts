@@ -5,6 +5,8 @@ import bcrypt from 'bcrypt';
 import { Tag } from './types';
 import { redis } from './config';
 
+// needs organisation
+
 export async function fetchWebsiteStats() {
 	return FallbackStatistics
 	try {
@@ -19,6 +21,21 @@ export async function fetchWebsiteStats() {
 	} catch (error) {
 		console.error('Database error:', error)
 		return FallbackStatistics
+	}
+}
+
+export async function checkOwnershipOfEvent(userId: string, eventId: string) {
+	try {
+		const data = await sql<SQLEvent> `
+		SELECT organiser_uid
+		FROM events
+		WHERE id = ${eventId}
+		`
+
+		return data?.rows[0]?.organiser_uid === userId;
+	} catch (error) {
+		console.error('database function error:', error);
+		throw new Error('Failed to verify ownership in database function');
 	}
 }
 
