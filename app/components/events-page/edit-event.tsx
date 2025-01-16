@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { generateDays, generateMonths, generateYears, generateHours, generateMinutes, placeholderImages } from '@/app/lib/utils';
-import { Event, FormData, Registrations } from '@/app/lib/types';
+import { Event, FormData, Registrations, EditEventComponentProps } from '@/app/lib/types';
 import { Input } from '../input';
 import { Button } from '../button';
 import { ArrowLeftIcon, TrashIcon } from '@heroicons/react/24/outline';
@@ -16,10 +16,6 @@ import { upload } from '@vercel/blob/client';
 import RegistrationsModal from './registrations-modal';
 import ToggleSwitch from '../toggle-button';
 
-
-interface EditEventComponentProps {
-	event: Event;
-}
 
 const MAX_POSTGRES_STRING_LENGTH = 255;
 

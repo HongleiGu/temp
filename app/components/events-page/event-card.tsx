@@ -7,6 +7,7 @@ import { formatDateString } from "@/app/lib/utils";
 import EventCardTags from "./event-tags";
 import EventModal from "./event-modal";
 import { useRouter } from 'next/navigation';
+import EditPage from "@/app/events/edit/page";
 
 
 interface EventCardProps {
@@ -16,6 +17,8 @@ interface EventCardProps {
 
 export default function EventCard({ event, editEvent }: EventCardProps) {
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isEditPage, setIsEditPage] = useState(false);
+
 
 	const router = useRouter()
 
@@ -24,18 +27,33 @@ export default function EventCard({ event, editEvent }: EventCardProps) {
 
 	const navigateToEdit = () => {
 		try {
-			const eventData = encodeURIComponent(JSON.stringify(event))
-			router.push(`/events/edit?data=${eventData}`)
+			const data = { id: event.id };
+			router.push(`/events/edit?data=${data}`)
 		} catch (error) {
 			console.error("Error encoding event data:", error)
 		}
+	}
+
+	const handleCardClick = () => {
+		if (editEvent) {
+			setIsEditPage(true); // Render EditPage directly
+		} else {
+			openModal(); // Open the modal for viewing the event
+		}
+	};
+
+	if (isEditPage) {
+		return <EditPage event={event} />;
 	}
 
 
 	return (
 		<>
 
-			<div className="flex flex-col p-4 rounded-sm shadow-lg relative transition-transform duration-300 ease-in-out hover:scale-105 hover:bg-opacity-90 bg-white" onClick={editEvent ? navigateToEdit : openModal}>
+			<div 
+				className="flex flex-col p-4 rounded-sm shadow-lg relative transition-transform duration-300 ease-in-out hover:scale-105 hover:bg-opacity-90 bg-white" 
+				onClick={handleCardClick}
+			>
 				<EventCardTags eventType={event.event_type} />
 				<Image
 					src={event.image_url}
