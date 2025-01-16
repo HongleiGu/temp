@@ -350,7 +350,6 @@ export default function CreateEventPage({ organiser_id, organiserList }: CreateE
 								src={previewImage || selectedImage}
 								alt={selectedImage}
 								fill
-								// className="w-[90%] h-64 object-cover border-2 border-black/70"
 								className={`w-[90%] h-64 border-2 border-black/70 ${imageContain ? 'object-contain' : 'object-cover'}`}
 							/>
 						</div>
