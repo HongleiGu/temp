@@ -133,11 +133,30 @@ export default function EditEventComponent({ eventProp, onClose }: EditEventProp
 				setValue(formDataKey, formData[formDataKey]);
 			}
 		});
-	}, [event, setValue]);
+	}, [eventProp, setValue]);
 
 	useEffect(() => {
 		fetchOrganisersData()
 	}, []);
+
+	// Disable background scroll and handle outside click detection
+	useEffect(() => {
+		// Prevent background scrolling
+		document.body.style.overflow = 'hidden';
+
+		const handleClickOutside = (event: MouseEvent) => {
+			if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+				onClose();
+			}
+		};
+
+		document.addEventListener('mousedown', handleClickOutside);
+
+		return () => {
+			document.body.style.overflow = '';
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, [onClose]);
 
 	const onSubmit = async (data: FormData) => {
 		const toastId = toast.loading('Updating event....')
@@ -536,7 +555,7 @@ export default function EditEventComponent({ eventProp, onClose }: EditEventProp
 				ref={modalRef}
 				className="relative bg-white w-[90vw] h-[80vh] p-8 border-2 border-black overflow-hidden"
 			>
-				<button onClick={onClose} className="absolute top-4 right-4 transition" >
+				<button onClick={onClose} className="absolute top-4 right-4 transition">
 					<Image
 						src="/icons/close.svg"
 						alt="Close"
@@ -545,24 +564,25 @@ export default function EditEventComponent({ eventProp, onClose }: EditEventProp
 						className="hover:brightness-75"
 					/>
 				</button>
-				<div className="flex flex-col md:flex-row h-full overflow-y-auto">
-					<div className="relative bg-white p-10 overflow-auto text-black">
-						<div className="sticky top-0 bg-gray-300 p-4 border-b flex justify-between items-center rounded-lg">
-							<Button variant='ghost' size='sm' className='text-lg hover:text-gray-500' onClick={() => onClose()}>
+				<div className="flex flex-col md:flex-row h-full">
+					<div className="relative bg-white p-10 text-black h-full w-full overflow-y-auto">
+						{/* Fixed Header Section */}
+						<div className="sticky top-0 z-10 bg-gray-300 p-4 border-b flex justify-between items-center rounded-lg">
+							<Button variant="ghost" size="sm" className="text-lg hover:text-gray-500" onClick={() => onClose()}>
 								<ArrowLeftIcon width={30} height={30} />Back
 							</Button>
-
+	
 							<div className="space-x-0 space-y-2 md:space-y-0 md:space-x-4 flex flex-col md:flex-row items-center">
 								<Button
 									variant="outline"
 									size="sm"
-									className='px-10 bg-purple-400 text-gray-950 md:text-xl'
+									className="px-10 bg-purple-400 text-gray-950 md:text-xl"
 									onClick={viewRegistrations}
 								>
 									View Registrations
 								</Button>
 								<Button
-									className='px-10 md:text-xl border-black'
+									className="px-10 md:text-xl border-black"
 									variant="outline"
 									size="sm"
 									disabled={!isValid}
@@ -572,10 +592,11 @@ export default function EditEventComponent({ eventProp, onClose }: EditEventProp
 								</Button>
 							</div>
 						</div>
-
+	
+						{/* Scrollable Form Section */}
 						<form className="space-y-4">
 							<h1 className="text-4xl font-semibold p-6">Let&#39;s edit your event!</h1>
-
+	
 							<TitleField />
 							<DescriptionField />
 							<OrganiserField />
@@ -588,7 +609,8 @@ export default function EditEventComponent({ eventProp, onClose }: EditEventProp
 							<SignupLinkField />
 							<ForExternalsField />
 						</form>
-
+	
+						{/* Modal for Registrations */}
 						{viewRegistrationsModal && <RegistrationsModal registrations={registrations} onClose={closeModal} />}
 					</div>
 				</div>
@@ -596,6 +618,7 @@ export default function EditEventComponent({ eventProp, onClose }: EditEventProp
 		</div>,
 		document.body
 	);
+	
 
 };
 
