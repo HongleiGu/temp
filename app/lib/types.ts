@@ -22,6 +22,16 @@ export interface EditEventProps {
 	onClose: () => void;
 }
 
+export interface EventModalProps {
+	event: Event;
+	onClose: () => void;
+}
+
+export interface EventCardProps {
+	event: Event
+	editEvent?: boolean
+}
+
 export interface EditEventComponentProps {
 	event: Event;
 }

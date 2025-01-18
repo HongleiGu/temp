@@ -9,10 +9,8 @@ import { Event, FormData, Registrations, EditEventProps } from '@/app/lib/types'
 import { Input } from '../input';
 import { Button } from '../button';
 import { ArrowLeftIcon, TrashIcon } from '@heroicons/react/24/outline';
-import { validateEvent } from '@/app/lib/utils';
 import TagsField from './create-event-tags';
 import { useRouter } from 'next/navigation';
-import { upload } from '@vercel/blob/client';
 import RegistrationsModal from './registrations-modal';
 import ToggleSwitch from '../toggle-button';
 import { createPortal } from 'react-dom';
@@ -160,7 +158,7 @@ export default function EditEventComponent({ eventProp, onClose }: EditEventProp
 
 	const onSubmit = async (data: FormData) => {
 		const toastId = toast.loading('Updating event....')
-		
+
 		// const error = validateEvent(data);
 
 		// if (error) {
@@ -191,7 +189,7 @@ export default function EditEventComponent({ eventProp, onClose }: EditEventProp
 		// 			'Content-Type': 'application/json',
 		// 		},
 		// 		body: JSON.stringify({
-		// 			id: event.id,
+		// 			id: eventProp.id,
 		// 			formData: {
 		// 				...data,
 		// 				selectedImage: imageUrl,
@@ -227,6 +225,7 @@ export default function EditEventComponent({ eventProp, onClose }: EditEventProp
 			if (response.status === 200) {
 				toast.success('Event successfully updated!', { id: toastId })
 				router.push('/account'); // modified to push to account, but can be changed back to /events
+				onClose();
 			} else {
 				toast.error(`Error updating event: ${result.message}.`, { id: toastId })
 			}

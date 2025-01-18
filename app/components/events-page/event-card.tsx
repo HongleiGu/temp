@@ -3,24 +3,15 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { Event } from "@/app/lib/types";
+import { EventCardProps } from "@/app/lib/types";
 import { formatDateString } from "@/app/lib/utils";
 import EventCardTags from "./event-tags";
 import EventModal from "./event-modal";
-import { useRouter } from 'next/navigation';
-import EditPage from "@/app/events/edit/page";
+import EditPage from "../edit/edit";
 
-
-interface EventCardProps {
-	event: Event
-	editEvent?: boolean
-}
 
 export default function EventCard({ event, editEvent }: EventCardProps) {
 	const [modalChoice, setModalChoice] = useState<'edit' | 'view' | 'waiting'>('waiting');
-
-
-	const router = useRouter()
 
 	const openEditModal = () => setModalChoice('edit');
 	const openViewModal = () => setModalChoice('view');
@@ -45,7 +36,7 @@ export default function EventCard({ event, editEvent }: EventCardProps) {
 	}
 
 	if (modalChoice === 'edit') {
-		return <EditPage eventProp={event} onClose={closeModal} />;
+		return <EditPage event={event} onClose={closeModal} />;
 	}
 
 

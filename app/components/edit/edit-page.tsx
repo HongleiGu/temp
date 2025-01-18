@@ -2,18 +2,18 @@
 
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
-import { Event, EditEventProps } from "@/app/lib/types";
+import { Event, EventModalProps } from "@/app/lib/types";
 import EditEventComponent from "@/app/components/events-page/edit-event";
 
-export default function EditPageComponent({ eventProp, onClose }: EditEventProps) {
+export default function EditPageComponent({ event, onClose }: EventModalProps) {
 
 	const [status, setStatus] = useState<'loading' | 'valid' | 'unauthorized' | 'forbidden'> ('loading');
-	const [event] = useState<Event> (eventProp);
+	const [eventProp] = useState<Event> (event);
 
 	const session = useSession();
 
 	useEffect(() => {
-		validateEditPrivileges(event);
+		validateEditPrivileges(eventProp);
 	}, [session]);
 
 	async function validateEditPrivileges(targetEvent: Event) { // Soft verification for UX. There is a second, hard check in backend for security
@@ -60,7 +60,7 @@ export default function EditPageComponent({ eventProp, onClose }: EditEventProps
 	if (status === 'loading') return <LoadingScreen />
 
 	return (
-		<EditEventComponent eventProp={event} onClose={onClose} />
+		<EditEventComponent eventProp={eventProp} onClose={onClose} />
 	)
 }
 
