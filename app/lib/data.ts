@@ -140,39 +140,8 @@ export async function insertEvent(event: SQLEvent) {
 	}
 }
 
-export async function updateEvent(event: SQLEvent) {
-	console.log('SQL query for ', event.id)
-	try {
-		await sql`
-			UPDATE events
-			SET
-				title = ${event.title},
-				description = ${event.description},
-				organiser = ${event.organiser},
-				start_time = ${event.start_time},
-				end_time = ${event.end_time},
-				day = ${event.day},
-				month = ${event.month},
-				year = ${event.year},
-				location_building = ${event.location_building},
-				location_area = ${event.location_area},
-				location_address = ${event.location_address},
-				image_url = ${event.image_url},
-				event_type = ${event.event_type},
-				sign_up_link = ${event.sign_up_link ?? null},
-				for_externals = ${event.for_externals ?? null},
-				capacity = ${event.capacity ?? null},
-				image_contain = ${event.image_contain}
-			WHERE id = ${event.id}
-		`;
-		return { success: true };
-	} catch (error) {
-		console.error('Error updating event:', error);
-		return { success: false, error };
-	}
-}
 
-export async function newUpdateEvent(event: SQLEvent) {
+export async function updateEvent(event: SQLEvent) {
 	// console.log('SQL query for ', event.id)
 	try {
 		await sql`

@@ -1,4 +1,4 @@
-import { newUpdateEvent, checkOwnershipOfEvent } from '@/app/lib/data';
+import { updateEvent, checkOwnershipOfEvent } from '@/app/lib/data';
 import { NextResponse } from 'next/server';
 import { createSQLEventObject, validateEvent } from '@/app/lib/utils';
 import { FormData } from '@/app/lib/types';
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
                     selectedImage: imageUrl,
                 }
                 const sqlEvent = await createSQLEventObject(data);
-                const response = await newUpdateEvent({ ...sqlEvent, id: eventId });	
+                const response = await updateEvent({ ...sqlEvent, id: eventId });	
                 return NextResponse.json(response);
             } else {
                 return NextResponse.json(

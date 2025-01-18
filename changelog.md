@@ -4,15 +4,16 @@ All the notable additions and fixes.
 
 This changelog follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-# [3.3.1] - 2025-01-18
+# [4.0.0] - 2025-01-18 
 
 ### Added
 
-- Added more secure API routes for editing
-- Added compatible data function for new routes
+- Added more secure API route for editing events
+- Changed data function to be compatible for new routes
 
 ### Changed
 
+- Old routes have been deleted for security reasons
 - Edit page is now a floating modal (before a seperate page)
 - Event data is now passed as a prop (before as search query)
 - Changed event editing pipeline to be more robust (most logic happens in backend now)
