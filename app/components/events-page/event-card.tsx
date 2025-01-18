@@ -28,7 +28,7 @@ export default function EventCard({ event, editEvent }: EventCardProps) {
 
 
 	const handleCardClick = () => {
-		{!editEvent? openViewModal() : openEditModal()} // !editEvent is the most likely scenario
+		{editEvent? openEditModal() : openViewModal()} // !editEvent is the most likely scenario
 	};
 
 	if (modalChoice === 'view') {

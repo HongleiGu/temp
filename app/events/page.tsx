@@ -14,7 +14,7 @@ export default async function EventPage() {
 			
 			<CreateEventButton />
 
-			<FilteredEventsPage allEvents={allEvents} />
+			<FilteredEventsPage allEvents={allEvents} editEvent={false} />
 
 		</main>
 	)

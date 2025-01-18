@@ -336,7 +336,7 @@ export default function SocietyPage() {
 				<h2 className="text-2xl italic mb-2 ml-2 text-center uppercase">
 					{name ? `${name}${name.endsWith('s') ? '\'' : '\'s'} events` : "Societies' events"}
 				</h2>
-				<UserEventsList user_id={stringid} />
+				<UserEventsList user_id={stringid} editEvent={false} />
 			</section>
 		</div>
 	);
