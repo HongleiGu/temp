@@ -165,10 +165,10 @@ export async function updateEvent(event: SQLEvent) {
 				image_contain = ${event.image_contain}
 			WHERE id = ${event.id}
 		`;
-		return { success: true };
+		return { message: 'succesfully updated database', status: 200 };
 	} catch (error) {
 		console.error('Error updating event:', error);
-		return { success: false, error };
+		return { message: 'failed to update database with event', status: 500, error };
 	}
 }
 

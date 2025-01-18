@@ -20,7 +20,7 @@ export default function EditPageComponent({ eventProp, onClose }: EditEventProps
 		try {
 			setStatus('loading'); // in case session changes
 
-			const response = await fetch('/api/protected/verify-owner-of-event', {
+			const response = await fetch('/api/protected/events/verify-owner-of-event', {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

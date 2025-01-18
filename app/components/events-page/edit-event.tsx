@@ -160,53 +160,76 @@ export default function EditEventComponent({ eventProp, onClose }: EditEventProp
 
 	const onSubmit = async (data: FormData) => {
 		const toastId = toast.loading('Updating event....')
-		const error = validateEvent(data);
+		// const error = validateEvent(data); // moved to backend
 
-		if (error) {
-			toast.error(`Event is invalid: ${error}`, { id: toastId })
-			return;
-		}
+		// if (error) {
+		// 	toast.error(`Event is invalid: ${error}`, { id: toastId })
+		// 	return;
+		// }
 
-		let imageUrl = data.selectedImage
+		// let imageUrl = data.selectedImage
 
-		if (data.uploadedImage && typeof data.uploadedImage !== 'string') {
-			try {
-				const newBlob = await upload(data.uploadedImage.name, data.uploadedImage, {
-					access: 'public',
-					handleUploadUrl: '/api/upload-image',
-				})
+		// if (data.uploadedImage && typeof data.uploadedImage !== 'string') {
+		// 	try {
+		// 		const newBlob = await upload(data.uploadedImage.name, data.uploadedImage, {
+		// 			access: 'public',
+		// 			handleUploadUrl: '/api/upload-image',
+		// 		})
 
-				imageUrl = newBlob.url
-			} catch (error) {
-				toast.error(`Error uploading image: ${error.message}`, { id: toastId })
-				return
-			}
-		}
+		// 		imageUrl = newBlob.url
+		// 	} catch (error) {
+		// 		toast.error(`Error uploading image: ${error.message}`, { id: toastId })
+		// 		return
+		// 	}
+		// }
+
+		// try {
+		// 	const res = await fetch('/api/events/update', {
+		// 		method: 'POST',
+		// 		headers: {
+		// 			'Content-Type': 'application/json',
+		// 		},
+		// 		body: JSON.stringify({
+		// 			eventId: eventProp.id,
+		// 			formData: {
+		// 				...data,
+		// 				selectedImage: imageUrl,
+		// 			}
+		// 		}),
+		// 	});
+
+		// 	const result = await res.json();
+		// 	if (result.success) {
+		// 		toast.success('Event successfully updated!', { id: toastId })
+		// 		router.push('/events');
+		// 	} else {
+		// 		toast.error(`Error updating event: ${result.error}.`, { id: toastId })
+		// 	}
+		// } catch (error) {
+		// 	toast.error(`Error during event submission: ${error}.`, { id: toastId })
+		// }
 
 		try {
-			const res = await fetch('/api/events/update', {
+			const response = await fetch('/api/protected/events/update', { // upload of image is handled in here
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
-					id: eventProp.id,
-					formData: {
-						...data,
-						selectedImage: imageUrl,
-					}
+					eventId: eventProp.id,
+					formData: data,
 				}),
 			});
 
-			const result = await res.json();
-			if (result.success) {
+			const result = await response.json();
+			if (response.status === 200) {
 				toast.success('Event successfully updated!', { id: toastId })
-				router.push('/events');
+				router.push('/account'); // modified to push to account, but can be changed back to /events
 			} else {
-				toast.error(`Error updating event: ${result.error}.`, { id: toastId })
+				toast.error(`Error updating event: ${result.message}.`, { id: toastId })
 			}
 		} catch (error) {
-			toast.error(`Error during event submission: ${error}.`, { id: toastId })
+			toast.error(`Error occured trying to update event: ${error}.`, { id: toastId })
 		}
 	};
 
