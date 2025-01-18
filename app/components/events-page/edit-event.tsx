@@ -160,7 +160,8 @@ export default function EditEventComponent({ eventProp, onClose }: EditEventProp
 
 	const onSubmit = async (data: FormData) => {
 		const toastId = toast.loading('Updating event....')
-		// const error = validateEvent(data); // moved to backend
+		
+		// const error = validateEvent(data);
 
 		// if (error) {
 		// 	toast.error(`Event is invalid: ${error}`, { id: toastId })
@@ -190,7 +191,7 @@ export default function EditEventComponent({ eventProp, onClose }: EditEventProp
 		// 			'Content-Type': 'application/json',
 		// 		},
 		// 		body: JSON.stringify({
-		// 			eventId: eventProp.id,
+		// 			id: event.id,
 		// 			formData: {
 		// 				...data,
 		// 				selectedImage: imageUrl,
@@ -210,6 +211,7 @@ export default function EditEventComponent({ eventProp, onClose }: EditEventProp
 		// }
 
 		try {
+			console.log(data);
 			const response = await fetch('/api/protected/events/update', { // upload of image is handled in here
 				method: 'POST',
 				headers: {

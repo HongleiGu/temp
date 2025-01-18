@@ -1,4 +1,4 @@
-import { updateEvent, checkOwnershipOfEvent } from '@/app/lib/data';
+import { newUpdateEvent, checkOwnershipOfEvent } from '@/app/lib/data';
 import { NextResponse } from 'next/server';
 import { createSQLEventObject, validateEvent } from '@/app/lib/utils';
 import { FormData } from '@/app/lib/types';
@@ -22,11 +22,13 @@ export async function POST(req: Request) {
 
                 if (isNotValid) {
                     return NextResponse.json(
-                        { message: 'Form is missing important fields'},
+                        { message: 'Some important fields are not valid'},
                         { status: 400 } // 400 Bad Request
                     );
                 }
-                let imageUrl = formData?.selectedImage;
+                let imageUrl = formData.selectedImage;
+
+                console.log(formData);
 
                 if (formData?.uploadedImage && formData?.uploadedImage?.name && typeof formData?.uploadedImage !== 'string') {
                     try {
@@ -42,11 +44,6 @@ export async function POST(req: Request) {
                             { status: 500 } // 500 Internal Server Error
                         );
                     }
-                } else {
-                    return NextResponse.json(
-                        { message: 'Bad request, payload not as expected'},
-                        { status: 400 } // 400 Bad Request
-                    );
                 }
 
                 const data = { // update with new imageUrl
@@ -54,7 +51,7 @@ export async function POST(req: Request) {
                     selectedImage: imageUrl,
                 }
                 const sqlEvent = await createSQLEventObject(data);
-                const response = await updateEvent({ ...sqlEvent, id: eventId });	
+                const response = await newUpdateEvent({ ...sqlEvent, id: eventId });	
                 return NextResponse.json(response);
             } else {
                 return NextResponse.json(
@@ -68,7 +65,6 @@ export async function POST(req: Request) {
                 { status: 401 } // 401 Unauthorized
             );
         }
-
 
     } catch (error) {
         console.error('Error verifying requester, there was an error in session extraction, or ownership verification', error);
