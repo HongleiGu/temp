@@ -178,7 +178,7 @@ export default function EventInfo() {
 						<h3 className="text-lg font-semibold mb-2 text-gray-500">Registration</h3>
 						<hr className="border-t-1 border-gray-300 m-2" />
 						<div className="w-full flex flex-row justify-center">
-							<button className="flex items-center rounded-lg px-4 text-sm font-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 aria-disabled:cursor-not-allowed aria-disabled:opacity-50 hover:cursor-pointer h-12 text-gray-700 uppercase tracking-wider hover:text-black transition-transform duration-300 ease-in-out border-2 border-gray-600 rounded-sm mt-2"
+							<button className="flex items-center px-4 text-sm font-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 aria-disabled:cursor-not-allowed aria-disabled:opacity-50 hover:cursor-pointer h-12 text-gray-700 uppercase tracking-wider hover:text-black transition-transform duration-300 ease-in-out border-2 border-gray-600 rounded-sm mt-2"
 								onClick={registerForEvent}>
 								{!loggedIn && <LockClosedIcon width={20} height={20} className='pr-2' />}
 								Press here to register to this event

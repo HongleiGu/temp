@@ -17,6 +17,11 @@ export interface Event {
 	for_externals?: string;
 }
 
+export interface EditEventProps {
+	eventProp: Event;
+	onClose: () => void;
+}
+
 export interface EditEventComponentProps {
 	event: Event;
 }

@@ -17,34 +17,35 @@ interface EventCardProps {
 }
 
 export default function EventCard({ event, editEvent }: EventCardProps) {
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [isEditPage, setIsEditPage] = useState(false);
+	const [modalChoice, setModalChoice] = useState<'edit' | 'view' | 'waiting'>('waiting');
 
 
 	const router = useRouter()
 
-	const openModal = () => setIsModalOpen(true);
-	const closeModal = () => setIsModalOpen(false);
+	const openEditModal = () => setModalChoice('edit');
+	const openViewModal = () => setModalChoice('view');
+	const closeModal = () => setModalChoice('waiting');
 
-	const navigateToEdit = () => {
-		try {
-			const data = { id: event.id };
-			router.push(`/events/edit?data=${data}`)
-		} catch (error) {
-			console.error("Error encoding event data:", error)
-		}
-	}
+	// const navigateToEdit = () => {
+	// 	try {
+	// 		const data = { id: event.id };
+	// 		router.push(`/events/edit?data=${data}`)
+	// 	} catch (error) {
+	// 		console.error("Error encoding event data:", error)
+	// 	}
+	// }
+
 
 	const handleCardClick = () => {
-		if (editEvent) {
-			setIsEditPage(true); // Render EditPage directly
-		} else {
-			openModal(); // Open the modal for viewing the event
-		}
+		{!editEvent? openViewModal() : openEditModal()} // !editEvent is the most likely scenario
 	};
 
-	if (isEditPage) {
-		return <EditPage event={event} />;
+	if (modalChoice === 'view') {
+		return <EventModal event={event} onClose={closeModal} />;
+	}
+
+	if (modalChoice === 'edit') {
+		return <EditPage eventProp={event} onClose={closeModal} />;
 	}
 
 
@@ -74,7 +75,6 @@ export default function EventCard({ event, editEvent }: EventCardProps) {
 					</div>
 				</div>
 			</div>
-			{isModalOpen && <EventModal event={event} onClose={closeModal} />}
 		</>
 	)
 }

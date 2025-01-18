@@ -2,15 +2,19 @@
 
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
-import { Event } from "@/app/lib/types";
+import { Event, EditEventProps } from "@/app/lib/types";
 import EditEventComponent from "@/app/components/events-page/edit-event";
 
-export default function EditPageComponent({ eventProp }: { eventProp: Event }) {
+export default function EditPageComponent({ eventProp, onClose }: EditEventProps) {
 
 	const [status, setStatus] = useState<'loading' | 'valid' | 'unauthorized' | 'forbidden'> ('loading');
-	const [event] = useState<Event> (eventProp)
+	const [event] = useState<Event> (eventProp);
 
 	const session = useSession();
+
+	useEffect(() => {
+		validateEditPrivileges(event);
+	}, [session]);
 
 	async function validateEditPrivileges(targetEvent: Event) { // Soft verification for UX. There is a second, hard check in backend for security
 		try {
@@ -47,13 +51,7 @@ export default function EditPageComponent({ eventProp }: { eventProp: Event }) {
 		}
 	}
 
-	useEffect(() => {
-		const validatePrivileges = async () => {
-			await validateEditPrivileges(event);
-		}
-
-		validatePrivileges();
-	}, [session]);
+	// could use better + more informative screens
 
 	if (status === 'forbidden') return <ForbiddenScreen />
 
@@ -62,7 +60,7 @@ export default function EditPageComponent({ eventProp }: { eventProp: Event }) {
 	if (status === 'loading') return <LoadingScreen />
 
 	return (
-		<EditEventComponent event={event} />
+		<EditEventComponent eventProp={event} onClose={onClose} />
 	)
 }
 
