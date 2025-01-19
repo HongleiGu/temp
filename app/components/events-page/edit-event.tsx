@@ -5,27 +5,23 @@ import toast from 'react-hot-toast';
 import { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { generateDays, generateMonths, generateYears, generateHours, generateMinutes, placeholderImages } from '@/app/lib/utils';
-import { Event, FormData, Registrations } from '@/app/lib/types';
+import { Event, FormData, Registrations, EditEventProps } from '@/app/lib/types';
 import { Input } from '../input';
 import { Button } from '../button';
 import { ArrowLeftIcon, TrashIcon } from '@heroicons/react/24/outline';
-import { validateEvent } from '@/app/lib/utils';
 import TagsField from './create-event-tags';
 import { useRouter } from 'next/navigation';
-import { upload } from '@vercel/blob/client';
 import RegistrationsModal from './registrations-modal';
 import ToggleSwitch from '../toggle-button';
+import { createPortal } from 'react-dom';
 
-
-interface EditEventComponentProps {
-	event: Event;
-}
 
 const MAX_POSTGRES_STRING_LENGTH = 255;
 
-export default function EditEventComponent({ event }: EditEventComponentProps) {
+export default function EditEventComponent({ eventProp, onClose }: EditEventProps) {
+	const modalRef = useRef<HTMLDivElement>(null);
 	const [viewRegistrationsModal, setViewRegistrationsModal] = useState(false)
-	const [organisers, setOrganisers] = useState([event.organiser]);
+	const [organisers, setOrganisers] = useState([eventProp.organiser]);
 	const [registrations, setRegistrations] = useState<Registrations[]>([])
 
 	const { register, handleSubmit, formState: { errors, isValid }, setValue, watch } = useForm<FormData>({
@@ -46,7 +42,7 @@ export default function EditEventComponent({ event }: EditEventComponentProps) {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
-					event_id: event.id
+					event_id: eventProp.id
 				}),
 			})
 			const result = await res.json();
@@ -120,7 +116,7 @@ export default function EditEventComponent({ event }: EditEventComponentProps) {
 
 	useEffect(() => {
 		// Sets form's regsitered values to those of `event`
-		const formData = mapEventToFormData(event);
+		const formData = mapEventToFormData(eventProp);
 
 		Object.keys(formData).forEach((key) => {
 			const formDataKey = key as keyof FormData;
@@ -135,61 +131,57 @@ export default function EditEventComponent({ event }: EditEventComponentProps) {
 				setValue(formDataKey, formData[formDataKey]);
 			}
 		});
-	}, [event, setValue]);
+	}, [eventProp, setValue]);
 
 	useEffect(() => {
 		fetchOrganisersData()
 	}, []);
 
+	// Disable background scroll and handle outside click detection
+	useEffect(() => {
+		// Prevent background scrolling
+		document.body.style.overflow = 'hidden';
+
+		const handleClickOutside = (event: MouseEvent) => {
+			if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+				onClose();
+			}
+		};
+
+		document.addEventListener('mousedown', handleClickOutside);
+
+		return () => {
+			document.body.style.overflow = '';
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, [onClose]);
+
 	const onSubmit = async (data: FormData) => {
 		const toastId = toast.loading('Updating event....')
-		const error = validateEvent(data);
-
-		if (error) {
-			toast.error(`Event is invalid: ${error}`, { id: toastId })
-			return;
-		}
-
-		let imageUrl = data.selectedImage
-
-		if (data.uploadedImage && typeof data.uploadedImage !== 'string') {
-			try {
-				const newBlob = await upload(data.uploadedImage.name, data.uploadedImage, {
-					access: 'public',
-					handleUploadUrl: '/api/upload-image',
-				})
-
-				imageUrl = newBlob.url
-			} catch (error) {
-				toast.error(`Error uploading image: ${error.message}`, { id: toastId })
-				return
-			}
-		}
 
 		try {
-			const res = await fetch('/api/events/update', {
+			console.log(data);
+			const response = await fetch('/api/protected/events/update', { // upload of image is handled in here
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
-					id: event.id,
-					formData: {
-						...data,
-						selectedImage: imageUrl,
-					}
+					eventId: eventProp.id,
+					formData: data,
 				}),
 			});
 
-			const result = await res.json();
-			if (result.success) {
+			const result = await response.json();
+			if (response.status === 200) {
 				toast.success('Event successfully updated!', { id: toastId })
-				router.push('/events');
+				router.push('/account'); // modified to push to account, but can be changed back to /events
+				onClose();
 			} else {
-				toast.error(`Error updating event: ${result.error}.`, { id: toastId })
+				toast.error(`Error updating event: ${result.message}.`, { id: toastId })
 			}
 		} catch (error) {
-			toast.error(`Error during event submission: ${error}.`, { id: toastId })
+			toast.error(`Error occured trying to update event: ${error}.`, { id: toastId })
 		}
 	};
 
@@ -532,53 +524,76 @@ export default function EditEventComponent({ event }: EditEventComponentProps) {
 		</div>
 	);
 
-	return (
-		<div className="relative bg-white p-10 overflow-auto text-black">
-			<div className="sticky top-0 bg-gray-300 p-4 border-b flex justify-between items-center rounded-lg">
-				<Button variant='ghost' size='sm' className='text-lg hover:text-gray-500' onClick={() => router.back()}>
-					<ArrowLeftIcon width={30} height={30} />Back
-				</Button>
-
-				<div className="space-x-0 space-y-2 md:space-y-0 md:space-x-4 flex flex-col md:flex-row items-center">
-					<Button
-						variant="outline"
-						size="sm"
-						className='px-10 bg-purple-400 text-gray-950 md:text-xl'
-						onClick={viewRegistrations}
-					>
-						View Registrations
-					</Button>
-					<Button
-						className='px-10 md:text-xl border-black'
-						variant="outline"
-						size="sm"
-						disabled={!isValid}
-						onClick={handleSubmit(onSubmit)}
-					>
-						Save Event
-					</Button>
+	return createPortal(
+		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+			<div
+				ref={modalRef}
+				className="relative bg-white w-[90vw] h-[80vh] p-8 border-2 border-black overflow-hidden"
+			>
+				<button onClick={onClose} className="absolute top-4 right-4 transition">
+					<Image
+						src="/icons/close.svg"
+						alt="Close"
+						width={12}
+						height={12}
+						className="hover:brightness-75"
+					/>
+				</button>
+				<div className="flex flex-col md:flex-row h-full">
+					<div className="relative bg-white p-10 text-black h-full w-full overflow-y-auto">
+						{/* Fixed Header Section */}
+						<div className="sticky top-0 z-10 bg-gray-300 p-4 border-b flex justify-between items-center rounded-lg">
+							<Button variant="ghost" size="sm" className="text-lg hover:text-gray-500" onClick={() => onClose()}>
+								<ArrowLeftIcon width={30} height={30} />Back
+							</Button>
+	
+							<div className="space-x-0 space-y-2 md:space-y-0 md:space-x-4 flex flex-col md:flex-row items-center">
+								<Button
+									variant="outline"
+									size="sm"
+									className="px-10 bg-purple-400 text-gray-950 md:text-xl"
+									onClick={viewRegistrations}
+								>
+									View Registrations
+								</Button>
+								<Button
+									className="px-10 md:text-xl border-black"
+									variant="outline"
+									size="sm"
+									disabled={!isValid}
+									onClick={handleSubmit(onSubmit)}
+								>
+									Save Event
+								</Button>
+							</div>
+						</div>
+	
+						{/* Scrollable Form Section */}
+						<form className="space-y-4">
+							<h1 className="text-4xl font-semibold p-6">Let&#39;s edit your event!</h1>
+	
+							<TitleField />
+							<DescriptionField />
+							<OrganiserField />
+							<DateField />
+							<TimeField />
+							<TagsFieldWrapper />
+							<LocationField />
+							<CapacityField />
+							<ImagePickerField />
+							<SignupLinkField />
+							<ForExternalsField />
+						</form>
+	
+						{/* Modal for Registrations */}
+						{viewRegistrationsModal && <RegistrationsModal registrations={registrations} onClose={closeModal} />}
+					</div>
 				</div>
 			</div>
-
-			<form className="space-y-4">
-				<h1 className="text-4xl font-semibold p-6">Let&#39;s edit your event!</h1>
-
-				<TitleField />
-				<DescriptionField />
-				<OrganiserField />
-				<DateField />
-				<TimeField />
-				<TagsFieldWrapper />
-				<LocationField />
-				<CapacityField />
-				<ImagePickerField />
-				<SignupLinkField />
-				<ForExternalsField />
-			</form>
-
-			{viewRegistrationsModal && <RegistrationsModal registrations={registrations} onClose={closeModal} />}
-
-		</div>
+		</div>,
+		document.body
 	);
+	
+
 };
 

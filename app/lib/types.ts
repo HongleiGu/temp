@@ -17,6 +17,25 @@ export interface Event {
 	for_externals?: string;
 }
 
+export interface EditEventProps {
+	eventProp: Event;
+	onClose: () => void;
+}
+
+export interface EventModalProps {
+	event: Event;
+	onClose: () => void;
+}
+
+export interface EventCardProps {
+	event: Event
+	editEvent?: boolean
+}
+
+export interface EditEventComponentProps {
+	event: Event;
+}
+
 export interface EmailData {
 	id: string;
 	email: string;
@@ -26,7 +45,7 @@ export interface EmailData {
 
 export interface UserEventsListProps {
 	user_id: string
-	edit?: boolean
+	editEvent?: boolean
 }
 
 export interface FetchAccountDetailsPromiseInterface {

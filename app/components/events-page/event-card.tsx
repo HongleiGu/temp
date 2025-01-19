@@ -1,41 +1,52 @@
 "use client";
 
+
 import Image from "next/image";
 import { useState } from "react";
-import { Event } from "@/app/lib/types";
+import { EventCardProps } from "@/app/lib/types";
 import { formatDateString } from "@/app/lib/utils";
 import EventCardTags from "./event-tags";
 import EventModal from "./event-modal";
-import { useRouter } from 'next/navigation';
+import EditPage from "../edit/edit";
 
-
-interface EventCardProps {
-	event: Event
-	editEvent?: boolean
-}
 
 export default function EventCard({ event, editEvent }: EventCardProps) {
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [modalChoice, setModalChoice] = useState<'edit' | 'view' | 'waiting'>('waiting');
 
-	const router = useRouter()
+	const openEditModal = () => setModalChoice('edit');
+	const openViewModal = () => setModalChoice('view');
+	const closeModal = () => setModalChoice('waiting');
 
-	const openModal = () => setIsModalOpen(true);
-	const closeModal = () => setIsModalOpen(false);
+	// const navigateToEdit = () => {
+	// 	try {
+	// 		const data = { id: event.id };
+	// 		router.push(`/events/edit?data=${data}`)
+	// 	} catch (error) {
+	// 		console.error("Error encoding event data:", error)
+	// 	}
+	// }
 
-	const navigateToEdit = () => {
-		try {
-			const eventData = encodeURIComponent(JSON.stringify(event))
-			router.push(`/events/edit?data=${eventData}`)
-		} catch (error) {
-			console.error("Error encoding event data:", error)
-		}
+
+	const handleCardClick = () => {
+		{editEvent? openEditModal() : openViewModal()} // !editEvent is the most likely scenario
+	};
+
+	if (modalChoice === 'view') {
+		return <EventModal event={event} onClose={closeModal} />;
+	}
+
+	if (modalChoice === 'edit') {
+		return <EditPage event={event} onClose={closeModal} />;
 	}
 
 
 	return (
 		<>
 
-			<div className="flex flex-col p-4 rounded-sm shadow-lg relative transition-transform duration-300 ease-in-out hover:scale-105 hover:bg-opacity-90 bg-white" onClick={editEvent ? navigateToEdit : openModal}>
+			<div 
+				className="flex flex-col p-4 rounded-sm shadow-lg relative transition-transform duration-300 ease-in-out hover:scale-105 hover:bg-opacity-90 bg-white" 
+				onClick={handleCardClick}
+			>
 				<EventCardTags eventType={event.event_type} />
 				<Image
 					src={event.image_url}
@@ -55,7 +66,6 @@ export default function EventCard({ event, editEvent }: EventCardProps) {
 					</div>
 				</div>
 			</div>
-			{isModalOpen && <EventModal event={event} onClose={closeModal} />}
 		</>
 	)
 }

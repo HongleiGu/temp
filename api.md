@@ -4,6 +4,47 @@ This API log follows the same [Semantic Versioning](https://semver.org/spec/v2.0
 
 For each public API route, it lists **inputs**, **outputs**, **errors thrown**, and **places invocated**
 
+# [4.0.0] # New non backward compatible routes introduced to workflow, and some previous routes deleted
+
+## 'events/update'
+- deleted
+
+## 'protected/events/update'
+
+### Inputs
+- eventId: UUID of event of type `string`
+- formData: event form data of type `FormData`
+
+### Outputs
+- status: number status code (200 = success)
+- message: string message that describes the response
+
+### Errors:
+- important fields are missing (400) [unique]
+- non authenticated request (401) [unique]
+- authenticated user doesn't have permission (403) [unique]
+- internal server error (500) [non-unique]
+
+### Where
+- `app/component/events-page/edit-event/EditEventComponent`
+
+## 'protected/events/verify-owner-of-event'
+
+### Inputs
+- eventId: UUID of event of type `string`
+
+### Outputs
+- status: number status code (200 = success)
+- message: string message that describes the response
+
+### Errors:
+- non authenticated request (401) [unique]
+- authenticated user doesn't have permission (403) [unique]
+- internal server error (500) [non-unique]
+
+### Where
+- `app/component/events-page/edit-event/EditEventComponent`
+
 # [3.1.0] 
 
 ## `events/get-information`

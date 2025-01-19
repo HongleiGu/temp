@@ -8,7 +8,7 @@ import { UserEventsListProps } from "@/app/lib/types";
 
 /* TODO: Make api call to get events for user_id */
 
-export default function UserEventsList({ user_id, edit = true }: UserEventsListProps) {
+export default function UserEventsList({ user_id, editEvent = false }: UserEventsListProps) {
 	const [userEvents, setUserEvents] = useState<Event[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
@@ -62,9 +62,8 @@ export default function UserEventsList({ user_id, edit = true }: UserEventsListP
 			<FilteredEventsList 
 				allEvents={userEvents} 
 				activeTags={[1, 2, 4]} // MARK: UPDATE if TAGS change
-				editEvent={edit}
+				editEvent={editEvent}
 			/>
 		</div>
 	);
-
 }

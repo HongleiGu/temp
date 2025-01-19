@@ -79,7 +79,7 @@ export default function AccountPage() {
 
 				<div className="border-b border-gray-300 pb-4 ml-4 mb-10 space-y-6">
 					<h2 className="text-2xl italic mb-2 ml-2">Your events</h2>
-					<UserEventsList user_id={user.id} />
+					<UserEventsList user_id={user.id} editEvent={true}/>
 				</div>
 
 				<div className="flex justify-end self-end space-x-2">

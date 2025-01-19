@@ -246,9 +246,7 @@ export default function SocietyPage() {
 							<skeletons.UniqueSocietyTagsSkeleton />
 						) : (
 							<div className='mt-2'>
-								{tags.length>0 && 
-									<span>|</span>
-								}
+								<span>|</span>
 								{tags.map((tag, index) => (
 									<>
 										<span
@@ -338,7 +336,7 @@ export default function SocietyPage() {
 				<h2 className="text-2xl italic mb-2 ml-2 text-center uppercase">
 					{name ? `${name}${name.endsWith('s') ? '\'' : '\'s'} events` : "Societies' events"}
 				</h2>
-				<UserEventsList user_id={stringid} edit={false} />
+				<UserEventsList user_id={stringid} editEvent={false} />
 			</section>
 		</div>
 	);

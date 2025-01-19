@@ -3,17 +3,13 @@
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
-import { Event } from "@/app/lib/types";
+import { EventModalProps } from "@/app/lib/types";
 import { createPortal } from 'react-dom';
 import { formatDateString, EVENT_TAG_TYPES, returnLogo } from '@/app/lib/utils';
 import { Button } from '../button';
 import { useRouter } from 'next/navigation';
 import { base16ToBase62 } from "@/app/lib/uuid-utils";
 
-interface EventModalProps {
-	event: Event;
-	onClose: () => void;
-}
 
 export default function EventModal({ event, onClose }: EventModalProps) {
 	const modalRef = useRef<HTMLDivElement>(null);

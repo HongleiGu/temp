@@ -5,6 +5,8 @@ import bcrypt from 'bcrypt';
 import { Tag } from './types';
 import { redis } from './config';
 
+// needs organisation
+
 export async function fetchWebsiteStats() {
 	// return FallbackStatistics
 	try {
@@ -19,6 +21,21 @@ export async function fetchWebsiteStats() {
 	} catch (error) {
 		console.error('Database error:', error)
 		return FallbackStatistics
+	}
+}
+
+export async function checkOwnershipOfEvent(userId: string, eventId: string) {
+	try {
+		const data = await sql<SQLEvent> `
+		SELECT organiser_uid
+		FROM events
+		WHERE id = ${eventId}
+		`
+
+		return data?.rows[0]?.organiser_uid === userId;
+	} catch (error) {
+		console.error('database function error:', error);
+		throw new Error('Failed to verify ownership in database function');
 	}
 }
 
@@ -91,6 +108,25 @@ export async function fetchEventById(id: string) {
 	}
 }
 
+export async function fetchEventWithUserId(event_id: string, user_id: string) {
+	try {
+		const data = await sql<SQLEvent>`
+			SELECT * FROM events
+			WHERE organiser_uid = ${user_id} AND id = ${event_id}
+			LIMIT 1
+		`;
+		console.log('Data rows: ', data.rows);
+		if (data.rows.length === 0) {
+			return { success: false };
+		} else {
+			return { success: true, event: convertSQLEventToEvent(data.rows[0]) }
+		}
+	} catch (error) {
+		console.error('Database error:', error);
+		throw new Error('Failed to fetch event');
+	}
+}
+
 export async function insertEvent(event: SQLEvent) {
 	try {
 		await sql`
@@ -104,8 +140,9 @@ export async function insertEvent(event: SQLEvent) {
 	}
 }
 
+
 export async function updateEvent(event: SQLEvent) {
-	console.log('SQL query for ', event.id)
+	// console.log('SQL query for ', event.id)
 	try {
 		await sql`
 			UPDATE events
@@ -129,10 +166,10 @@ export async function updateEvent(event: SQLEvent) {
 				image_contain = ${event.image_contain}
 			WHERE id = ${event.id}
 		`;
-		return { success: true };
+		return { message: 'succesfully updated database', status: 200 };
 	} catch (error) {
 		console.error('Error updating event:', error);
-		return { success: false, error };
+		return { message: 'failed to update database with event', status: 500, error };
 	}
 }
 
