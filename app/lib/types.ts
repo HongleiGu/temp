@@ -175,6 +175,17 @@ export interface CompanyRegisterFormData {
 	imageUrl: string | null;
 }
 
+export interface CompanyInformation {
+	id: string
+	company_name: string;
+	contact_email: string;
+	contact_name: string;
+	description: string | null;
+	website: string | null;
+	motivation: Array<string> | null;
+	logo_url: string | null;
+}
+
 export interface OrganiserAccountEditFormData {
 	uploadedImage: File | null;
 	imageUrl: string | null;
