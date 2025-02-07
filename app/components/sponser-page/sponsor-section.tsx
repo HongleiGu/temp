@@ -57,7 +57,7 @@ export default async function SponsorsSection({companyInformation}:{companyInfor
                         </div>
                     ))}
                     <div className="relative bg-black bg-opacity-50 p-2 flex justify-center items-center">
-                        <p className="text-md md:text-xl tracking-wider mb-2 text-center overflow-scroll scrollbar-none">
+                        <p className="text-md md:text-xl tracking-wider mb-2 text-center">
                             Sponsor the London Student Network! <br/><br/>
                             We connect students through exciting events and societies.
                         </p>
