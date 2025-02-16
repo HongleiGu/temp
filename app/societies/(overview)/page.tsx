@@ -140,7 +140,7 @@ export default function SocietyPage() {
 				scrollThreshold={0.9} // Trigger when 90% of the content is visible
 			>
 				{/* Partners List */}
-				<div className=" w-full overflow-x-auto mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 ">
+				<div className=" w-full overflow-x-auto mt-16 grid grid-cols-2 xl:grid-cols-4 gap-8 ">
 					<Partners filteredPartners={filteredPartners} />
 				</div>
 			</InfiniteScroll>
