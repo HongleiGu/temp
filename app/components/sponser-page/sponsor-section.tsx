@@ -24,7 +24,13 @@ export default async function SponsorsSection({companyInformation}:{companyInfor
                                     src={company.logo_url}
                                     alt={company.company_name}
                                     fill
-                                    style={{ objectFit: "contain" }}
+                                    className='p-2'
+                                    style={
+                                        company.logoBgc ? {
+                                            backgroundColor: company.logoBgc,
+                                            objectFit: "contain"
+                                        } : {objectFit: "contain"}
+                                    }
                                 />
                             </div>
                             <a
@@ -56,12 +62,13 @@ export default async function SponsorsSection({companyInformation}:{companyInfor
                             </div>
                         </div>
                     ))}
-                    <div className="relative bg-black bg-opacity-50 p-2 flex justify-center items-center">
-                        <p className="text-md md:text-xl tracking-wider mb-2 text-center">
+                </div>
+                <div className="relative bg-black bg-opacity-50 p-2 flex flex-col justify-center items-center min-h-max">
+                        <p className="relative text-md md:text-xl tracking-wider mb-2 text-center">
                             Sponsor the London Student Network! <br/><br/>
                             We connect students through exciting events and societies.
                         </p>
-                        <div className="absolute bottom-0 p-5 flex flex-col justify-center items-center">
+                        <div className="relative bottom-0 p-5 flex flex-col justify-center items-center">
                             <p className="w-full text-sm md:text-md text-gray-300 pb-2">
                                 Please follow the guide below to contact LSN
                             </p>
@@ -71,7 +78,6 @@ export default async function SponsorsSection({companyInformation}:{companyInfor
                             </svg>
                         </div>
                     </div>
-                </div>
             </div>
         </section>
     );
