@@ -184,6 +184,7 @@ export interface CompanyInformation {
 	website: string | null;
 	motivation: Array<string> | null;
 	logo_url: string | null;
+	logoBgc?: string // optional, some logos need white background to be visible
 }
 
 export interface OrganiserAccountEditFormData {
