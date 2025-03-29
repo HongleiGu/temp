@@ -8,7 +8,7 @@ export default function ProblemSection() {
 
           {/* Content */}
           <div className="relative z-10 text-center text-white max-w-6xl mx-auto">
-              <h1 className="text-5xl text-left font-bold mb-6 tracking-wider">Our Sponsers</h1>
+              <h1 className="text-5xl text-left font-bold mb-6 tracking-wider">Our Sponsors</h1>
               <p className="text-2xl text-left leading-2 mb-4 tracking-widest">
                 Empowering Student Connections Across the UK
               </p>

@@ -1,4 +1,4 @@
-export default function HowToSponserSection() {
+export default function HowToSponsorSection() {
   return (
       <section
           className="relative w-full min-h-screen flex flex-col justify-center "
@@ -8,7 +8,7 @@ export default function HowToSponserSection() {
 
           {/* Content */}
           <div className="relative z-10 text-center text-white max-w-6xl mx-auto">
-              <h1 className="text-5xl text-left font-bold mb-6 tracking-wider">How To Sponser</h1>
+              <h1 className="text-5xl text-left font-bold mb-6 tracking-wider">How To Sponsor</h1>
               <p className="text-2xl text-left leading-2 mb-4 tracking-widest">
                 Please 
                 <a

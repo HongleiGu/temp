@@ -7,6 +7,6 @@ export async function GET() {
 		return NextResponse.json(organisers)
 	} catch (error) {
 		console.log('Error fetching organisers;', error)
-		return NextResponse.json({ error: 'Failed to fetch sponsers' }, { status: 500 });
+		return NextResponse.json({ error: 'Failed to fetch sponsors' }, { status: 500 });
 	}
 }

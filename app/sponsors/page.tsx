@@ -1,8 +1,8 @@
-import Intro from '@/app/components/sponser-page/intro-section';
-import SponserSection from '@/app/components/sponser-page/sponsor-section';
-import HowToSponserSection from '../components/sponser-page/how-to-sponsor-section';
+import Intro from '@/app/components/sponsor-page/intro-section';
+import SponsorSection from '@/app/components/sponsor-page/sponsor-section';
+import HowToSponsorSection from '../components/sponsor-page/how-to-sponsor-section';
 import { getAllCompanyInformation } from '../lib/data';
-import { hardCodedSponsers } from '../components/sponser-page/hard-coded-sponsers';
+import { hardCodedSponsors } from '../components/sponsor-page/hard-coded-sponsors';
 
 export default async function SponserPage() {
 	const companyInformation = await getAllCompanyInformation();
@@ -16,12 +16,12 @@ export default async function SponserPage() {
 						<Intro />
                     </section>
                     <section className='snap-start'>
-                        <SponserSection 
-                            companyInformation={[...companyInformation, ...hardCodedSponsers]}
+                        <SponsorSection 
+                            companyInformation={[...companyInformation, ...hardCodedSponsors]}
                         />
                     </section>
                     <section className='snap-start'>
-                        <HowToSponserSection />
+                        <HowToSponsorSection />
                     </section>
                 </div>
             </div>

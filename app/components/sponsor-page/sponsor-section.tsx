@@ -12,7 +12,7 @@ export default async function SponsorsSection({companyInformation}:{companyInfor
 
             {/* Content */}
             <div className="relative z-10 text-centre text-white max-w-full mx-auto ">
-                <h1 className="text-5xl font-bold mb-6 tracking-wider">Current Sponsers</h1>
+                <h1 className="text-5xl font-bold mb-6 tracking-wider">Sponsors</h1>
                 <hr className="border-white border-2 w-40 my-8" />
 
                 {/* Team Members */}

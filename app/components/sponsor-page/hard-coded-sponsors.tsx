@@ -1,8 +1,8 @@
 // wonder why they are not in the database
 import { CompanyInformation } from '@/app/lib/types';
 
-// temporarily set all the hard coded sponsers id to 0, can change at any time
-export const hardCodedSponsers: CompanyInformation[]  = [
+// temporarily set all the hard coded sponsors id to 0, can change at any time
+export const hardCodedSponsors: CompanyInformation[]  = [
   {
     id: "0",
     company_name: "Sertie",
