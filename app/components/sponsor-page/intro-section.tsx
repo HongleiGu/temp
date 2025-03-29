@@ -24,13 +24,13 @@ export default function ProblemSection() {
               </p>
           </div>
           <div className="relative flex flex-col w-full justify-center items-center">
-            <p className="text-md md:text-xl text-gray-300 pb-2">
+            {/* <p className="text-md md:text-xl text-gray-300 pb-2">
                 Scroll down for more
-            </p>
+            </p> */}
             {/* hero icons chevron-double-down*/}
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+            {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 5.25 7.5 7.5 7.5-7.5m-15 6 7.5 7.5 7.5-7.5" />
-            </svg>
+            </svg> */}
           </div>
       </section>
   );

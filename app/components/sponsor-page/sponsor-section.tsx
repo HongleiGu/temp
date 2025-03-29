@@ -15,7 +15,6 @@ export default async function SponsorsSection({companyInformation}:{companyInfor
                 <h1 className="text-5xl font-bold mb-6 tracking-wider">Sponsors</h1>
                 <hr className="border-white border-2 w-40 my-8" />
 
-                {/* Team Members */}
                 <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${rows} gap-6 mt-10`}>
                     {companyInformation.map((company, index) => (
                         <div key={index} className="bg-black bg-opacity-50 p-2 text-center">
@@ -56,7 +55,7 @@ export default async function SponsorsSection({companyInformation}:{companyInfor
                                     </svg>
                                         <a 
                                             href={company.website}
-                                            className="text-xl tracking-wider mb-2 mt-5 underline"
+                                            className="text-xl tracking-wider mb-2 mt-5"
                                         >
                                             Click here
                                         </a>
@@ -71,13 +70,13 @@ export default async function SponsorsSection({companyInformation}:{companyInfor
                             We connect students through exciting events and societies.
                         </p>
                         <div className="relative bottom-0 p-5 flex flex-col justify-center items-center">
-                            <p className="w-full text-sm md:text-md text-gray-300 pb-2">
+                            {/* <p className="w-full text-sm md:text-md text-gray-300 pb-2">
                                 Please follow the guide below to contact LSN
-                            </p>
+                            </p> */}
                             {/* hero icons chevron-double-down*/}
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                            {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 5.25 7.5 7.5 7.5-7.5m-15 6 7.5 7.5 7.5-7.5" />
-                            </svg>
+                            </svg> */}
                         </div>
                     </div>
             </div>

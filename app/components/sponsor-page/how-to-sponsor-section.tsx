@@ -17,11 +17,11 @@ export default function HowToSponsorSection() {
                 >
                   Contact Us
                 </a>
-                and we will respond as soon as possible
+                and we will get back to you as soon as possible
               </p>
               <hr className="border-white border-2 w-40 my-8" />
               <h3 className="text-3xl text-left font-bold mb-6 tracking-wider">
-                Thank you for trusting and supporting LSN
+                Our sincere thanks for trusting and supporting LSN
               </h3>
           </div>
       </section>
