@@ -33,33 +33,35 @@ export default async function SponsorsSection({companyInformation}:{companyInfor
                                     }
                                 />
                             </div>
-                            <a
-                                className="text-2xl tracking-wider underline mb-2"
-                                href={company.website}
-                            >
-                                {company.company_name}
-                            </a>
-                            {/* <div
-                                className="relative max-w-full max-h-[200px] overflow-y-scroll"
-                            >
-                                {company.description.split("\n").map((it, index) => (
-                                    <p key={index} className="text-md text-gray-300 pb-10">{it}</p>
-                                ))}
-                            </div> */}
-                            <div
-                                className="relative flex w-full items-center text-left flex-row-reverse"
-                            >
-                                {/* hero icons chevron left*/}
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                                </svg>
-                                <a 
+                            {company.website? 
+                                (<a
+                                    className="text-2xl tracking-wider underline mb-2"
                                     href={company.website}
-                                    className="text-xl tracking-wider mb-2 underline"
                                 >
-                                    Click here
-                                </a>
-                            </div>
+                                    {company.company_name}
+                                </a>)
+                            :
+                                (<p className="text-2xl tracking-wider underline mb-2">
+                                    {company.company_name}
+                                </p>)
+                            }
+
+                            {company.website && 
+                                <div
+                                    className="relative flex w-full items-center text-left flex-row-reverse"
+                                >
+                                    {/* hero icons chevron left*/}
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                                    </svg>
+                                        <a 
+                                            href={company.website}
+                                            className="text-xl tracking-wider mb-2 mt-5 underline"
+                                        >
+                                            Click here
+                                        </a>
+                                </div>
+                            }
                         </div>
                     ))}
                 </div>

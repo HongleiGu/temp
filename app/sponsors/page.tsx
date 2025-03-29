@@ -13,7 +13,7 @@ export default async function SponserPage() {
             <div className="relative h-full overflow-y-auto bg-black bg-opacity-50 text-white snap-y snap-mandatory">
                 <div className="p-10 space-y-10">
                     <section className='snap-start'>
-												<Intro />
+						<Intro />
                     </section>
                     <section className='snap-start'>
                         <SponserSection 
@@ -28,4 +28,3 @@ export default async function SponserPage() {
         </main>
     );
 }
-
