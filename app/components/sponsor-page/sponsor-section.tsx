@@ -64,21 +64,12 @@ export default async function SponsorsSection({companyInformation}:{companyInfor
                         </div>
                     ))}
                 </div>
-                <div className="relative bg-black bg-opacity-50 p-2 flex flex-col justify-center items-center min-h-max">
+                {/* <div className="relative bg-black bg-opacity-50 p-2 flex flex-col justify-center items-center min-h-max mt-5">
                         <p className="relative text-md md:text-xl tracking-wider mb-2 text-center">
                             Sponsor the London Student Network! <br/><br/>
                             We connect students through exciting events and societies.
                         </p>
-                        <div className="relative bottom-0 p-5 flex flex-col justify-center items-center">
-                            {/* <p className="w-full text-sm md:text-md text-gray-300 pb-2">
-                                Please follow the guide below to contact LSN
-                            </p> */}
-                            {/* hero icons chevron-double-down*/}
-                            {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 5.25 7.5 7.5 7.5-7.5m-15 6 7.5 7.5 7.5-7.5" />
-                            </svg> */}
-                        </div>
-                    </div>
+                </div> */}
             </div>
         </section>
     );

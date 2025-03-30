@@ -7,10 +7,10 @@ import { hardCodedSponsors } from '../components/sponsor-page/hard-coded-sponsor
 export default async function SponserPage() {
 	const companyInformation = await getAllCompanyInformation();
     return (
-        <main className="relative bg-cover bg-center bg-fixed bg-no-repeat h-screen overflow-y-auto " style={{ backgroundImage: "url('/images/tower-bridge-1.jpeg')" }}>
+        <main className="relative bg-cover bg-center bg-fixed bg-no-repeat h-screen overflow-y-auto snap-y snap-mandatory" style={{ backgroundImage: "url('/images/tower-bridge-1.jpeg')" }}>
 
             {/* Scrollable Content */}
-            <div className="relative h-full overflow-y-auto bg-black bg-opacity-50 text-white snap-y snap-mandatory">
+            <div className="relative h-full overflow-y-auto bg-black bg-opacity-50 text-white">
                 <div className="p-10 space-y-10">
                     <section className='snap-start'>
 						<Intro />
