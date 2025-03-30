@@ -1,7 +1,7 @@
 export default function HowToSponsorSection() {
   return (
       <section
-          className="relative w-full min-h-screen flex flex-col justify-center "
+          className="relative w-full flex flex-col justify-center "
       >
           {/* Overlay to make text readable */}
           <div className="absolute inset-0 "></div>

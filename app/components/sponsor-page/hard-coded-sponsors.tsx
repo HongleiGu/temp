@@ -65,16 +65,16 @@ export const hardCodedSponsors: CompanyInformation[]  = [
     motivation: [""], // not given
     logo_url: '/sponsors/forest.png'
   },
-  {
-    id: "0",
-    company_name: "sertie",
-    contact_email: "", // not given
-    contact_name: "sertie", // not known, but set to company name as default
-    description: "", // not given
-    website: "https://sertie.io/",
-    motivation: [""], // not given
-    logo_url: '/sponsors/sertie.png'
-  },
+  // {
+  //   id: "0",
+  //   company_name: "sertie",
+  //   contact_email: "", // not given
+  //   contact_name: "sertie", // not known, but set to company name as default
+  //   description: "", // not given
+  //   website: "https://sertie.io/",
+  //   motivation: [""], // not given
+  //   logo_url: '/sponsors/sertie.png'
+  // },
   {
     id: "0",
     company_name: "Inferential Future",
