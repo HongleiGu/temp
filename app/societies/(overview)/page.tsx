@@ -10,7 +10,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { fetchAllPartners } from '@/app/lib/utils';
-import CardSkeleton from '@/app/components/skeletons/card';
+// import CardSkeleton from '@/app/components/skeletons/card';
 import Partners from '@/app/components/societies/partners';
 import { FormattedPartner } from '@/app/lib/types';
 // import InfiniteScroll from 'react-infinite-scroll-component';
@@ -23,6 +23,7 @@ export default function SocietyPage() {
 	// Fetch partners for the current page
 	const fetchPartnersData = useCallback(async () => {
 		setLoading(true);
+		await new Promise((resolve) => setTimeout(resolve, 2000)); // for testing purposes
 		const result = await fetchAllPartners(60);
 		if (result.length !== 0) {
 			// setPartners((prev) => [...prev, ...result]); // this causes a bug where duplicate societies are rendered on page reloads/back navigation
@@ -54,17 +55,17 @@ export default function SocietyPage() {
 			</div>
 
 			{/* Skeletons on Initial Render */}
-			{loading && (
+			{/* {loading && (
 				<div className="flex flex-col space-y-8 w-full max-w-[1000px] overflow-x-auto mt-16">
 					{Array.from({ length: 30 }).map((_, index) => (
 						<CardSkeleton key={index} />
 					))}
 				</div>
-			)}
+			)} */}
 
 			{/* Partners List */}
 			<div className=" w-full mt-16 grid partner-grid gap-8 ">
-				<Partners filteredPartners={partners} />
+				<Partners filteredPartners={partners} skeleton={loading}/>
 			</div>
 
 		</main>

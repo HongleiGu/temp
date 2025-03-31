@@ -2,15 +2,24 @@
 
 import { FormattedPartner } from "@/app/lib/types";
 import PartnerCard from "./partner-card";
+import CardSkeleton from "../skeletons/card";
 
 
-function Partners({ filteredPartners, skeleton = true }: { filteredPartners: FormattedPartner[], skeleton: boolean }) {
+function Partners({ filteredPartners, skeleton }: { filteredPartners: FormattedPartner[], skeleton: boolean }) {
 
 	return (
 		<>
-			{filteredPartners.map((partner: FormattedPartner) => (
-				<PartnerCard key={partner.id} partner={partner}/>
-			))}
+			{skeleton ? (
+				<>
+					{[...Array(30)].map((_, idx) => (
+						<CardSkeleton idx={idx}/>
+					))}
+				</>
+			) : (
+				filteredPartners.map((partner: FormattedPartner) => (
+					<PartnerCard key={partner.id} partner={partner}/>
+				))
+			)}
 		</>
 	);
 

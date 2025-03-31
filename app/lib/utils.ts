@@ -110,7 +110,7 @@ export async function fetchPartners(page: number, limit: number) {
 			keywords: (partner.tags || []).map((tag: number) => {
 				return tagLookup[tag] || 'Unknown Tag';
 			}),
-			description: partner.description || 'No description provided',
+			description: partner.description || `Welcome to ${partner.name}`,
 			website: partner.website || 'No website available',
 			logo: partner.logo_url || null,
 
@@ -152,7 +152,7 @@ export async function fetchAllPartners(cacheDurationInSeconds?: number) {
 			keywords: (partner.tags || []).map((tag: number) => {
 				return tagLookup[tag] || 'Unknown Tag';
 			}),
-			description: partner.description || 'No description provided',
+			description: partner.description || `Welcome to ${partner.name}`,
 			website: partner.website || 'No website available',
 			logo: partner.logo_url || null,
 
