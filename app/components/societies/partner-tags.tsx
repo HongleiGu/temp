@@ -8,7 +8,7 @@ export default function PartnerTags({keywords}: {keywords: string[]}) {
           key={index}
           className="text-white px-2 py-1 rounded-full text-[10px] shadow-lg hover:cursor-default"
           style={{
-            backgroundColor: '#1A4E85', // Lighter background color than card background
+            backgroundColor: '#297BD1', // Lighter background color than card background
           }}
         >
           {tag}

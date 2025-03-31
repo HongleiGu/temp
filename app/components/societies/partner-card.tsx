@@ -36,7 +36,7 @@ export default function PartnerCard({ partner }:{ partner:FormattedPartner }) {
 			>
 				{/* logo */}
 				<Image
-					src={partner.logo && partner.logo !== '' ? partner.logo : '/images/no-logo-found.jpg'}
+					src={partner.logo && partner.logo !== '' ? partner.logo : '/images/placeholders/pretty-logo-not-found.jpg'}
 					alt={partner.name}
 					width={200}
 					height={200}

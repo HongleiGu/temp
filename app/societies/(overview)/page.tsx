@@ -59,16 +59,16 @@ export default function SocietyPage() {
 
 	return (
 		<main className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-[#041A2E] via-[#064580] to-[#083157] p-10 relative">
-			<div className="flex flex-row items-center justify-between w-full max-w-[1000px] mb-10">
-				<h1 className="text-4xl font-semibold text-white">Our Partners</h1>
+			<div className="flex flex-col w-full max-w-[1000px] mb-10">
+				<h1 className="self-start text-4xl font-semibold text-white">Our Partners</h1>
 
 				{/* Search Box */}
-				<div className="relative items-center w-[100px] sm:w-[100px] md:w-[200px] lg:w-[300px] transition-all duration-100 ease-in-out bg-transparent backdrop-blur-lg bg-opacity-30 rounded-lg">
+				<div className="self-end bg-transparent backdrop-blur-lg bg-opacity-30 rounded-lg mt-16">
 					<input
 						type="text"
 						placeholder="Search partners..."
 						className="rounded-full border-[1px] border-white bg-transparent px-6 py-3 w-[300px] min-w-[50px] text-gray-200 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-300 sm:w-[250px] md:w-[300px]"
-						value={searchQuery}
+						// value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
 					/>
 				</div>
@@ -84,7 +84,7 @@ export default function SocietyPage() {
 			)} */}
 
 			{/* Partners List */}
-			<div className=" w-full mt-16 grid partner-grid gap-8 ">
+			<div className=" w-full mt-3 grid partner-grid gap-8 ">
 				<Partners filteredPartners={filteredPartners} skeleton={loading}/>
 			</div>
 
