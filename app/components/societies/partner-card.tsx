@@ -30,7 +30,7 @@ export default function PartnerCard({ partner }:{ partner:FormattedPartner }) {
 	return (
 		<>
 			<Link
-				className="flex flex-col p-4 rounded-sm shadow-lg relative transition-transform duration-300 ease-in-out hover:scale-105 bg-white" 
+				className="flex flex-col p-4 rounded-sm shadow-lg relative transition-transform duration-300 ease-in-out hover:scale-105 bg-white h-[400px]" 
 				href={`/societies/society/${partner.id}`} 
 				passHref 
 			>
@@ -45,7 +45,7 @@ export default function PartnerCard({ partner }:{ partner:FormattedPartner }) {
 				<div className="flex flex-col justify-between flex-grow">
 					<div>
 						{/* TODO: make scrollable */}
-						<p className="text-gray-700 text-sm line-clamp-3 text-ellipsis overflow-y-auto">{partner.description}</p>
+						<p className="text-gray-700 text-sm line-clamp-3 text-ellipsis overflow-y-hidden">{partner.description}</p>
 						<h3 className="text-slate-700 text-xl font-bold mt-2 mb-2 line-clamp-3">{partner.name}</h3>
 					</div>
 					<PartnerTags keywords={partner.keywords}/>
