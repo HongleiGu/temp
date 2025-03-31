@@ -122,9 +122,13 @@ export async function fetchPartners(page: number, limit: number) {
 	}
 }
 
-export async function fetchAllPartners() {
+export async function fetchAllPartners(cacheDurationInSeconds?: number) {
 	try {
-		const response = await fetch('/api/societies/get-all-organiser-cards');
+		const response = await fetch('/api/societies/get-all-organiser-cards', {
+			...(cacheDurationInSeconds &&
+				{ next: { revalidate: cacheDurationInSeconds } }
+			)
+		});
 
 		if (!response.ok) {
 			throw new Error('Failed to fetch organisers card data');

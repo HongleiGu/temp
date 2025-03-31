@@ -8,41 +8,33 @@
 // This was spotted during development on 6/1/2025. For now, pagination is removed until it is
 // more thoroughly tested and fixed.
 
-import { useState, useMemo, useEffect, useCallback } from 'react';
-import { fetchPartners, fetchAllPartners } from '@/app/lib/utils';
+import { useState, useEffect, useCallback } from 'react';
+import { fetchAllPartners } from '@/app/lib/utils';
 import CardSkeleton from '@/app/components/skeletons/card';
 import Partners from '@/app/components/societies/partners';
 import { FormattedPartner } from '@/app/lib/types';
-import InfiniteScroll from 'react-infinite-scroll-component';
+// import InfiniteScroll from 'react-infinite-scroll-component';
 
 export default function SocietyPage() {
 	// Search feature will search the whole dataset, and we'll paginate it
-	const [searchQuery, setSearchQuery] = useState<string>('');
 	const [partners, setPartners] = useState<FormattedPartner[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
-	const [currentPage, setCurrentPage] = useState<number>(1);
-	const [hasMore, setHasMore] = useState<boolean>(true); // Tracks if more data exists
-	const [initialLoadTriggered, setInitialLoadTriggered] = useState<boolean>(false); // New state
-	const pageSize: number = 10;
-	const maxCards: number = 100; // Max number of cards per page
 
 	// Fetch partners for the current page
-	const fetchPartnersData =useCallback(async () => {
+	const fetchPartnersData = useCallback(async () => {
 		setLoading(true);
-		const result = await fetchAllPartners();
-		if (result.length === 0) {
-			setHasMore(false); // No more data to fetch
-		} else {
-			setPartners((prev) => [...prev, ...result]);
+		const result = await fetchAllPartners(60);
+		if (result.length !== 0) {
+			// setPartners((prev) => [...prev, ...result]); // this causes a bug where duplicate societies are rendered on page reloads/back navigation
+			setPartners(result);
 		}
 		setLoading(false);
-	}, [currentPage, setHasMore, setPartners]);
-
+	}, [setPartners]);
 
 
 	useEffect(() => {
 		fetchPartnersData();
-	}, [currentPage, fetchPartnersData]);
+	}, [fetchPartnersData]);
 
 
 	return (
@@ -62,7 +54,7 @@ export default function SocietyPage() {
 			</div>
 
 			{/* Skeletons on Initial Render */}
-			{loading && currentPage === 1 && (
+			{loading && (
 				<div className="flex flex-col space-y-8 w-full max-w-[1000px] overflow-x-auto mt-16">
 					{Array.from({ length: 30 }).map((_, index) => (
 						<CardSkeleton key={index} />

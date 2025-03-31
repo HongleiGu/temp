@@ -4,7 +4,7 @@ import { FormattedPartner } from "@/app/lib/types";
 import PartnerCard from "./partner-card";
 
 
-function Partners({ filteredPartners }: { filteredPartners: FormattedPartner[] }) {
+function Partners({ filteredPartners, skeleton = true }: { filteredPartners: FormattedPartner[], skeleton: boolean }) {
 
 	return (
 		<>

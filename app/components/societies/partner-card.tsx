@@ -8,7 +8,7 @@ import PartnerTags from "./partner-tags";
 import PartnerWebsite from "./partner-website";
 import PartnerMessage from "./partner-message";
 
-export default function PartnerCard({partner}:{partner:FormattedPartner}) {
+export default function PartnerCard({ partner, skeleton=false }:{ partner:FormattedPartner, skeleton: boolean }) {
   const handleMessageClick = (e: React.MouseEvent<HTMLButtonElement>, id: number) => { // turns message button into link
 		e.preventDefault();
 		e.stopPropagation();
