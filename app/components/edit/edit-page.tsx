@@ -14,7 +14,7 @@ export default function EditPageComponent({ event, onClose }: EventModalProps) {
 
 	useEffect(() => {
 		validateEditPrivileges(eventProp);
-	}, [session]);
+	}, [session, validateEditPrivileges, eventProp]);
 
 	async function validateEditPrivileges(targetEvent: Event) { // Soft verification for UX. There is a second, hard check in backend for security
 		try {

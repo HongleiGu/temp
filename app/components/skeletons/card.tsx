@@ -1,6 +1,6 @@
-export default function CardSkeleton({ idx }: { idx: number }) {
+export default function CardSkeleton() {
 	return (
-		<div key={idx} className="flex flex-col p-4 rounded-sm shadow-lg relative bg-white h-[400px]">
+		<div className="flex flex-col p-4 rounded-sm shadow-lg relative bg-white h-[400px]">
 			{/* Logo Skeleton */}
 			<div className="w-full h-40 bg-gray-200 animate-pulse mb-1 border border-black rounded-sm"></div>
 

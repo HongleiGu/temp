@@ -12,7 +12,7 @@ function Partners({ filteredPartners, skeleton }: { filteredPartners: FormattedP
 			{skeleton ? (
 				<>
 					{[...Array(30)].map((_, idx) => (
-						<CardSkeleton idx={idx}/>
+						<CardSkeleton key={idx}/>
 					))}
 				</>
 			) : (
