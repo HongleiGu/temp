@@ -71,7 +71,7 @@ export default function SocietyPage() {
 			)}
 
 			{/* Partners List */}
-			<div className=" w-full overflow-x-auto mt-16 grid grid-cols-2 xl:grid-cols-4 gap-8 ">
+			<div className=" w-full mt-16 grid partner-grid gap-8 ">
 				<Partners filteredPartners={partners} />
 			</div>
 

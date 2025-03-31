@@ -29,19 +29,19 @@ export default function PartnerCard({partner}:{partner:FormattedPartner}) {
   return (
       <>
           <Link
-            className="flex flex-col p-4 rounded-sm shadow-lg relative transition-transform duration-300 ease-in-out hover:scale-105 hover:bg-opacity-90 bg-white" 
+            className="flex flex-col p-4 rounded-sm shadow-lg relative transition-transform duration-300 ease-in-out hover:scale-105 bg-white" 
             href={`/societies/society/${partner.id}`} 
             passHref 
           >
             {/* <EventCardTags eventType={event.event_type} /> */}
             {/* logo */}
             <Image
-								src={partner.logo && partner.logo !== '' ? partner.logo : '/images/no-logo-found.jpg'}
-								alt={partner.name}
-								width={200}
-								height={200}
-								className={`w-full h-40 object-contain mb-1 border border-black`}
-							/>
+				src={partner.logo && partner.logo !== '' ? partner.logo : '/images/no-logo-found.jpg'}
+				alt={partner.name}
+				width={200}
+				height={200}
+				className={`w-full h-40 object-contain mb-1 border border-black`}
+			/>
             <div className="flex flex-col justify-between flex-grow">
               <div>
                 {/* maybe we should make this scrollable? since description can be long */}
