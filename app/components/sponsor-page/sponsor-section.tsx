@@ -35,6 +35,7 @@ export default async function SponsorsSection({companyInformation}:{companyInfor
                             {company.website? 
                                 (<a
                                     className="text-2xl tracking-wider underline mb-2"
+                                    target='_blank'
                                     href={company.website}
                                 >
                                     {company.company_name}
@@ -56,6 +57,7 @@ export default async function SponsorsSection({companyInformation}:{companyInfor
                                         <a 
                                             href={company.website}
                                             className="text-xl tracking-wider mb-2 mt-5"
+                                            target="_blank"
                                         >
                                             Click here
                                         </a>
