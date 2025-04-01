@@ -68,6 +68,7 @@ export default async function SponsorsSection({companyInformation}:{companyInfor
                             {company.website? 
                                 (<a
                                     className="text-2xl tracking-wider underline mb-2"
+                                    target='_blank'
                                     href={company.website}
                                 >
                                     {company.company_name}
@@ -83,14 +84,18 @@ export default async function SponsorsSection({companyInformation}:{companyInfor
                                     className="relative flex w-full items-center text-left flex-row-reverse"
                                 >
                                     {/* hero icons chevron left*/}
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                    {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 h-full">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                                    </svg>
-                                        <a 
+                                    </svg> */}
+                                        <a
                                             href={company.website}
-                                            className="text-xl tracking-wider mb-2 mt-5"
+                                            className="relative flex flex-center text-xl tracking-wider mb-2 mt-5 h-full"
+                                            target="_blank"
                                         >
                                             Click here
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 h-full">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                                    </svg>
                                         </a>
                                 </div>
                             }
