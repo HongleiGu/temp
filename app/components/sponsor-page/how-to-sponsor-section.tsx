@@ -2,7 +2,7 @@ export default function HowToSponsorSection() {
     return (
         <>
             {/* Content */}
-            <h1 className="text-5xl font-bold mb-6 self-end">How To Sponsor</h1>
+            <h1 className="text-5xl font-bold ml-6 mb-6 self-end">How To Sponsor</h1>
             <p className="text-2xl leading-2 mb-4 text-right ml-10">
                 Please 
                 <a
