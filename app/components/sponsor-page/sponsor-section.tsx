@@ -2,6 +2,39 @@ import { CompanyInformation } from '@/app/lib/types';
 import Image from 'next/image';;
 
 export default async function SponsorsSection({companyInformation}:{companyInformation: CompanyInformation[]}) {
+    const premiumSponsors = [
+        {
+            id: "0",
+            company_name: "Sertie",
+            contact_email: "", // not given
+            contact_name: "Sertie", // not known, but set to company name as default
+            description: "", // not given
+            website: "https://sertie.io/",
+            motivation: [""], // not given
+            logo_url: '/sponsors/sertie.png'
+        },
+        {
+            id: "0",
+            company_name: "Forest",
+            contact_email: "", // not given
+            contact_name: "Forest", // not known, but set to company name as default
+            description: "", // not given
+            website: "https://forest.me/",
+            motivation: [""], // not given
+            logo_url: '/sponsors/forest.png'
+        }
+    ];
+
+    // Combine premium sponsors with other sponsors
+    const sortedSponsors: CompanyInformation[] = [
+        ...premiumSponsors,
+        ...companyInformation.filter(company => 
+            !['Sertie', 'Forest', 'Traqr', 'TALAB', 'Association Of Azerbaijani British Professionals ', 'Talli Tigers'].includes(company.company_name)
+        )
+    ];
+
+    console.log(sortedSponsors);
+
     const rows = Math.max(Math.min(companyInformation.length, 4), 2)
     return (
         <section
@@ -16,7 +49,7 @@ export default async function SponsorsSection({companyInformation}:{companyInfor
                 <hr className="border-white border-2 w-40 my-8" />
 
                 <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${rows} gap-6 mt-10`}>
-                    {companyInformation.map((company, index) => (
+                    {sortedSponsors.map((company, index) => (
                         <div key={index} className="bg-black bg-opacity-50 p-2 text-center">
                             <div className="w-48 h-60 relative mx-auto my-4">
                                 <Image
@@ -64,12 +97,6 @@ export default async function SponsorsSection({companyInformation}:{companyInfor
                         </div>
                     ))}
                 </div>
-                {/* <div className="relative bg-black bg-opacity-50 p-2 flex flex-col justify-center items-center min-h-max mt-5">
-                        <p className="relative text-md md:text-xl tracking-wider mb-2 text-center">
-                            Sponsor the London Student Network! <br/><br/>
-                            We connect students through exciting events and societies.
-                        </p>
-                </div> */}
             </div>
         </section>
     );
