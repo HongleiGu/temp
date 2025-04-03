@@ -472,7 +472,7 @@ export async function insertOrganiserInformation(formData: SocietyRegisterFormDa
 export async function getAllCompanyInformation() {
 	try {
 		const data = await sql`
-			SELECT 
+			SELECT
 					c.id,
 					u.name AS company_name, 
 					COALESCE(c.contact_email, u.email) AS contact_email,
