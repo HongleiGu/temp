@@ -4,15 +4,18 @@ All the notable additions and fixes.
 
 This changelog follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-# [4.0.1] - 2024-03-04
-(forgot the exact date, took me a long time after completion to remember the PR is not made)
+# [4.1.0] - 2025-03-04
 
-### Added:
-nothing
+### Added
+
+- Sponsers page
+- Reused the about page structure, the first section is some text
+- Hardcoded some sponsers not in the database (may need to check)
+- When the screen is small, reduce the number of columns for displaying the sponsors section
+- Allow user to redirect to the sponsor website either from click here or the name
 
 ### Changed:
-
-- organized a better structure for the society grids
+nothing
 
 # [4.0.0] - 2025-01-18 
 
