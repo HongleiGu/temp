@@ -14,6 +14,7 @@ This changelog follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 - Sponsor's page UI (more compact cards + fixed dimensions)
 - Sponsor's page skeleton for new UI
 - Before cards were transparent, now white
+- Now `Welcome to ${partner_name}` is always default fallback for description
 
 ### Fixed:
 - Quick fix for duplicate/missing cards by removing lazy loading
