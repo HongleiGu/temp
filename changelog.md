@@ -8,14 +8,15 @@ This changelog follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ### Added
 
-- Sponsers page
-- Reused the about page structure, the first section is some text
-- Hardcoded some sponsers not in the database (may need to check)
-- When the screen is small, reduce the number of columns for displaying the sponsors section
-- Allow user to redirect to the sponsor website either from click here or the name
+- Sponsor page search functionality with query debouncing
 
 ### Changed:
-nothing
+- Sponsor's page UI (more compact cards + fixed dimensions)
+- Sponsor's page skeleton for new UI
+- Before cards were transparent, now white
+
+### Fixed:
+- Quick fix for duplicate/missing cards by removing lazy loading
 
 # [4.0.0] - 2025-01-18 
 
