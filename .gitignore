@@ -37,12 +37,11 @@ yarn-error.log*
 next-env.d.ts
 
 # local
-/.history/
-/.vscode/
-/.bugs/
-/.todo.txt
+/.history
 /.notes.txt
+/.todo.txt
 /.developer.notes.txt
+/.bugs
 
 # tests
 /.tests/
