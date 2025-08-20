@@ -15,11 +15,8 @@ jobs:
 
       - name: Set environment variable for Vercel URL
         run: |
-          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
-            echo "VERCEL_URL=https://london-student-network-web.vercel.app" >> $GITHUB_ENV
-          else
-            echo "VERCEL_URL=https://london-student-network-web-git-32ff71-anishs-projects-e3711624.vercel.app" >> $GITHUB_ENV
-          fi
+          echo "VERCEL_URL=https://london-student-network-web-git-32ff71-anishs-projects-e3711624.vercel.app" >> $GITHUB_ENV
+          
 
       - name: Trigger notify-event API
         run: |
